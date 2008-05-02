@@ -1,0 +1,54 @@
+exportClasses(
+              "bayesglm",
+              "bayesglm.h",
+              "bayespolr"
+              )
+
+exportMethods(
+              "coefplot",
+              "display",
+              "mcsamp",
+              #"model.matrix.bayes",
+              "se.coef",
+              "sim",
+              "sigma.hat",
+              "print",
+              "show"
+              )
+
+export(
+       "balanceplot",
+       "bayesglm",
+       "bayesglm.fit",
+       "bayespolr",
+       "binnedplot",
+       "coefplot",
+       "coefplot.default",
+       "contr.bayes.ordered",
+       "contr.bayes.unordered",
+       "corrplot",
+       "display",  
+       "fround",
+       "G",
+       "go",
+       "invlogit",
+       "matching", 
+       "model.matrix.bayes",
+       "multicomp.plot",
+       "mcplot",
+       "pfround",
+       "rescale",
+       "se.coef",
+       "se.fixef",
+       "se.ranef",
+       "sigma.hat",
+       "sim",
+       "standardize",
+       "traceplot.bugs",
+       "triangleplot"
+)
+
+
+
+
+S3method(print, GO)
