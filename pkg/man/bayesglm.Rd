@@ -10,6 +10,7 @@
 \alias{print,bayesglm-method}
 \alias{print,bayesglm.h-method}
 \alias{show,bayesglm-method}
+\alias{show,bayesglm.h-method}
 
 \title{Bayesian generalized linear models.}
 
