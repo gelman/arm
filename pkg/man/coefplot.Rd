@@ -48,8 +48,8 @@ coefplot(object,\dots)
   \item{vertical}{orientation of the plot, default is TRUE which will plot
     variable names in the 2nd axis. If FALSE, plot variable names in the first
     axis instead.}
-  \item{v.axis}{default is TRUE, which shows the bottom axis--axis(1) and the top axis--axis(3).}
-  \item{h.axis}{default is TRUE, which shows the left axis--axis(2) and the right axis--axis(4).}
+  \item{v.axis}{default is TRUE, which shows the bottom axis--axis(1).}
+  \item{h.axis}{default is TRUE, which shows the left axis--axis(2).}
   \item{cex.var}{The fontsize of the varible names, default=0.8.}
   \item{cex.pts}{The size of data points, default=0.9.}
   \item{col.pts}{color of points and segments, default is black.}
