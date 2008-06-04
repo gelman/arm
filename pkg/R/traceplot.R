@@ -1,7 +1,12 @@
+
+
+
 # ========================================================================
 # function for trace plot
 # ========================================================================
-traceplot.bugs <- function( x, mfrow = c( 1, 1 ), varname = NULL,
+
+setMethod("traceplot", signature(x = "bugs"),
+  function( x, mfrow = c( 1, 1 ), varname = NULL,
   match.head = TRUE, ask = TRUE,
   col = rainbow( x$n.chains ),
   lty = 1, lwd = 1, ... ) 
@@ -31,3 +36,4 @@ traceplot.bugs <- function( x, mfrow = c( 1, 1 ), varname = NULL,
     axis( 1, at = seq(0, n.keep, n.keep*0.1), tick = TRUE )
   }
 }
+)
