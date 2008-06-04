@@ -63,6 +63,12 @@ if (!isGeneric("terms.bayes")) {
                standardGeneric("terms.bayes"))
 }
 
+if (!isGeneric("tracplot")) {
+    setGeneric("traceplot",
+               function(x, ...)
+               standardGeneric("traceplot"))
+}
+
 
    
 traceplot <- function(x, ...) UseMethod("traceplot")

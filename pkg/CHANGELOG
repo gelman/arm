@@ -1,4 +1,9 @@
 2008-6-4  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-7.
+    * R/traceplot: add mcmc.list method (previously was mask by traceplot
+        generic.
+
+2008-6-4  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-6.
     * R/traceplot:
       1. make it a generic
