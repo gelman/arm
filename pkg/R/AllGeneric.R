@@ -65,3 +65,5 @@ if (!isGeneric("terms.bayes")) {
 
 
    
+traceplot <- function(x, ...) UseMethod("traceplot")
+traceplot.default <- coda::traceplot

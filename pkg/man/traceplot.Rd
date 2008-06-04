@@ -1,10 +1,14 @@
-\name{traceplot.bugs}
-\alias{traceplot.bugs}
+\name{traceplot}
+\docType{genericFunction}
+\alias{traceplot}
+\alias{traceplot.default}
+\alias{traceplot,bugs-method}
+
 
 \title{Trace plot of bugs object}
 
 \usage{
-traceplot.bugs( x, mfrow = c( 1, 1 ), varname = NULL,
+\S4method{traceplot}{bugs}( x, mfrow = c( 1, 1 ), varname = NULL,
   match.head = TRUE, ask = TRUE,
   col = rainbow( x$n.chains ),
   lty = 1, lwd = 1, \dots) 
