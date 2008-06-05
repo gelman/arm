@@ -177,6 +177,7 @@ setMethod("display", signature(object = "mer"),
     #object <- summary(object)
     fcoef <- fixef(object)
     useScale <- attr (VarCorr (object), "sc")
+    useScale <- ifelse (useScale, sc, NA)
     corF <- vcov(object)@factors$correlation
     coefs <- cbind(fcoef, corF@sd)
     if (length (fcoef) > 0){
@@ -202,7 +203,7 @@ setMethod("display", signature(object = "mer"),
     cat(fround(DIC, 1))
     cat("\ndeviance =", fround (dev, 1), "\n")
     if (useScale < 0){
-      cat("overdispersion parameter =", fround (.Call("lmer2_sigma", 
+      cat("overdispersion parameter =", fround (.Call("mer_sigma", 
         object, FALSE, PACKAGE = "lme4"), 1), "\n")
     }
     }
