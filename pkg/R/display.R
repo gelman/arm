@@ -176,7 +176,8 @@ setMethod("display", signature(object = "mer"),
     print (call)
     #object <- summary(object)
     fcoef <- fixef(object)
-    useScale <- attr (VarCorr (object), "sc")
+    #useScale <- attr (VarCorr (object), "sc")
+    useScale <- object@dims["useSc"]
     corF <- vcov(object)@factors$correlation
     coefs <- cbind(fcoef, corF@sd)
     if (length (fcoef) > 0){
@@ -187,7 +188,7 @@ setMethod("display", signature(object = "mer"),
     vc <- as.matrix.VarCorr (VarCorr (object), useScale=useScale, digits)
     print (vc[,c(1:2,4:ncol(vc))], quote=FALSE)
     ngrps <- lapply(object@flist, function(x) length(levels(x)))
-    REML <- object@dims["isREML"]
+    REML <- object@dims["REML"]
     llik <- logLik(object, REML)
     AIC <- AIC(llik)
     dev <- object@deviance["ML"]     # Dbar

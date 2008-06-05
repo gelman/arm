@@ -54,53 +54,53 @@ setMethod("sim", signature(object = "glm"),
 
 
 
-setMethod("sim", signature(object = "mer"),
-    function(object, n.sims=100)
-    {
-    #object <- summary(object)
-#    if (lapply(object@bVar,sum)<=0|sum(unlist(lapply(object@bVar, is.na)))>0){
-#        object@call$control <- list(usePQL=TRUE)
-#        object <- lmer(object@call$formula)
-    #}
-    #sc <- attr (VarCorr (object), "sc")  
-    # simulate unmodeled coefficients
-    
-    fcoef <- fixef(object)
-    corF <- vcov(object)@factors$correlation
-    se.unmodeled <- corF@sd
-    V.beta <- (se.unmodeled %o% se.unmodeled) * as.matrix(corF)
-    beta.unmodeled <- NULL
-    if (length (fcoef) > 0){
-      beta.unmodeled[[1]] <- mvrnorm (n.sims, fcoef, V.beta)
-      names (beta.unmodeled) <- "unmodeled"
-    }
-    # simulate coefficients within groups
-    #coef <- ranef (object)  
-    #estimate <- ranef(object, postVar=TRUE)
-    #vars <- object@bVar
-    #beta.bygroup <- vars
-    
-    sc <- attr (VarCorr (object), "sc")
-    coef <- ranef(object, postVar=TRUE)   
-    beta.bygroup <- c(coef)
-    n.groupings <- length (coef)
-    for (m in 1:n.groupings){
-      #vars.m <- vars[[m]]
-      vars.m <- attr (coef[[m]], "postVar")
-      K <- dim(vars.m)[1]
-      J <- dim(vars.m)[3]
-      beta.bygroup[[m]] <- array (NA, c(n.sims, J, K))
-      bhat <- coef[[m]]
-      for (j in 1:J){
-        V.beta <- untriangle(vars.m[,,j])#*sc^2
-        beta.bygroup[[m]][,j,] <- mvrnorm (n.sims, bhat[j,], V.beta)
-      }   
-      dimnames (beta.bygroup[[m]]) <- c (list(NULL), dimnames(bhat))
-    }
-    betas <- c (beta.unmodeled, beta.bygroup)
-    return (betas)
-    }
-)
+#setMethod("sim", signature(object = "mer"),
+#    function(object, n.sims=100)
+#    {
+#    #object <- summary(object)
+##    if (lapply(object@bVar,sum)<=0|sum(unlist(lapply(object@bVar, is.na)))>0){
+##        object@call$control <- list(usePQL=TRUE)
+##        object <- lmer(object@call$formula)
+#    #}
+#    #sc <- attr (VarCorr (object), "sc")  
+#    # simulate unmodeled coefficients
+#    
+#    fcoef <- fixef(object)
+#    corF <- vcov(object)@factors$correlation
+#    se.unmodeled <- corF@sd
+#    V.beta <- (se.unmodeled %o% se.unmodeled) * as.matrix(corF)
+#    beta.unmodeled <- NULL
+#    if (length (fcoef) > 0){
+#      beta.unmodeled[[1]] <- mvrnorm (n.sims, fcoef, V.beta)
+#      names (beta.unmodeled) <- "unmodeled"
+#    }
+#    # simulate coefficients within groups
+#    #coef <- ranef (object)  
+#    #estimate <- ranef(object, postVar=TRUE)
+#    #vars <- object@bVar
+#    #beta.bygroup <- vars
+#    
+#    sc <- attr (VarCorr (object), "sc")
+#    coef <- ranef(object, postVar=TRUE)   
+#    beta.bygroup <- c(coef)
+#    n.groupings <- length (coef)
+#    for (m in 1:n.groupings){
+#      #vars.m <- vars[[m]]
+#      vars.m <- attr (coef[[m]], "postVar")
+#      K <- dim(vars.m)[1]
+#      J <- dim(vars.m)[3]
+#      beta.bygroup[[m]] <- array (NA, c(n.sims, J, K))
+#      bhat <- coef[[m]]
+#      for (j in 1:J){
+#        V.beta <- untriangle(vars.m[,,j])#*sc^2
+#        beta.bygroup[[m]][,j,] <- mvrnorm (n.sims, bhat[j,], V.beta)
+#      }   
+#      dimnames (beta.bygroup[[m]]) <- c (list(NULL), dimnames(bhat))
+#    }
+#    betas <- c (beta.unmodeled, beta.bygroup)
+#    return (betas)
+#    }
+#)
 
 setMethod("sim", signature(object = "mer"),
     function(object, n.sims=100)

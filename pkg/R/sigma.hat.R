@@ -57,7 +57,8 @@ setMethod("sigma.hat", signature(object = "mer"),
     {
     #object <- summary (object)
     fcoef <- fixef(object)
-    useScale <- attr (VarCorr (object), "sc")  # =sc?
+    #useScale <- attr (VarCorr (object), "sc")  # =sc?
+    useScale <- object@dims["useSc"]
     ngrps <- lapply(object@flist, function(x) length(levels(x)))
     n.groupings <- length (ngrps)
     varc <- VarCorr (object)
