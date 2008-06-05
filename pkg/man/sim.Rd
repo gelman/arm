@@ -98,8 +98,7 @@ sim(object, ...)
 
 # Example 3 
  y <- rbinom (n, 1, invlogit (a[group] + b*x))
- E3 <- glmer (y ~ x + (1 | group), family=binomial(link="logit"),
-    control=list(usePQL=TRUE))
+ E3 <- glmer (y ~ x + (1 | group), family=binomial(link="logit"))
  display(E3)
  E3.sim <- sim (E3)
  
