@@ -62,8 +62,8 @@ setMethod("sigma.hat", signature(object = "mer"),
     n.groupings <- length (ngrps)
     varc <- VarCorr (object)
     sc <- attr(varc, "sc")  # =useScale
-    recorr <- lapply(varc, function(el) el@factors$correlation)
-    reStdDev <- c(lapply(recorr, slot, "sd"), list(Residual = sc))
+    recorr <- lapply(varc, function(el) attr(el, "correlation"))
+    reStdDev <- c(lapply(varc, function(el) attr(el, "stddev")), list(Residual = sc))
     sigmas <- as.list (rep (NA, n.groupings+1))
     sigmas[1] <- ifelse (useScale, sc, NA)
     cors <- as.list (rep (NA, n.groupings+1))
