@@ -4,7 +4,6 @@
 \alias{se.coef,lm-method}
 \alias{se.coef,glm-method}
 \alias{se.coef,mer-method}
-\alias{se.coef,lmer2-method}
 \alias{se.fixef}
 \alias{se.ranef}
 
@@ -22,7 +21,6 @@ se.ranef (object)
 \S4method{se.coef}{lm}(object)
 \S4method{se.coef}{glm}(object)
 \S4method{se.coef}{mer}(object)
-\S4method{se.coef}{lmer2}(object)
 }
 
 \arguments{
@@ -93,17 +91,10 @@ se.ranef (object)
    se.ranef (M3)
 
 #  glmer fit
-   M4 <- lmer (y2 ~ 1 + (0 + x |group), family=binomial(link="logit"))
+   M4 <- glmer (y2 ~ 1 + (0 + x |group), family=binomial(link="logit"))
    se.coef (M4)
    se.fixef (M4)
    se.ranef (M4)
-   
-\testonly{
-   M5 <- lmer2 (y1 ~ x + (1 + x |group))
-   se.coef (M5)
-   se.fixef (M5)
-   se.ranef (M5)
-}
 }
 \keyword{methods}
 \keyword{models}

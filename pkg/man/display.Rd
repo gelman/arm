@@ -6,7 +6,6 @@
 \alias{display,bayesglm.h-method}
 \alias{display,glm-method}
 \alias{display,mer-method}
-\alias{display,lmer2-method}
 \alias{display,polr-method}
 
 \title{Functions for Processing lm, glm, mer and polr Output}
@@ -22,7 +21,6 @@ display (object, ...)
 \S4method{display}{bayesglm.h}(object, digits=2)
 \S4method{display}{glm}(object, digits=2)
 \S4method{display}{mer}(object, digits=2)
-\S4method{display}{lmer2}(object, digits=2)
 \S4method{display}{polr}(object, digits=2)
 }
 
@@ -109,42 +107,42 @@ display (object, ...)
  
    M3 <- lmer (y1 ~ x + (1|group))
    display (M3)
-   M3.sim <- mcsamp (M3)
-   print (M3.sim)
-   plot (M3.sim)
+#   M3.sim <- mcsamp (M3)
+#   print (M3.sim)
+#   plot (M3.sim)
  
 # Then the full varying-intercept, varying-slope model:
  
    M4 <- lmer (y1 ~ x + (1 + x |group))
    display (M4)
-   M4.sim <- mcsamp (M4)
-   print (M4.sim)
-   plot (M4.sim)
+#   M4.sim <- mcsamp (M4)
+#   print (M4.sim)
+#   plot (M4.sim)
  
 # Then the full varying-intercept, logit model:
  
-   M5 <- lmer (y2 ~ x + (1|group), family=binomial(link="logit"))
+   M5 <- glmer (y2 ~ x + (1|group), family=binomial(link="logit"))
    display (M5)
-   M5.sim <- mcsamp (M5)
-   print (M5.sim)
-   plot (M5.sim)
+#   M5.sim <- mcsamp (M5)
+#   print (M5.sim)
+#   plot (M5.sim)
  
 # Then the full varying-intercept, varying-slope logit model:
  
-   M6 <- lmer (y2 ~ x + (1|group) + (0 + x |group), 
+   M6 <- glmer (y2 ~ x + (1|group) + (0 + x |group), 
         family=binomial(link="logit"))
    display (M6)
-   M6.sim <- mcsamp (M6)
-   print (M6.sim)
-   plot (M6.sim)
+#   M6.sim <- mcsamp (M6)
+#   print (M6.sim)
+#   plot (M6.sim)
 
 # Then non-nested varying-intercept, varying-slop model:
    
    M7 <- lmer (y3 ~ x + (1 + x |group) + (1|group2))
    display(M7)
-   M7.sim <- mcsamp (M7)
-   print (M7.sim)
-   plot (M7.sim)
+#   M7.sim <- mcsamp (M7)
+#   print (M7.sim)
+#   plot (M7.sim)
 
  
 # Then the ordered logit model from polr
@@ -155,10 +153,7 @@ display (object, ...)
    M9 <- bayespolr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
    display(M9) 
    
-\testonly{
-    M11 <- lmer2 (y1 ~ x + (1 + x |group))
-    display(M11)
-}  
+
 }
 
 

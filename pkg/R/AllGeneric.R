@@ -48,20 +48,21 @@ if (!isGeneric("se.coef")) {
 
 
 
-if (!isGeneric("mcsamp")) {
-    setGeneric("mcsamp",
-               function(object, ...)
-               standardGeneric("mcsamp"))
-}
+#if (!isGeneric("mcsamp")) {
+#    setGeneric("mcsamp",
+#               function(object, ...)
+#               standardGeneric("mcsamp"))
+#}
 
 
 
 
-if (!isGeneric("terms.bayes")) {
-    setGeneric("terms.bayes",
-               function(x, ...)
-               standardGeneric("terms.bayes"))
-}
+#if (!isGeneric("terms.bayes")) {
+#    setGeneric("terms.bayes",
+#               function(x, ...)
+#               standardGeneric("terms.bayes"))
+#}
+
 
 if (!isGeneric("tracplot")) {
     setGeneric("traceplot",
@@ -71,5 +72,4 @@ if (!isGeneric("tracplot")) {
 
 
    
-traceplot <- function(x, ...) UseMethod("traceplot")
-traceplot.default <- coda::traceplot
+#traceplot <- function(x, ...) UseMethod("traceplot")

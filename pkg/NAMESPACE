@@ -7,7 +7,7 @@ exportClasses(
 exportMethods(
               "coefplot",
               "display",
-              "mcsamp",
+              #"mcsamp",
               #"model.matrix.bayes",
               "se.coef",
               "sim",

@@ -4,7 +4,7 @@
 \alias{sim,lm-method}
 \alias{sim,glm-method}
 \alias{sim,mer-method}
-\alias{sim,lmer2-method}
+
 
 
 \title{Functions to Get Posterior Distributions}
@@ -21,7 +21,7 @@ sim(object, ...)
 \S4method{sim}{lm}(object, n.sims = 100)
 \S4method{sim}{glm}(object, n.sims = 100)
 \S4method{sim}{mer}(object, n.sims = 100)
-\S4method{sim}{lmer2}(object, n.sims = 100)
+
 }
 
 \arguments{
@@ -48,7 +48,6 @@ sim(object, ...)
         }
 
 \seealso{\code{\link{display}},
-        \code{\link{mcsamp}},
         \code{\link{lm}},
         \code{\link{glm}},
         \code{\link[lme4]{lmer}}
@@ -99,15 +98,11 @@ sim(object, ...)
 
 # Example 3 
  y <- rbinom (n, 1, invlogit (a[group] + b*x))
- E3 <- lmer (y ~ x + (1 | group), family=binomial(link="logit"),
+ E3 <- glmer (y ~ x + (1 | group), family=binomial(link="logit"),
     control=list(usePQL=TRUE))
  display(E3)
  E3.sim <- sim (E3)
  
-\testonly{
- E4 <- lmer2 (y ~ x + u.full + (1 | group))
- E4.sim <- sim (E4) 
-}
 }
 
 \keyword{models}
