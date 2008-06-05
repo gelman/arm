@@ -2,7 +2,6 @@ setOldClass("family")
 setOldClass("mcmc.list")
 setOldClass("polr")
 setOldClass("bugs")
-setOldClass("terms")
 
 
 setClass("bayesglm",

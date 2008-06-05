@@ -15,47 +15,47 @@ setMethod("se.coef", signature(object = "glm"),
     }
 )
 
-setMethod("se.coef", signature(object = "mer"),
-    function(object)
-    {
-    #    if (sum(unlist(lapply(object@bVar, is.na)))>0){
-#        object@call$control <- list(usePQL=TRUE)
-#        object <- lmer(object@call$formula)
+#setMethod("se.coef", signature(object = "mer"),
+#    function(object)
+#    {
+#    #    if (sum(unlist(lapply(object@bVar, is.na)))>0){
+##        object@call$control <- list(usePQL=TRUE)
+##        object <- lmer(object@call$formula)
+##    }
+#    #ngrps <- lapply(object@flist, function(x) length(levels(x)))
+#    fcoef <- fixef(object)
+#    #sc <- attr (VarCorr (object), "sc")
+#    corF <- vcov(object)@factors$correlation
+#    se.unmodeled <- NULL
+#    se.unmodeled[[1]] <- corF@sd
+#    names (se.unmodeled) <- "unmodeled"
+#
+#    #coef <- ranef (object)
+#    #estimate <- ranef(object, postVar=TRUE)
+#    coef <- ranef(object, postVar=TRUE)
+#    se.bygroup <- coef #ranef( object, postVar = TRUE )
+#    n.groupings <- length (coef)
+#    
+#    for (m in 1:n.groupings){
+#      vars.m <- attr (coef[[m]], "postVar")
+#      K <- dim(vars.m)[1]
+#      J <- dim(vars.m)[3]
+#      se.bygroup[[m]] <- array (NA, c(J,K))
+#      for (j in 1:J){
+#        se.bygroup[[m]][j,] <- sqrt(diag(as.matrix(vars.m[,,j])))
+#      }
+##      se.bygroup[[m]] <- se.bygroup[[m]]*sc
+#      names.full <- dimnames (ranef(object)[[m]])
+#      dimnames (se.bygroup[[m]]) <- list (names.full[[1]],
+#                            names.full[[2]])
 #    }
-    #ngrps <- lapply(object@flist, function(x) length(levels(x)))
-    fcoef <- fixef(object)
-    #sc <- attr (VarCorr (object), "sc")
-    corF <- vcov(object)@factors$correlation
-    se.unmodeled <- NULL
-    se.unmodeled[[1]] <- corF@sd
-    names (se.unmodeled) <- "unmodeled"
+#    #names(se.bygroup) <- names(ngrps)
+#    ses <- c (se.unmodeled, se.bygroup)
+#    return (ses)
+#    }
+#)
 
-    #coef <- ranef (object)
-    #estimate <- ranef(object, postVar=TRUE)
-    coef <- ranef(object, postVar=TRUE)
-    se.bygroup <- coef #ranef( object, postVar = TRUE )
-    n.groupings <- length (coef)
-    
-    for (m in 1:n.groupings){
-      vars.m <- attr (coef[[m]], "postVar")
-      K <- dim(vars.m)[1]
-      J <- dim(vars.m)[3]
-      se.bygroup[[m]] <- array (NA, c(J,K))
-      for (j in 1:J){
-        se.bygroup[[m]][j,] <- sqrt(diag(as.matrix(vars.m[,,j])))
-      }
-#      se.bygroup[[m]] <- se.bygroup[[m]]*sc
-      names.full <- dimnames (ranef(object)[[m]])
-      dimnames (se.bygroup[[m]]) <- list (names.full[[1]],
-                            names.full[[2]])
-    }
-    #names(se.bygroup) <- names(ngrps)
-    ses <- c (se.unmodeled, se.bygroup)
-    return (ses)
-    }
-)
-
-setMethod("se.coef", signature(object = "lmer2"),
+setMethod("se.coef", signature(object = "mer"),
     function(object)
     {
     #ngrps <- lapply(object@flist, function(x) length(levels(x)))

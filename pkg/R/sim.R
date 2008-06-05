@@ -102,7 +102,7 @@ setMethod("sim", signature(object = "mer"),
     }
 )
 
-setMethod("sim", signature(object = "lmer2"),
+setMethod("sim", signature(object = "mer"),
     function(object, n.sims=100)
     {
     # simulate unmodeled coefficients

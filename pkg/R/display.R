@@ -129,47 +129,47 @@ setMethod("display", signature(object = "glm"),
 
 
 
+#setMethod("display", signature(object = "mer"),
+#    function(object, digits=2)
+#    {
+#    call <- object@call
+#    print (call)
+#    #object <- summary(object)
+#    fcoef <- fixef(object)
+#    useScale <- attr( VarCorr(object), "sc") 
+#    corF <- vcov(object)@factors$correlation
+#    coefs <- cbind(fcoef, corF@sd)
+#    if (length (fcoef) > 0){
+#      dimnames(coefs) <- list(names(fcoef), c("coef.est", "coef.se"))
+#      pfround (coefs, digits)
+#    }
+#    cat("\nError terms:\n")
+#    vc <- as.matrix.VarCorr (VarCorr (object), useScale=useScale, digits)
+#    print (vc[,c(1:2,4:ncol(vc))], quote=FALSE)
+#    ngrps <- lapply(object@flist, function(x) length(levels(x)))
+#    REML <- object@status["REML"]
+#    llik <- logLik(object, REML)
+#    AIC <- AIC(llik)
+#    dev <- object@deviance["ML"]     # Dbar
+#    n <- object@devComp["n"]
+#    Dhat <- -2*(llik) # Dhat
+#    pD <- dev - Dhat              # pD
+#    DIC <- dev + pD               # DIC=Dbar+pD=Dhat+2pD
+#    cat("---\n")
+#    cat(sprintf("number of obs: %d, groups: ", n))
+#    cat(paste(paste(names(ngrps), ngrps, sep = ", "), collapse = "; "))
+#    cat(sprintf("\nAIC = %g, DIC = ", fround(AIC, 1)))
+#    cat(fround(DIC, 1))
+#    cat("\ndeviance =", fround (dev, 1), "\n")
+#    if (useScale < 0){
+#      cat("overdispersion parameter =", fround (.Call("mer_sigma", 
+#        object, FALSE, PACKAGE = "lme4"), 1), "\n")
+#    }
+#    }
+#)
+
+
 setMethod("display", signature(object = "mer"),
-    function(object, digits=2)
-    {
-    call <- object@call
-    print (call)
-    #object <- summary(object)
-    fcoef <- fixef(object)
-    useScale <- attr( VarCorr(object), "sc") 
-    corF <- vcov(object)@factors$correlation
-    coefs <- cbind(fcoef, corF@sd)
-    if (length (fcoef) > 0){
-      dimnames(coefs) <- list(names(fcoef), c("coef.est", "coef.se"))
-      pfround (coefs, digits)
-    }
-    cat("\nError terms:\n")
-    vc <- as.matrix.VarCorr (VarCorr (object), useScale=useScale, digits)
-    print (vc[,c(1:2,4:ncol(vc))], quote=FALSE)
-    ngrps <- lapply(object@flist, function(x) length(levels(x)))
-    REML <- object@status["REML"]
-    llik <- logLik(object, REML)
-    AIC <- AIC(llik)
-    dev <- object@deviance["ML"]     # Dbar
-    n <- object@devComp["n"]
-    Dhat <- -2*(llik) # Dhat
-    pD <- dev - Dhat              # pD
-    DIC <- dev + pD               # DIC=Dbar+pD=Dhat+2pD
-    cat("---\n")
-    cat(sprintf("number of obs: %d, groups: ", n))
-    cat(paste(paste(names(ngrps), ngrps, sep = ", "), collapse = "; "))
-    cat(sprintf("\nAIC = %g, DIC = ", fround(AIC, 1)))
-    cat(fround(DIC, 1))
-    cat("\ndeviance =", fround (dev, 1), "\n")
-    if (useScale < 0){
-      cat("overdispersion parameter =", fround (.Call("mer_sigma", 
-        object, FALSE, PACKAGE = "lme4"), 1), "\n")
-    }
-    }
-)
-
-
-setMethod("display", signature(object = "lmer2"),
     function(object, digits=2)
     {
     call <- object@call

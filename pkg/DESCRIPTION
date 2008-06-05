@@ -1,6 +1,6 @@
 Package: arm
-Version: 1.1-7
-Date: 2008-6-4
+Version: 1.1-50
+Date: 2008-6-5
 Title: Data Analysis Using Regression and Multilevel/Hierarchical Models
 Author: Andrew Gelman <gelman@stat.columbia.edu>,
         Yu-Sung Su <ys463@columbia.edu>,
@@ -10,7 +10,7 @@ Author: Andrew Gelman <gelman@stat.columbia.edu>,
         Jouni Kerman <jouni@kerman.com> and
         Tian Zheng <tzheng@stat.columbia.edu>
 Maintainer: Yu-Sung Su <ys463@columbia.edu>
-Depends: methods, R (>= 2.4.0), MASS, Matrix (>= 0.9975-1), lme4 (>= 0.9975-1), R2WinBUGS
+Depends: methods, R (>= 2.7.0), MASS, Matrix (>= 0.999375-1), lme4 (>= 0.999375-1), R2WinBUGS
 Suggests: car, foreign, nnet
 Description: R functions for processing lm, glm, mer and polr outputs.
 URL: http://www.stat.columbia.edu/~gelman/software/

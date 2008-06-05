@@ -26,32 +26,33 @@ setMethod("sigma.hat", signature(object = "glm"),
 )
 
 
-setMethod("sigma.hat", signature(object = "mer"),
-    function(object)
-    {
-    #object <- summary (object)
-    fcoef <- fixef(object)
-    useScale <- object@devComp[8]
-    ngrps <- lapply(object@flist, function(x) length(levels(x)))
-    n.groupings <- length (ngrps)
-    varc <- VarCorr (object, useScale=useScale)
-    sc <- attr(varc, "sc")
-    recorr <- lapply(varc, function(el) el@factors$correlation)
-    reStdDev <- c(lapply(recorr, slot, "sd"), list(Residual = sc))
-    sigmas <- as.list (rep (NA, n.groupings+1))
-    sigmas[1] <- ifelse (useScale, sc, NA)
-    cors <- as.list (rep (NA, n.groupings+1))
-    names (sigmas) <- names (cors) <- c ("data", names (varc))
-    for (k in 1:n.groupings){
-      sigmas[[k+1]] <- reStdDev[[k]]
-      cors[[k+1]] <- as.matrix (recorr[[k]])
-      if (length (cors[[k+1]]) == 1) cors[[k+1]] <- NA
-    }
-    return (list (sigma=sigmas, cors=cors))
-    }
-) 
+#setMethod("sigma.hat", signature(object = "mer"),
+#    function(object)
+#    {
+#    #object <- summary (object)
+#    fcoef <- fixef(object)
+#    useScale <- object@devComp[8]
+#    ngrps <- lapply(object@flist, function(x) length(levels(x)))
+#    n.groupings <- length (ngrps)
+#    varc <- VarCorr (object, useScale=useScale)
+#    sc <- attr(varc, "sc")
+#    recorr <- lapply(varc, function(el) el@factors$correlation)
+#    reStdDev <- c(lapply(recorr, slot, "sd"), list(Residual = sc))
+#    sigmas <- as.list (rep (NA, n.groupings+1))
+#    sigmas[1] <- ifelse (useScale, sc, NA)
+#    cors <- as.list (rep (NA, n.groupings+1))
+#    names (sigmas) <- names (cors) <- c ("data", names (varc))
+#    for (k in 1:n.groupings){
+#      sigmas[[k+1]] <- reStdDev[[k]]
+#      cors[[k+1]] <- as.matrix (recorr[[k]])
+#      if (length (cors[[k+1]]) == 1) cors[[k+1]] <- NA
+#    }
+#    return (list (sigma=sigmas, cors=cors))
+#    }
+#) 
 
-setMethod("sigma.hat", signature(object = "lmer2"),
+
+setMethod("sigma.hat", signature(object = "mer"),
     function(object)
     {
     #object <- summary (object)
