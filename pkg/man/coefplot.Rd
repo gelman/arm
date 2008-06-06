@@ -165,12 +165,13 @@ coefplot(object,\dots)
  M4 <- bayespolr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
  coefplot(M4, main="bayespolr")
 
-# plot 6: plot bugs & lmer
- par <- op
- M5 <- lmer(Reaction ~ Days + (1|Subject), sleepstudy)
- M5.sim <- mcsamp(M5)
- coefplot(M5.sim, var.idx=5:22, CI=1, ylim=c(18,1), main="lmer model")
- 
+## plot 6: plot bugs & lmer
+# par <- op
+# M5 <- lmer(Reaction ~ Days + (1|Subject), sleepstudy)
+# M5.sim <- mcsamp(M5)
+# coefplot(M5.sim, var.idx=5:22, CI=1, ylim=c(18,1), main="lmer model")
+
+
 # plot 7: plot coefficients & sds vectors
  coef.vect <- c(0.2, 1.4, 2.3, 0.5)
  sd.vect <- c(0.12, 0.24, 0.23, 0.15)
