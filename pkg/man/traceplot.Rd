@@ -2,7 +2,7 @@
 \docType{genericFunction}
 \alias{traceplot}
 \alias{traceplot.default}
-%\alias{traceplot,mcmc.list-method}
+\alias{traceplot,mcmc.list-method}
 \alias{traceplot,bugs-method}
 
 
