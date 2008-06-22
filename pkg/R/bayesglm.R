@@ -113,14 +113,14 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
   if (family$link == "probit")
     prior.scale <- prior.scale*1.6
   }
-  prior.scale <- prior.scale
+  #prior.scale <- prior.scale
   
   if (is.null(prior.scale.for.intercept)){
     prior.scale.for.intercept <- 10
   if (family$link == "probit")
     prior.scale.for.intercept <- prior.scale.for.intercept*1.6
   }
-  prior.scale.for.intercept <- prior.scale.for.intercept
+  #prior.scale.for.intercept <- prior.scale.for.intercept
   ################
   
   J <- NCOL(x)
@@ -131,9 +131,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (intercept) {
       prior.mean <- c(prior.mean.for.intercept, prior.mean)
     }
-    else {
-      prior.mean <- prior.mean
-    }
+#   else {
+#      prior.mean <- prior.mean
+#    }
   }
   if (length(prior.scale)==1){
     prior.scale <- rep(prior.scale, J)
@@ -142,9 +142,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (intercept) {
       prior.scale <- c(prior.scale.for.intercept, prior.scale)
     }
-    else {
-      prior.scale <- prior.scale
-    }
+#    else {
+#      prior.scale <- prior.scale
+#    }
   }
   if (length(prior.df) == 1) {
     prior.df <- rep(prior.df, J)
@@ -153,9 +153,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (intercept) {
       prior.df <- c(prior.df.for.intercept, prior.df)
     }
-    else {
-      prior.df <- prior.df
-    }
+#    else {
+#      prior.df <- prior.df
+#    }
   }
   
   
@@ -315,7 +315,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       prior.sd <- ifelse(prior.df == Inf, prior.scale,
       sqrt(((centered.coefs - prior.mean)^2 + sampling.var * dispersion + 
         prior.df * prior.scale^2)/(1 + prior.df)))  
-
+  # wrong????
       start[fit$pivot] <- fit$coefficients
       eta <- drop(x %*% start)
       mu <- linkinv(eta <- eta + offset)
