@@ -65,17 +65,16 @@ multicomp.plot(object, alpha = 0.05, main = "Multiple Comparison Plot",
 \examples{
 # example 1
 simulation.array <- data.frame(coef1=rnorm(100,10,2), coef2=rnorm(100,5,2),  
-                      coef3=rnorm(100,0,1), coef4=rnorm(100,-5,3), 
-                      coef5=rnorm(100,-10,5))
+                      coef3=rnorm(100,0,1), coef4=rnorm(100,-5,3))
 short.lab <- c("c01", "c02", "c03", "c04", "c05")
-multicomp.plot(simulation.array, label.as.shortlabel=TRUE)
+#multicomp.plot(simulation.array[,1:4], label.as.shortlabel=TRUE)
 # wraper for multicomp.plot
-mcplot(simulation.array, shortlabel = short.lab)
+#mcplot(simulation.array, shortlabel = short.lab)
 
 # example 2
 data(lalonde)
 M1 <- lm(re78 ~ treat + re74 + re75 + age + educ + u74 + u75, data=lalonde)
 lm.sim <- sim(M1)[["beta"]][,-1]
-multicomp.plot(lm.sim, label.as.shortlabel=TRUE, label.on.which.axis=2)
+#multicomp.plot(lm.sim, label.as.shortlabel=TRUE, label.on.which.axis=2)
 }
 \keyword{hplot}
