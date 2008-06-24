@@ -120,7 +120,7 @@ setMethod("sim", signature(object = "mer"),
     #coef <- ranef (object)
     #estimate <- ranef(object, postVar=TRUE)
     coef <- ranef(object, postVar=TRUE)
-    beta.bygroup <- c(coef)
+    beta.bygroup <- coef
     n.groupings <- length (coef)
     for (m in 1:n.groupings){
       bhat <- coef[[m]]

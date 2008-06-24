@@ -1,6 +1,12 @@
-2008-6-22  Yu-Sung Su     <ys463@columbia.edu>  
+2008-6-23  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-9.
+    * R/se.coef: remove trick to show the coef names
+
+
+2008-6-23  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-8.
     * R/Bayesglm: Clean up redundant code.
+
 
 2008-6-5  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-8.
