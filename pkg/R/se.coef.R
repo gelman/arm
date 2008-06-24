@@ -118,5 +118,5 @@ se.ranef <- function (object){
         names.full <- dimnames(se.bygroup)
         dimnames(se.bygroup[[m]]) <- list(names.full[[1]], names.full[[2]])
     }
-    return(c(se.bygroup))
+    return(se.bygroup)
 }
