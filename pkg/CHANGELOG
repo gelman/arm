@@ -1,7 +1,7 @@
 2008-6-23  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-9.
     * R/se.coef: remove trick to show the coef names
-
+    * R/bayesglm: scaled=TRUE --> * sd(y) / sd(x)
 
 2008-6-23  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-8.
