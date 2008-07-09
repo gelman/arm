@@ -253,7 +253,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     devold <- sum(dev.resids(y, mu, weights))
     boundary <- conv <- FALSE
     prior.sd <- prior.scale
-    dispersion <- 1
+    #========Andy 2008.7.8=============
+    dispersion <- ifelse((family$family %in% c("poisson", "binomial")),  1, var(y)/10000)
+    #==================================
     dispersionold <- dispersion
     for (iter in 1:control$maxit) {
       good <- weights > 0
