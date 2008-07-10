@@ -15,7 +15,7 @@ rescale <- function (x, binary.inputs="center"){
     else if (binary.inputs=="-0.5,0.5"){
       return (x-0.5)
     }
-    else if {(binary.inputs=="center") 
+    else if (binary.inputs=="center"){
       return (x-mean(x.obs))
     }
     else if (binary.inputs=="full"){
