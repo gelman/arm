@@ -6,12 +6,21 @@ rescale <- function (x, binary.inputs="center"){
     x.obs <- x[!is.na(x)] 
   }
   x.obs <- x[!is.na(x)]
+  # for binary cases
   if (length(unique(x.obs))==2){
-    x <- (x-min(x.obs))/(max(x.obs)-min(x.obs))
-    if (binary.inputs=="0/1") return (x)
-    else if (binary.inputs=="-0.5,0.5") return (x-0.5)
-    else if (binary.inputs=="center") return (x-mean(x.obs))
-    else if (binary.inputs=="full") return ((x-mean(x.obs))/(2*sd(x.obs)))
+    if (binary.inputs=="0/1"){
+      x <- (x-min(x.obs))/(max(x.obs)-min(x.obs))
+      return (x)
+    }
+    else if (binary.inputs=="-0.5,0.5"){
+      return (x-0.5)
+    }
+    else if {(binary.inputs=="center") 
+      return (x-mean(x.obs))
+    }
+    else if (binary.inputs=="full"){
+      return ((x-mean(x.obs))/(2*sd(x.obs)))
+    }
   }      
   else {
     return ((x-mean(x.obs))/(2*sd(x.obs)))
