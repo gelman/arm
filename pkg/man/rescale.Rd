@@ -44,7 +44,7 @@ rescale(x, binary.inputs="center")
   b1 <- 1.5
   b2 <- 2
   y <- rbinom (n, 1, invlogit(b0+b1*x1+b2*x2))
-  rescale(x, "full2")
+  rescale(x, "full")
   rescale(y, "center")
 }
 \keyword{models}
