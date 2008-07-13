@@ -10,7 +10,7 @@ Author: Andrew Gelman <gelman@stat.columbia.edu>,
         Jouni Kerman <jouni@kerman.com> and
         Tian Zheng <tzheng@stat.columbia.edu>
 Maintainer: Yu-Sung Su <ys463@columbia.edu>
-Depends: methods, R (>= 2.6.0), MASS, Matrix (>= 0.999375-7), lme4 (>= 0.999375-16), R2WinBUGS
+Depends: methods, R (>= 2.6.0), MASS, Matrix (>= 0.999375-10), lme4 (>= 0.999375-16), R2WinBUGS
 Suggests: car, foreign, nnet
 Description: R functions for processing lm, glm, mer and polr outputs.
 URL: http://www.stat.columbia.edu/~gelman/software/
