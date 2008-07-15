@@ -4,12 +4,12 @@ coefplot.default <- function(coefs, sds,
             v.axis=TRUE, h.axis=TRUE,
             cex.var=0.8, cex.pts=0.9, col.pts=1,
             var.las=2, main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
-            plot=TRUE, ...)
+            plot=TRUE, add=FALSE, epsilon=.1,...)
 {
-
+  
      # collect informations
     if (is.list(coefs)){
-        coefs <- unlist(coefs)
+      coefs <- unlist(coefs)
     }
     n.x <- length(coefs)
     idx <- seq(1, n.x)   
@@ -37,47 +37,73 @@ coefplot.default <- function(coefs, sds,
       if (vertical){
         mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
         par(mar=mar)
-        plot(c(coefs.l, coefs.h), c(idx+k,idx-k), type="n",                                     
+        if(!add){
+          plot(c(coefs.l, coefs.h), c(idx+k,idx-k), type="n",                                     
             axes=F, main=main, xlab=xlab, ylab=ylab,...) 
-        if (h.axis){                                                  
-             axis(1)                                
+          if (h.axis){                                                  
+            #axis(1)                                
             axis(3)
-        }
-        if (v.axis){
+          }
+          if (v.axis){
             axis(2, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
-                lty=0, cex.axis=cex.var) 
-        }
-        abline(v=0, lty=2)                                                 
-        points(coefs, idx, pch=19, cex=cex.pts, col=col.pts)
-        if (CI==2){
+              lty=0, cex.axis=cex.var) 
+          }
+          abline(v=0, lty=2)                                                 
+          points(coefs, idx, pch=19, cex=cex.pts, col=col.pts)
+          if (CI==2){
             segments (coefs+sds, idx, coefs-sds, idx, lwd=2, col=col.pts)     
             segments (coefs+2*sds, idx, coefs-2*sds, idx, lwd=1, col=col.pts)
+          }
+          else{
+            segments (coefs+sds, idx, coefs-sds, idx, lwd=1, col=col.pts)    
+          }
         }
         else{
+          idx <- idx + epsilon
+          points(coefs, idx, pch=19, cex=cex.pts, col=col.pts)
+          if (CI==2){
+            segments (coefs+sds, idx, coefs-sds, idx, lwd=2, col=col.pts)     
+            segments (coefs+2*sds, idx, coefs-2*sds, idx, lwd=1, col=col.pts)
+          }
+          else{
             segments (coefs+sds, idx, coefs-sds, idx, lwd=1, col=col.pts)    
+          }
         }
-    }
+    } # end of if vertical
     else{ # horizontal
       mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
       par(mar=mar)
-      plot(c(idx+k,idx-k), c(coefs.l, coefs.h), type="n", axes=F, 
-        main=main, xlab=xlab, ylab=ylab,...)                                                  
-      if (v.axis){
+      if(!add){
+        plot(c(idx+k,idx-k), c(coefs.l, coefs.h), type="n", axes=F, 
+          main=main, xlab=xlab, ylab=ylab,...)                                                  
+        if (v.axis){
           axis(2, las=var.las)                                
           #axis(4, las=var.las)
-      }
-      if (h.axis){
+        }
+        if (h.axis){
           axis(1, 1:n.x, varnames[1:n.x], las=var.las, tck=FALSE, 
-              lty=0, cex.axis=cex.var) 
-      }
-      abline(h=0, lty=2)                                                 
-      points(idx, coefs, pch=19, cex=cex.pts, col=col.pts)
-      if (CI==2){
+            lty=0, cex.axis=cex.var) 
+        }
+        abline(h=0, lty=2)                                                 
+        points(idx, coefs, pch=19, cex=cex.pts, col=col.pts)
+        if (CI==2){
           segments (idx, coefs+sds, idx, coefs-sds, lwd=2, col=col.pts)     
           segments (idx, coefs+2*sds, idx, coefs-2*sds, lwd=1, col=col.pts)
-      }
-      else if (CI==1) {
+        }
+        else if (CI==1) {
           segments (idx, coefs+sds, idx, coefs-sds, lwd=1, col=col.pts)     
+        }
+      }
+      else{
+        idx <- idx + epsilon
+        points(idx, coefs, pch=19, cex=cex.pts, col=col.pts)
+        if (CI==2){
+          segments (idx, coefs+sds, idx, coefs-sds, lwd=2, col=col.pts)     
+          segments (idx, coefs+2*sds, idx, coefs-2*sds, lwd=1, col=col.pts)
+        }
+        else if (CI==1) {
+            segments (idx, coefs+sds, idx, coefs-sds, lwd=1, col=col.pts)     
+        }
       }
     }   
   }
@@ -86,7 +112,7 @@ coefplot.default <- function(coefs, sds,
       mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
       par(mar=mar)
       plot(c(coefs.l, coefs.h), c(idx+k,idx-k), type="n",                                     
-          axes=F, main=main, xlab=xlab, ylab=ylab,...) 
+          axes=F, main="", xlab=xlab, ylab=ylab,...) 
       if (v.axis){
           axis(2, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
               lty=0, cex.axis=cex.var) 
@@ -115,7 +141,7 @@ setMethod("coefplot", signature(object = "numeric"),
 
 
 setMethod("coefplot", signature(object = "lm"), 
-    function(object, varnames=NULL, intercept=FALSE, ...)
+    function(object, varnames=NULL, intercept=FALSE, add=FALSE, ...)
     {
     # collect informations
     coefs <- summary(object)$coef[,1]
