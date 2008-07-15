@@ -1,4 +1,9 @@
 2008-7-10  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-11.
+    * R/coefplot: add options add=TRUE and epsilon=.1, 
+        so coefplot can plot over the existing plot.
+
+2008-7-10  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-10.
     * man/rescale: fix a typo in the example: full2 -> full
     * R/rescale: fix a bug;

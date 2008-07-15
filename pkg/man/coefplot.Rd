@@ -23,7 +23,7 @@ coefplot(object,\dots)
                 cex.var=0.8, cex.pts=0.9, 
                 col.pts=1, var.las=2,
                 main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
-                plot=TRUE, \dots)
+                plot=TRUE, add=FALSE, epsilon=.1, \dots)
 \S4method{coefplot}{bugs}(object, var.idx=NULL, varnames=NULL, 
             CI=1, vertical=TRUE,
             v.axis=TRUE, h.axis=TRUE, 
@@ -65,6 +65,8 @@ coefplot(object,\dots)
           which gives the number of lines of margin to be specified on
           the four sides of the plot. The default is \code{c(1,3,5.1,2)}.}
   \item{plot}{default is TRUE, plot the estimates.}
+  \item{add}{if add=TRUE, plot over the existing plot. default is FALSE.}
+  \item{epsilon}{add extra spaces to separate from the existing dots. default is 0.1.}
   \item{var.idx}{the index of the variables of a bugs object, default
         is NULL which will plot all the variables.}
   \item{intercept}{If TRUE will plot intercept, default=FALSE to get better presentation.}
@@ -138,25 +140,18 @@ coefplot(object,\dots)
        display (M1)
  M2 <- bayesglm (y ~ x1 + x2, family=binomial(link="logit"))
        display (M2)
+
 #=================== 
 #    stacked plot
 #===================
-  par <- op
-  par(oma=c(0,0,1,0))
-  coefplot(M2, xlim=c(-1,5), intercept=TRUE, main="")
-  points(coef(M1), c(3:1)-0.1, col="red", pch=19)
-  segments(coef(M1) + se.coef(M1), c(3:1)-0.1,
-    coef(M1) - se.coef(M1), c(3:1)-0.1, lwd=2, col="red")
-  segments(coef(M1) + 2*se.coef(M1), c(3:1)-0.1,
-    coef(M1) - 2*se.coef(M1), c(3:1)-0.1, col="red")    
-  mtext("Coefficients", side=3, at=0.1, outer=TRUE)
-  mtext("Estimate", side=3, at=0.6, outer=TRUE)
+  coefplot(M2, xlim=c(-1,5), intercept=TRUE)
+  coefplot(M1, add=TRUE, col.pts="red")
+  
 #==================== 
 # arrayed plot       
 #====================
   par(mfrow=c(1,2))
   x.scale <- c(0, 7.5) # fix x.scale for comparison
-   
   coefplot(M1, xlim=x.scale, main="glm", intercept=TRUE)
   coefplot(M2, xlim=x.scale, main="bayesglm", intercept=TRUE)
 
@@ -165,7 +160,7 @@ coefplot(object,\dots)
  coefplot(M3, main="polr")
    
  M4 <- bayespolr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
- coefplot(M4, main="bayespolr")
+ coefplot(M4, main="bayespolr", add=TRUE, col.pts="red")
 
 ## plot 6: plot bugs & lmer
 # par <- op
