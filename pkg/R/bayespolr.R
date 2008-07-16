@@ -55,7 +55,7 @@ function (formula, data, weights, start, ..., subset, na.action,
         if (pc > 0)
             g1 <- g1 - dt.deriv(beta[1:pc], prior.mean, prior.scale, 
                 prior.df, log = TRUE)
-        if (all(pr) > 0) 
+        if (all(pr > 0)) 
             c(g1, g2)
         else rep(NA, pc + q)
     }
