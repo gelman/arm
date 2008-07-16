@@ -113,13 +113,14 @@ function (formula, data, weights, start, ..., subset, na.action,
         q1 <- length(lev)%/%2
         y1 <- (y > q1)
         X <- cbind(Intercept = rep(1, n), x)
-        fit <- switch(method, logistic = bayesglm.fit(X, y1, 
-            wt, family = binomial(), offset = offset, intercept = TRUE, 
-            prior.mean = prior.mean, prior.scale = prior.scale, 
-            prior.df = prior.df, prior.mean.for.intercept = 0, 
-            prior.scale.for.intercept = 10, prior.df.for.intercept = 1, 
-            scaled = scaled, control = glm.control(maxit = n.iter), 
-            print.unnormalized.log.posterior = print.unnormalized.log.posterior), 
+        fit <- switch(method, 
+            logistic = bayesglm.fit(X, y1, 
+              wt, family = binomial(), offset = offset, intercept = TRUE, 
+              prior.mean = prior.mean, prior.scale = prior.scale, 
+              prior.df = prior.df, prior.mean.for.intercept = 0, 
+              prior.scale.for.intercept = 10, prior.df.for.intercept = 1, 
+              scaled = scaled, control = glm.control(maxit = n.iter), 
+              print.unnormalized.log.posterior = print.unnormalized.log.posterior), 
             probit = bayesglm.fit(X, y1, wt, family = binomial("probit"), 
                 offset = offset, intercept = TRUE, prior.mean = prior.mean, 
                 prior.scale = prior.scale, prior.df = prior.df, 
@@ -154,6 +155,10 @@ function (formula, data, weights, start, ..., subset, na.action,
         gammas <- -coefs[1] + spacing - spacing[q1]
         thetas <- c(gammas[1], log(diff(gammas)))
         start <- c(coefs[-1], thetas)
+    }
+    # rep start to have the same length of coef + zeta
+    else if (length(start)==1){
+      start <- rep(start, (pc+q))
     }
     else if (length(start) != pc + q) 
         stop("'start' is not of the correct length")
