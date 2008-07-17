@@ -1,4 +1,9 @@
 2008-7-16  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-13.
+    * R/bayespolr: fix a bug in gmin
+
+
+2008-7-16  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-12.
     * R/bayespolr: rep start values to have the same length of coef + zeta
 
