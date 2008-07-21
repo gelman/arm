@@ -15,7 +15,7 @@
 \usage{
 balance(rawdata, matched, pscore.fit, factor=TRUE)
 
-\method{print}{balance}(x, digits = getOption("digits"))
+\method{print}{balance}(object, digits = getOption("digits"))
 
 \method{plot}{balance}(x, longcovnames = NULL, 
     main = "Standardized Difference in Means",

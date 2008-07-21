@@ -53,3 +53,5 @@ export(
 
 
 S3method(print, GO)
+S3method(plot, balance)
+S3method(print, balance)
