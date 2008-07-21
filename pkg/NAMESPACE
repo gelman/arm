@@ -1,4 +1,5 @@
 exportClasses(
+              "balance",
               "bayesglm",
               "bayesglm.h",
               "bayespolr"
@@ -18,7 +19,7 @@ exportMethods(
               )
 
 export(
-       "balanceplot",
+       "balance",
        "bayesglm",
        "bayesglm.fit",
        "bayespolr",

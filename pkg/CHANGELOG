@@ -1,11 +1,13 @@
-2008-7-16  Yu-Sung Su     <ys463@columbia.edu>  
+2008-7-21  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-14.
+    * man/balance: doc for balance().
     * R/coefplot: fix when plot=FALSE, should not plot varnames. 
+    * R/balanceplot: obsolet!
+    * R/balance: new function that computes, print and plot the balance stats
 
 2008-7-16  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-13.
     * R/bayespolr: fix a bug in gmin
-
 
 2008-7-16  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-12.

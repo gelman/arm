@@ -32,7 +32,7 @@ Regression and Multilevel/Hierarchical Models, Cambridge University Press, 2006.
         Yu-Sung Su \email{ys463@columbia.edu}
 }
 
-\seealso{\code{\link{balanceplot}}
+\seealso{\code{\link{balance}}
         }
 
 \examples{
@@ -46,8 +46,10 @@ pscores <- predict(fit, type="link")
 matches <- matching(z=lalonde$treat, score=pscores)
 matched <- lalonde[matches$matched,]
 
-# make the plot
-balanceplot(lalonde, matched, fit)
+# balance check!
+b.stats <- balance(lalonde, matched, fit)
+print(b.stats)
+plot(b.stats)
 }
 
 \keyword{models}

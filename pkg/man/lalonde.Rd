@@ -46,7 +46,7 @@
 
 \seealso{\code{\link{matching}},
         \code{\link[Matching]{GenMatch}}
-            \code{\link{balanceplot}}
+            \code{\link{balance}}
             }
 
 \examples{
