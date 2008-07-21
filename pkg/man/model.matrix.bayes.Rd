@@ -35,7 +35,7 @@ model.matrix.bayes.h(object, data = environment(object),
     that main effects come first, followed by the interactions,
     all second-order, all third-order and so on.  Effects of a given
     order are kept in the order specified.} 
-  \item{drop.baseline}{Drop the base level of categorical x's, default is TRUE.}
+  \item{drop.baseline}{Drop the base level of categorical Xs, default is TRUE.}
   \item{batch}{Not implement yet!}
   \item{\dots}{further arguments passed to or from other methods.}
 }
@@ -71,3 +71,4 @@ class(ff) <- c("bayesglm.h", "terms", "formula")
 (model.matrix.bayes(ff, m))
 }
 \keyword{models}
+\keyword{manip}

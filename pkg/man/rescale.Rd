@@ -47,4 +47,4 @@ rescale(x, binary.inputs="center")
   rescale(x, "full")
   rescale(y, "center")
 }
-\keyword{models}
+\keyword{manip}

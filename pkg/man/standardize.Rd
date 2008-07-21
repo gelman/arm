@@ -62,6 +62,7 @@ standardize(object, unchanged = NULL,
   display(M1)
   M2 <-standardize(M1)
   display(M2)
-  }
+}
+\keyword{manip}
 \keyword{models}
 \keyword{methods}

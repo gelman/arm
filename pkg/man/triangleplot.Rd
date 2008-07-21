@@ -30,7 +30,7 @@ triangleplot (x, y=NULL, cutpts=NULL, details=TRUE,
 \details{
 The function makes a triangle plot from a square matrix, e.g., the correlation plot, see 
 \code{\link{corrplot}}.  If a square matrix contains missing values, the cells of missing values
-will be marked ``x".
+will be marked \code{x}.
 }
 
 

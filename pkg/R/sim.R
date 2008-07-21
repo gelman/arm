@@ -129,7 +129,7 @@ setMethod("sim", signature(object = "mer"),
       J <- dim(vars.m)[3]
       beta.bygroup[[m]] <- array (NA, c(n.sims, J, K))
       for (j in 1:J){
-        V.beta <- untriangle(vars.m[,,j])#*sc^2
+        V.beta <- .untriangle(vars.m[,,j])#*sc^2
         beta.bygroup[[m]][,j,] <- mvrnorm (n.sims, bhat[j,], V.beta)
       }   
       dimnames (beta.bygroup[[m]]) <- c (list(NULL), dimnames(bhat))

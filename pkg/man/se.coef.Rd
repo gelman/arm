@@ -96,5 +96,6 @@ se.ranef (object)
    se.fixef (M4)
    se.ranef (M4)
 }
+\keyword{manip}
 \keyword{methods}
 \keyword{models}

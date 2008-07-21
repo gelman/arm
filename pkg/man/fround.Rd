@@ -38,5 +38,5 @@ pfround(x, digits)
     pfround(x, digits=2)
 }
 
-\keyword{arith}
+\keyword{manip}
 \keyword{print}
