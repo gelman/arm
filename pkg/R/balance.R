@@ -145,14 +145,14 @@ plot.balance <- function(x, longcovnames=NULL,
          xaxt="n", yaxt="n", #xaxs="i", 
          #yaxs="i", 
          type="n",
-         ylim=c(max(idx)+.25, min(idx)-.25),
+         #ylim=c(max(idx)+.25, min(idx)-.25),
          #xlim=x.range,
          main=main, cex.main=cex.main,...)
      abline(v=0, lty=2)
      points(pts, idx, cex=cex.pts)          # before matched
      points(pts2, idx, pch=19, cex=cex.pts) # after matched
      if (v.axis){
-         axis(3, cex.axis=0.8)
+         axis(3)
      }
      if (is.null(longcovnames)){
          axis(2, at=1:K, labels=covnames[1:K], 
@@ -169,8 +169,8 @@ plot.balance <- function(x, longcovnames=NULL,
       xaxt="n", yaxt="n", #xaxs="i", 
       #yaxs="i", 
       type="n", axes=FALSE,
-      ylim=c(max(idx)+.25, min(idx)-.25),
+      #ylim=c(max(idx)+.25, min(idx)-.25),
       #xlim=x.range,
-      main="", cex.main="",...)
+      main="", cex.main=cex.main,...)
   }
 }
