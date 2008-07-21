@@ -19,6 +19,7 @@ exportMethods(
               )
 
 export(
+       "array.append",
        "balance",
        "bayesglm",
        "bayesglm.fit",
@@ -34,7 +35,6 @@ export(
        "G",
        "go",
        "invlogit",
-       "logit",
        "matching", 
        "model.matrix.bayes",
        "multicomp.plot",
