@@ -157,5 +157,5 @@ display (object, ...)
 }
 
 
-\keyword{models}
+\keyword{manip}
 \keyword{methods}

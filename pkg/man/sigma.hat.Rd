@@ -70,5 +70,5 @@ sigma.hat(object)
    sigma.hat(M5)
 
 }
-
+\keyword{manip}
 \keyword{methods}

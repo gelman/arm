@@ -41,3 +41,4 @@ go(..., add=FALSE, timer=FALSE)
  }
 
 \keyword{methods}
+\keyword{manip}

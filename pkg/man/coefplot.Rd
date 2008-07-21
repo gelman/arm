@@ -181,3 +181,4 @@ coefplot(object,\dots)
 \keyword{hplot}
 \keyword{dplot}
 \keyword{methods}
+\keyword{manip}

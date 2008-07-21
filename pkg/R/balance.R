@@ -77,7 +77,8 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
 }
 
 
-print.balance <- function(x, digits=getOption("digits")){
+print.balance <- function(x, ..., digits= getOption("digits"))
+{
  cat("Differences in Means of Unmatched Data\n")
  cat("--\n") 
  print(round(x$diff.means.raw, digits=digits))
@@ -88,75 +89,88 @@ print.balance <- function(x, digits=getOption("digits")){
  print(round(x$diff.means.matched, digits=digits))
  cat("--\n") 
  cat("\n")
-}
+}   
+
 
 
 plot.balance <- function(x, longcovnames=NULL,
                 main="Standardized Difference in Means",
                 v.axis=TRUE,
                 cex.main=1, cex.vars=0.8, cex.pts=0.8,
-                mar=c(0, 3, 5.1, 2), ...)
+                mar=c(0, 3, 5.1, 2), plot=TRUE, ...)
 {
-    K <- dim(x$diff.means.raw)[1]
-    idx <- 1:K
+  K <- dim(x$diff.means.raw)[1]
+  idx <- 1:K
 
-    covnames <- x$covnames
-    # prepare for plot use
-    
-    est <- x$diff.means.raw[,3]
-    sd <- x$diff.means.raw[,6]
-    est2 <- x$diff.means.matched[,3]
-    sd2 <- x$diff.means.matched[,6]
-    
-    # x.range <- range (c(est,est2)/c(sd,sd2))
-    # x.range[2] <- x.range[2] +.3
-    # A <- -x.range[1]/(x.range[2]-x.range[1])
-    # B <- 1/(x.range[2]-x.range[1])
-    # pts <- A + B*(est/sd)              # before matched.dat
-    # pts2 <- A + B*(est2/sd2)           # after macthed
-    
-    pts <-  est/sd                      # before matched.dat
-    pts2 <- est2/sd2                    # after macthed 
-    #x.range <- c(jitter(min(c(pts, pts2)),15), max(c(pts,pts2)+.105))
-    
-    
-    # tune the graphic console
-    #par (mar=mar, mgp=mgp, oma=oma, tcl=tcl)
-    
+  covnames <- x$covnames
+  # prepare for plot use
+  
+  est <- x$diff.means.raw[,3]
+  sd <- x$diff.means.raw[,6]
+  est2 <- x$diff.means.matched[,3]
+  sd2 <- x$diff.means.matched[,6]
+  
+  # x.range <- range (c(est,est2)/c(sd,sd2))
+  # x.range[2] <- x.range[2] +.3
+  # A <- -x.range[1]/(x.range[2]-x.range[1])
+  # B <- 1/(x.range[2]-x.range[1])
+  # pts <- A + B*(est/sd)              # before matched.dat
+  # pts2 <- A + B*(est2/sd2)           # after macthed
+  
+  pts <-  est/sd                      # before matched.dat
+  pts2 <- est2/sd2                    # after macthed 
+  #x.range <- c(jitter(min(c(pts, pts2)),15), max(c(pts,pts2)+.105))
+  
+  
+  # tune the graphic console
+  #par (mar=mar, mgp=mgp, oma=oma, tcl=tcl)
+  
 
-    par(mar = c(0, 3, 5.1, 2))
-    if (is.null(longcovnames)) {
-        longcovnames <- covnames
-        maxchar <- max(sapply(longcovnames, nchar))
-    }
-    else {
-        maxchar <- max(sapply(longcovnames, nchar))
-    }
-    min.mar <- par("mar")
-    mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 
-        0.1
-    par(mar = mar)
-    # plot the estimates
+  par(mar = c(0, 3, 5.1, 2)) 
+  if (is.null(longcovnames)) {
+      longcovnames <- covnames
+      maxchar <- max(sapply(longcovnames, nchar))
+  }
+  else {
+      maxchar <- max(sapply(longcovnames, nchar))
+  }
+  min.mar <- par("mar")
+  mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
+  par(mar = mar)
+  
+  if(plot){
+     # plot the estimates
+     plot(c(pts,pts2), c(idx,idx),
+         bty="n", xlab="", ylab="",
+         xaxt="n", yaxt="n", #xaxs="i", 
+         #yaxs="i", 
+         type="n",
+         ylim=c(max(idx)+.25, min(idx)-.25),
+         #xlim=x.range,
+         main=main, cex.main=cex.main,...)
+     abline(v=0, lty=2)
+     points(pts, idx, cex=cex.pts)          # before matched
+     points(pts2, idx, pch=19, cex=cex.pts) # after matched
+     if (v.axis){
+         axis(3, cex.axis=0.8)
+     }
+     if (is.null(longcovnames)){
+         axis(2, at=1:K, labels=covnames[1:K], 
+             las=2, hadj=1, lty=0, cex.axis=cex.vars)
+     }
+     else{
+         axis(2, at=1:K, labels=longcovnames[1:K], 
+             las=2, hadj=1, lty=0, cex.axis=cex.vars)
+     }
+  }
+  else{
     plot(c(pts,pts2), c(idx,idx),
-        bty="n", xlab="", ylab="",
-        xaxt="n", yaxt="n", #xaxs="i", 
-        #yaxs="i", 
-        type="n",
-        ylim=c(max(idx)+.25, min(idx)-.25),
-        #xlim=x.range,
-        main=main, cex.main=cex.main,...)
-    abline(v=0, lty=2)
-    points(pts, idx, cex=cex.pts)          # before matched
-    points(pts2, idx, pch=19, cex=cex.pts) # after matched
-    if (v.axis){
-        axis(3, cex.axis=0.8)
-    }
-    if (is.null(longcovnames)){
-        axis(2, at=1:K, labels=covnames[1:K], 
-            las=2, hadj=1, lty=0, cex.axis=cex.vars)
-    }
-    else{
-        axis(2, at=1:K, labels=longcovnames[1:K], 
-            las=2, hadj=1, lty=0, cex.axis=cex.vars)
-    }
+      bty="n", xlab="", ylab="",
+      xaxt="n", yaxt="n", #xaxs="i", 
+      #yaxs="i", 
+      type="n", axes=FALSE,
+      ylim=c(max(idx)+.25, min(idx)-.25),
+      #xlim=x.range,
+      main="", cex.main="",...)
+  }
 }

@@ -58,3 +58,4 @@ contr.bayes.ordered (n, scores = 1:n, contrasts = TRUE)
 \keyword{design}
 \keyword{regression}
 \keyword{array}
+\keyword{manip}

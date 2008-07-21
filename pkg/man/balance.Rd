@@ -15,12 +15,13 @@
 \usage{
 balance(rawdata, matched, pscore.fit, factor=TRUE)
 
-\method{print}{balance}(object, digits = getOption("digits"))
+\method{print}{balance}(x, \dots, digits = getOption("digits"))
 
 \method{plot}{balance}(x, longcovnames = NULL, 
     main = "Standardized Difference in Means",
     v.axis=TRUE, cex.main = 1, 
-    cex.vars = 0.8, cex.pts = 0.8, mar=c(0,3,5.1,2),...)
+    cex.vars = 0.8, cex.pts = 0.8, 
+    mar=c(0,3,5.1,2), plot=TRUE, \dots)
 }
 
 \arguments{
@@ -44,7 +45,7 @@ balance(rawdata, matched, pscore.fit, factor=TRUE)
   \item{mar}{A numerical vector of the form \code{c(bottom, left, top, right)}
           which gives the number of lines of margin to be specified on
           the four sides of the plot. The default is \code{c(0,3,5.1,2)}.}
-
+  \item{plot}{default is TRUE, which will plot the plot.}
   \item{\dots}{other plot options may be passed to this function}
 }
 \details{
@@ -93,6 +94,6 @@ plot(b.stats)
 
 
 \keyword{methods}
-\keyword{models}
+\keyword{manip}
 \keyword{hplot}
 \keyword{dplot}
