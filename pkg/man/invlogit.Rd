@@ -1,6 +1,5 @@
 \name{invlogit}
 \alias{invlogit}
-\alias{logit}
 
 \title{Inverse logistic function}
 
