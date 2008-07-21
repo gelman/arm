@@ -3,6 +3,15 @@ setOldClass("mcmc.list")
 setOldClass("polr")
 setOldClass("bugs")
 
+setClass("balance",
+     representation(
+            rawdata = "data.frame",
+            matched = "data.frame",
+            factor = "logical")
+)
+
+
+
 
 setClass("bayesglm",
      representation(
