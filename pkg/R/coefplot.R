@@ -113,20 +113,20 @@ coefplot.default <- function(coefs, sds,
       par(mar=mar)
       plot(c(coefs.l, coefs.h), c(idx+k,idx-k), type="n",                                     
           axes=F, main="", xlab=xlab, ylab=ylab,...) 
-      if (v.axis){
-          axis(2, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
-              lty=0, cex.axis=cex.var) 
-      }
+#      if (v.axis){
+#          axis(2, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
+#              lty=0, cex.axis=cex.var) 
+#      }
     }
     else{ # horizontal
       mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
       par(mar=mar)
       plot(c(idx+k,idx-k), c(coefs.l, coefs.h), type="n", axes=F, 
         main=main, xlab=xlab, ylab=ylab,...)                                                  
-      if (h.axis){
-          axis(1, 1:n.x, varnames[1:n.x], las=var.las, tck=FALSE, 
-              lty=0, cex.axis=cex.var) 
-      }
+      #if (h.axis){
+#          axis(1, 1:n.x, varnames[1:n.x], las=var.las, tck=FALSE, 
+#              lty=0, cex.axis=cex.var) 
+#      }
     }
   }   
 }
