@@ -1,4 +1,8 @@
 2008-7-16  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-14.
+    * R/coefplot: fix when plot=FALSE, should not plot varnames. 
+
+2008-7-16  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-13.
     * R/bayespolr: fix a bug in gmin
 
