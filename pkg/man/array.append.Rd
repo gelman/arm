@@ -16,7 +16,7 @@ array.append(array1, array2, d)
   \item{d}{append after which dimension}
 }
 
-value{
+\value{
 array
 }
 

@@ -34,7 +34,7 @@ residual.plot(Expected, Residuals, sigma, main = deparse(substitute(Expected)), 
   M.Grazia Pittau \email{grazia@stat.columbia.edu}
 }
 
-\example{
+\examples{
 x <- rnorm(100)
 y <- rnorm(100)
 fit <- lm(y~x)
