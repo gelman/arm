@@ -36,13 +36,13 @@ if (!isGeneric("sim")) {
 
 if (!isGeneric("sigma.hat")) {
     setGeneric("sigma.hat",
-               function(object)
+               function(object, ...)
                standardGeneric("sigma.hat"))
 }
 
 if (!isGeneric("se.coef")) {
     setGeneric("se.coef",
-               function(object)
+               function(object, ...)
                standardGeneric("se.coef"))
 }
 

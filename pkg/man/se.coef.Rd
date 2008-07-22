@@ -14,7 +14,7 @@
    from objects returned by modeling functions.
 }
 \usage{
-se.coef (object)
+se.coef (object, \dots)
 se.fixef (object)
 se.ranef (object)
 
@@ -25,6 +25,7 @@ se.ranef (object)
 
 \arguments{
   \item{object}{object of lm, glm, lmer and glmer fit}
+  \item{\dots}{other arguments}
 }
 \value{
   \code{se.coef} gives lists of standard errors for \code{coef},
