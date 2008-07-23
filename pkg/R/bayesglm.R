@@ -8,7 +8,7 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
   prior.scale.for.intercept = NULL, prior.df.for.intercept = 1,
   min.prior.scale = 1e-12, scaled = TRUE, keep.order = TRUE,
   drop.baseline = TRUE, n.iter = 100, 
-  print.unnormalized.log.posterior = FALSE, ...)
+  print.unnormalized.log.posterior = FALSE, Warning=TRUE,...)
 {
   call <- match.call()
   if (is.character(family))
@@ -67,7 +67,7 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
     prior.mean.for.intercept = prior.mean.for.intercept,
     prior.scale.for.intercept = prior.scale.for.intercept,
     prior.df.for.intercept = prior.df.for.intercept, min.prior.scale =
-    min.prior.scale, scaled = scaled)
+    min.prior.scale, scaled = scaled, Warning=Warning)
   if (any(offset) && attr(mt, "intercept") > 0) {
    cat("bayesglm not yet set up to do deviance comparion here\n")
   fit$null.deviance <- bayesglm.fit(x = X[, "(Intercept)", drop = FALSE], 
@@ -77,7 +77,8 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
     prior.df = prior.df, prior.mean.for.intercept = prior.mean.for.intercept,
     prior.scale.for.intercept = prior.scale.for.intercept,
     prior.df.for.intercept = prior.df.for.intercept,
-    min.prior.scale = min.prior.scale, scaled = scaled)$deviance
+    min.prior.scale = min.prior.scale, scaled = scaled, 
+    Warning=Warning)$deviance
   }
   if (model)
     fit$model <- mf
@@ -104,7 +105,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
   prior.scale.for.intercept = NULL,
   prior.df.for.intercept = 1,
   min.prior.scale=1e-12,
-  scaled = TRUE, print.unnormalized.log.posterior=FALSE)
+  scaled = TRUE, print.unnormalized.log.posterior=FALSE, Warning=TRUE)
 {
 
   ##### 12.13 ####
@@ -402,19 +403,21 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         coef <- coefold <- start
       }
     }
-    if (!conv)
-      warning("algorithm did not converge")
-    if (boundary)
-      warning("algorithm stopped at boundary value")
-    eps <- 10 * .Machine$double.eps
-    if (family$family == "binomial") {
-      if (any(mu > 1 - eps) || any(mu < eps)) {
-        warning("fitted probabilities numerically 0 or 1 occurred")
+    if(Warning){
+      if (!conv)
+        warning("algorithm did not converge")
+      if (boundary)
+        warning("algorithm stopped at boundary value")
+      eps <- 10 * .Machine$double.eps
+      if (family$family == "binomial") {
+        if (any(mu > 1 - eps) || any(mu < eps)) {
+          warning("fitted probabilities numerically 0 or 1 occurred")
+        }
       }
-    }
-    if (family$family == "poisson") {
-      if (any(mu < eps))
-        warning("fitted rates numerically 0 occurred")
+      if (family$family == "poisson") {
+        if (any(mu < eps))
+          warning("fitted rates numerically 0 occurred")
+      }
     }
     if (fit$rank < nvars) {
       coef[fit$pivot][seq(fit$rank + 1, nvars)] <- NA

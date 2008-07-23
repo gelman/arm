@@ -1,4 +1,9 @@
 2008-7-22  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-15.
+    * R/bayesglm: new option "Warning" to turn off the error message
+        of no convergence and separation
+
+2008-7-22  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-14.
     * make all internal function start with .
     * add keyword manip to the docs
