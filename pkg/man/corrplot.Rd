@@ -55,6 +55,8 @@ Journal of the American Statistical Association, Vol.101, N0. 474: p.409-23}
 }
 
 \examples{
+old.par <- par(no.readonly = TRUE)
+
  x1 <- rnorm(1000,50,2) 
  x2 <- rbinom(1000,1,prob=0.63) 
  x3 <- rpois(1000, 2) 
@@ -83,6 +85,8 @@ Journal of the American Statistical Association, Vol.101, N0. 474: p.409-23}
  data(lalonde)
  corrplot(lalonde, details=FALSE, color=TRUE)
  corrplot(lalonde, cutpts=c(0,0.25,0.5,0.75), color=TRUE, digits=2)
+ 
+par(old.par)
 }
 
 \keyword{dplot}

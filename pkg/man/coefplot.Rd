@@ -97,6 +97,8 @@ coefplot(object,\dots)
          \code{\link[graphic]{plot}}
         }
 \examples{
+old.par <- par(no.readonly = TRUE)
+
  y1 <- rnorm(1000,50,23)
  y2 <- rbinom(1000,1,prob=0.72)
  x1 <- rnorm(1000,50,2) 
@@ -176,6 +178,8 @@ coefplot(object,\dots)
  coefplot (coef.vect, sd.vect, longnames, main="Regression Estimates")
  coefplot (coef.vect, sd.vect, longnames, vertical=FALSE, 
     var.las=1, main="Regression Estimates")
+    
+par(old.par)
 }
 
 \keyword{hplot}

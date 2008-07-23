@@ -60,6 +60,7 @@ if the model were actually true.
 \seealso{\code{\link{par}}, \code{\link{plot}}}
 
 \examples{
+old.par <- par(no.readonly = TRUE)
  data(lalonde)
  attach(lalonde)
  fit <- glm(treat ~ re74 + re75 + educ + black + hisp + married 
@@ -67,5 +68,6 @@ if the model were actually true.
  x <- predict(fit)
  y <- resid(fit)
  binnedplot(x,y)
+par(old.par)
 }
 \keyword{dplot}

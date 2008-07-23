@@ -42,6 +42,8 @@ will be marked \code{x}.
 }
 
 \examples{
+old.par <- par(no.readonly = TRUE)
+
  # create a square matrix
  x <- matrix(runif(1600, 0, 1), 40, 40)
  
@@ -55,6 +57,8 @@ will be marked \code{x}.
  x[12,13] <- x[13,12] <- NA
  x[25,27] <- x[27,25] <- NA
  triangleplot(x)
+ 
+par(old.par)
 }
 
 \keyword{dplot}

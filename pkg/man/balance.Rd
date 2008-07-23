@@ -77,6 +77,7 @@ Regression and Multilevel/Hierarchical Models, Cambridge University Press, 2006.
         
 \examples{
 # matching first
+old.par <- par(no.readonly = TRUE)
 data(lalonde)
 attach(lalonde)
 fit <- glm(treat ~ re74 + re75 + age + factor(educ) + 
@@ -90,6 +91,7 @@ matched <- lalonde[matches$matched,]
 b.stats <- balance(lalonde, matched, fit)
 print(b.stats)
 plot(b.stats)
+par(old.par)
 }
 
 
