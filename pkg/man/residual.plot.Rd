@@ -35,6 +35,8 @@ residual.plot(Expected, Residuals, sigma, main = deparse(substitute(Expected)), 
 }
 
 \examples{
+old.par <- par(no.readonly = TRUE)
+
 x <- rnorm(100)
 y <- rnorm(100)
 fit <- lm(y~x)
@@ -42,6 +44,8 @@ y.hat <- fitted(fit)
 u <- resid(fit)
 sigma <- sigma.hat(fit)
 residual.plot(y.hat, u, sigma)
+
+par(old.par)
 }
 
 
