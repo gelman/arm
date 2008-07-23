@@ -35,7 +35,8 @@ bayesglm (formula, family = gaussian, data,
     min.prior.scale=1e-12,
     scaled = TRUE, keep.order=TRUE, 
     drop.baseline=TRUE, n.iter = 100, 
-    print.unnormalized.log.posterior=FALSE,...)
+    print.unnormalized.log.posterior=FALSE,
+    Warning=TRUE,...)
     
 bayesglm.fit (x, y, weights = rep(1, nobs), 
     start = NULL, etastart = NULL, 
@@ -48,7 +49,7 @@ bayesglm.fit (x, y, weights = rep(1, nobs),
     prior.scale.for.intercept = NULL,
     prior.df.for.intercept = 1,
     min.prior.scale=1e-12, scaled = TRUE,
-    print.unnormalized.log.posterior=FALSE)
+    print.unnormalized.log.posterior=FALSE, Warning=TRUE)
 }
 
 \arguments{
@@ -164,7 +165,7 @@ bayesglm.fit (x, y, weights = rep(1, nobs),
   
   \item{n.iter}{default is 100.}
   \item{print.unnormalized.log.posterior}{display the unnormalized log posterior likelihood for bayesglm, default=FALSE}
-  
+  \item{Warning}{default is TRUE, which will show the error messages of not convergence and separation.}
   \item{\dots}{further arguments passed to or from other methods.}
 }
 \details{
