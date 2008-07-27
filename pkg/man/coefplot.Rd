@@ -24,12 +24,16 @@ coefplot(object,\dots)
                 col.pts=1, var.las=2,
                 main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
                 plot=TRUE, add=FALSE, epsilon=.1, \dots)
+
 \S4method{coefplot}{bugs}(object, var.idx=NULL, varnames=NULL, 
             CI=1, vertical=TRUE,
             v.axis=TRUE, h.axis=TRUE, 
             cex.var=0.8, cex.pts=0.9, 
             col.pts=1, var.las=2, 
-            main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),\ldots)
+            main=NULL, xlab=NULL, ylab=NULL, 
+            plot=TRUE, add=FALSE, epsilon=.1,
+            mar=c(1,3,5.1,2), \dots)
+
 \S4method{coefplot}{numeric}(object, \dots)
 \S4method{coefplot}{lm}(object, varnames=NULL, intercept=FALSE, \dots)
 \S4method{coefplot}{glm}(object, varnames=NULL, intercept=FALSE, \dots)
