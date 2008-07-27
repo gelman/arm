@@ -207,113 +207,150 @@ setMethod("coefplot", signature(object = "bugs"),
             v.axis=TRUE, h.axis=TRUE, 
             cex.var=0.8, cex.pts=0.9, 
             col.pts=1, var.las=2, 
-            main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2), ...)
+            main=NULL, xlab=NULL, ylab=NULL, 
+            plot=TRUE, add=FALSE, epsilon=.1,
+            mar=c(1,3,5.1,2), ...)
 {  
     
-    if (is.null(var.idx)){
-        var.idx <- 1:length(object$summary[,"50%"])
+  if (is.null(var.idx)){
+    var.idx <- 1:length(object$summary[,"50%"])
+  }
+  n.x <- length(var.idx)
+  idx <- 1:n.x
+  
+  coefs <- object$summary[,"50%"][var.idx]
+  if (is.null(varnames)){
+    varnames <- names(coefs)     
+  }
+  
+  if (is.null(main)){main <- "Regression Estimates"}
+  if (is.null(xlab)){xlab <- ""}
+  if (is.null(ylab)){ylab <- ""}
+  
+  
+  par(mar=mar)
+  
+  
+  maxchar <- max(sapply(varnames, nchar))
+  min.mar <- par('mar')
+  
+  k <- 1/n.x
+  
+  if (CI==1){
+    CI50.h <- object$summary[,"75%"][var.idx]
+    CI50.l <- object$summary[,"25%"][var.idx]
+    CI50 <- cbind(CI50.l, CI50.h)
+    if (vertical){
+      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
+      par(mar=mar)
+      if(add){
+        segments (CI50[,1], idx+epsilon, CI50[,2], idx+epsilon, lwd=1, col=col.pts)     
+        points(coefs, idx+epsilon, pch=20, cex=cex.pts, col=col.pts)
+      }
+      else{
+        plot(c(CI50[,1],CI50[,2]), c(idx+k,idx-k), type="n", 
+          axes=F, main=main, xlab=xlab, ylab=ylab, ...) 
+        if(plot){
+          if (h.axis){
+            axis(3)
+          }
+          if (v.axis){
+          axis(2, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
+              lty=0, cex.axis=cex.var)  
+          }
+          abline(v=0, lty=2)                                                 
+          segments (CI50[,1], idx, CI50[,2], idx, lwd=1, col=col.pts)     
+          points(coefs, idx, pch=20, cex=cex.pts, col=col.pts)  
+        }
+      }
     }
-    n.x <- length(var.idx)
-    idx <- 1:n.x
-    
-    coefs <- object$summary[,"50%"][var.idx]
-    if (is.null(varnames)){
-        varnames <- names(coefs)     
-    }
-
-    if (is.null(main)){main <- "Regression Estimates"}
-    if (is.null(xlab)){xlab <- ""}
-    if (is.null(ylab)){ylab <- ""}
-    
-    
-    par(mar=mar)
-    
-    
-    maxchar <- max(sapply(varnames, nchar))
-    min.mar <- par('mar')
-    
-    k <- 1/n.x
-    
-    if (CI==1){
-        CI50.h <- object$summary[,"75%"][var.idx]
-        CI50.l <- object$summary[,"25%"][var.idx]
-        CI50 <- cbind(CI50.l, CI50.h)
-        if (vertical){
-          mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
-          par(mar=mar)
-          plot(c(CI50[,1],CI50[,2]), c(idx+k,idx-k), type="n", 
+    else {
+      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
+      par(mar=mar)
+      if(add){
+          segments (idx+epsilon, CI50[,1], idx+epsilon, CI50[,2], lwd=1, col=col.pts)     
+          points(idx+epsilon, coefs, pch=20, cex=cex.pts, col=col.pts)
+      }
+      else{
+        plot(c(idx+k,idx-k), c(CI50[,1],CI50[,2]), type="n",                                     
             axes=F, main=main, xlab=xlab, ylab=ylab,...) 
-            if (h.axis){
-                axis(3)
-            }
-            if (v.axis){
+        if(plot){
+          if (v.axis){
+            axis(2)
+          }
+          if (h.axis){
+            axis(1, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
+              lty=0, cex.axis=cex.var)  
+          }
+          
+          abline(h=0, lty=2)                                                 
+          segments (idx, CI50[,1], idx, CI50[,2], lwd=1, col=col.pts)     
+          points(idx, coefs, pch=20, cex=cex.pts, col=col.pts)
+        }
+      }
+    }   
+  }
+  
+  if (CI==2){
+    CI50.h <- object$summary[,"75%"][var.idx]
+    CI50.l <- object$summary[,"25%"][var.idx]
+    CI95.h <- object$summary[,"97.5%"][var.idx]
+    CI95.l <- object$summary[,"2.5%"][var.idx]
+    CI50 <- cbind(CI50.l, CI50.h)
+    CI95 <- cbind(CI95.l, CI95.h)
+    if (vertical){
+      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
+      par(mar=mar)
+      if(add){
+        segments (CI50[,1], idx+epsilon, CI50[,2], idx+epsilon, lwd=2, col=col.pts) 
+        segments (CI95[,1], idx+epsilon, CI95[,2], idx+epsilon, lwd=1, col=col.pts)    
+        points(coefs, idx+epsilon, pch=20, cex=cex.pts, col=col.pts)
+      }
+      else{
+        plot(c(CI95[,1],CI95[,2]), c(idx+k,idx-k), type="n",                                     
+          axes=F, main=main, xlab=xlab, ylab=ylab,...) 
+        if(plot){
+          if (h.axis){
+            axis(3)
+          }
+          if (v.axis){
             axis(2, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
-                lty=0, cex.axis=cex.var)  
-            }
-            abline(v=0, lty=2)                                                 
-            segments (CI50[,1], idx, CI50[,2], idx, lwd=1, col=col.pts)     
-            points(coefs, idx, pch=20, cex=cex.pts, col=col.pts)
+              lty=0, cex.axis=cex.var)  
+          }
+          abline(v=0, lty=2)                                                 
+          segments (CI50[,1], idx, CI50[,2], idx, lwd=2, col=col.pts) 
+          segments (CI95[,1], idx, CI95[,2], idx, lwd=1, col=col.pts)    
+          points(coefs, idx, pch=20, cex=cex.pts, col=col.pts)
         }
-        else {
-          mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
-          par(mar=mar)
-          plot(c(idx+k,idx-k), c(CI50[,1],CI50[,2]), type="n",                                     
-                axes=F, main=main, xlab=xlab, ylab=ylab,...) 
-            if (v.axis){
-                axis(2)
-            }
-            if (h.axis){
-                axis(1, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
-                    lty=0, cex.axis=cex.var)  
-            }
-            abline(h=0, lty=2)                                                 
-            segments (idx, CI50[,1], idx, CI50[,2], lwd=1, col=col.pts)     
-            points(idx, coefs, pch=20, cex=cex.pts, col=col.pts)
-        }
+      }
     }
-    
-    if (CI==2){
-        CI50.h <- object$summary[,"75%"][var.idx]
-        CI50.l <- object$summary[,"25%"][var.idx]
-        CI95.h <- object$summary[,"97.5%"][var.idx]
-        CI95.l <- object$summary[,"2.5%"][var.idx]
-        CI50 <- cbind(CI50.l, CI50.h)
-        CI95 <- cbind(CI95.l, CI95.h)
-        if (vertical){
-          mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
-          par(mar=mar)
-          plot(c(CI95[,1],CI95[,2]), c(idx+k,idx-k), type="n",                                     
-                axes=F, main=main, xlab=xlab, ylab=ylab,...) 
-        if (h.axis){
-                axis(3)
-            }
-            if (v.axis){
-            axis(2, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
-                lty=0, cex.axis=cex.var)  
-            }
-            abline(v=0, lty=2)                                                 
-            segments (CI50[,1], idx, CI50[,2], idx, lwd=2, col=col.pts) 
-            segments (CI95[,1], idx, CI95[,2], idx, lwd=1, col=col.pts)    
-            points(coefs, idx, pch=20, cex=cex.pts, col=col.pts)
+    else {
+      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
+      par(mar=mar)
+      if(add){
+        segments (idx+epsilon, CI50[,1], idx+epsilon, CI50[,2], lwd=2, col=col.pts)
+        segments (idx+epsilon, CI95[,1], idx+epsilon, CI95[,2], lwd=1, col=col.pts)         
+        points(idx+epsilon, coefs, pch=20, cex=cex.pts, col=col.pts)        
+      }
+      else{
+        plot(c(idx+k,idx-k), c(CI95[,1],CI95[,2]), type="n",                                     
+          axes=F, main=main, xlab=xlab, ylab=ylab,...) 
+        if(plot){
+          if (v.axis){
+            axis(2)
+          }
+          if (h.axis){
+            axis(1, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
+              lty=0, cex.axis=cex.var)  
+          }
+          abline(h=0, lty=2)                                                 
+          segments (idx, CI50[,1], idx, CI50[,2], lwd=2, col=col.pts)
+          segments (idx, CI95[,1], idx, CI95[,2], lwd=1, col=col.pts)         
+          points(idx, coefs, pch=20, cex=cex.pts, col=col.pts)
         }
-        else {
-            mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
-            par(mar=mar)
-            plot(c(idx+k,idx-k), c(CI95[,1],CI95[,2]), type="n",                                     
-                axes=F, main=main, xlab=xlab, ylab=ylab,...) 
-            if (v.axis){
-                axis(2)
-            }
-            if (h.axis){
-                axis(1, n.x:1, varnames[n.x:1], las=var.las, tck=FALSE, 
-                    lty=0, cex.axis=cex.var)  
-            }
-            abline(h=0, lty=2)                                                 
-            segments (idx, CI50[,1], idx, CI50[,2], lwd=2, col=col.pts)
-            segments (idx, CI95[,1], idx, CI95[,2], lwd=1, col=col.pts)         
-            points(idx, coefs, pch=20, cex=cex.pts, col=col.pts)
-        }
+      }
     }
+  }
 }
 )
     
