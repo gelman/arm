@@ -19,7 +19,6 @@ exportMethods(
               )
 
 export(
-       "array.append",
        "balance",
        "bayesglm",
        "bayesglm.fit",
