@@ -1,8 +1,11 @@
+2008-8-20  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-15.
+    * sim: coerce bhat in sim.mer into a matrix to suit the use of mvrnorm
+
 2008-7-27  Yu-Sung Su     <ys463@columbia.edu>  
     * coefplot: add options plot=TRUE, epsilon, add=FALSE into BUGS method
 
 2008-7-22  Yu-Sung Su     <ys463@columbia.edu>  
-    * DESCRIPTION (Version, Date): 1.1-15.
     * R/bayesglm: new option "Warning" to turn off the error message
         of no convergence and separation
 
