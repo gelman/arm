@@ -123,7 +123,7 @@ setMethod("sim", signature(object = "mer"),
     beta.bygroup <- coef
     n.groupings <- length (coef)
     for (m in 1:n.groupings){
-      bhat <- coef[[m]]
+      bhat <- as.matrix(coef[[m]])
       vars.m <- attr (coef[[m]], "postVar")
       K <- dim(vars.m)[1]
       J <- dim(vars.m)[3]
