@@ -4,7 +4,7 @@ coefplot.default <- function(coefs, sds,
             v.axis=TRUE, h.axis=TRUE,
             cex.var=0.8, cex.pts=0.9, col.pts=1,
             var.las=2, main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
-            plot=TRUE, add=FALSE, epsilon=0,...)
+            plot=TRUE, add=FALSE, epsilon=0.1,...)
 {
   
      # collect informations
