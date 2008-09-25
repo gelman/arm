@@ -1,3 +1,9 @@
+2008-9-24  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-16.
+    * coefplot: 
+        1. add the pch.pts option
+        2. fix mar error.
+
 2008-8-19  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-15.
     * sim: coerce bhat in sim.mer into a matrix to suit the use of mvrnorm

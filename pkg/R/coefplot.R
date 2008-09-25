@@ -2,7 +2,7 @@ coefplot.default <- function(coefs, sds,
             varnames=NULL, CI=2, 
             vertical=TRUE,
             v.axis=TRUE, h.axis=TRUE,
-            cex.var=0.8, cex.pts=0.9, col.pts=1,
+            cex.var=0.8, cex.pts=0.9, col.pts=1, pch.pts=20,
             var.las=2, main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
             plot=TRUE, add=FALSE, epsilon=0.1,...)
 {
@@ -17,6 +17,8 @@ coefplot.default <- function(coefs, sds,
     coefs.h <- coefs + CI*sds 
     coefs.l <- coefs - CI*sds                                                          
     
+    min.mar <- par('mar')
+    
     if (is.null(main)){main <- "Regression Estimates"}
     if (is.null(xlab)){xlab <- ""}
     if (is.null(ylab)){ylab <- ""}
@@ -29,13 +31,15 @@ coefplot.default <- function(coefs, sds,
     else{
       maxchar <- max(sapply(varnames, nchar))
     }
-    min.mar <- par('mar')
+
     
     # add margin to the axis
     k <- 1/n.x   
     if(plot){
       if (vertical){
-        mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
+
+        mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + 0.1
+
         par(mar=mar)
         if(!add){
           plot(c(coefs.l, coefs.h), c(idx+k,idx-k), type="n",                                     
@@ -49,7 +53,7 @@ coefplot.default <- function(coefs, sds,
               lty=0, cex.axis=cex.var) 
           }
           abline(v=0, lty=2)                                                 
-          points(coefs, idx, pch=20, cex=cex.pts, col=col.pts)
+          points(coefs, idx, pch=pch.pts, cex=cex.pts, col=col.pts)
           if (CI==2){
             segments (coefs+sds, idx, coefs-sds, idx, lwd=2, col=col.pts)     
             segments (coefs+2*sds, idx, coefs-2*sds, idx, lwd=1, col=col.pts)
@@ -60,7 +64,7 @@ coefplot.default <- function(coefs, sds,
         }
         else{
           idx <- idx + epsilon
-          points(coefs, idx, pch=20, cex=cex.pts, col=col.pts)
+          points(coefs, idx, pch=pch.pts, cex=cex.pts, col=col.pts)
           if (CI==2){
             segments (coefs+sds, idx, coefs-sds, idx, lwd=2, col=col.pts)     
             segments (coefs+2*sds, idx, coefs-2*sds, idx, lwd=1, col=col.pts)
@@ -71,7 +75,7 @@ coefplot.default <- function(coefs, sds,
         }
     } # end of if vertical
     else{ # horizontal
-      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
+      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + 0.1
       par(mar=mar)
       if(!add){
         plot(c(idx+k,idx-k), c(coefs.l, coefs.h), type="n", axes=F, 
@@ -85,7 +89,7 @@ coefplot.default <- function(coefs, sds,
             lty=0, cex.axis=cex.var) 
         }
         abline(h=0, lty=2)                                                 
-        points(idx, coefs, pch=20, cex=cex.pts, col=col.pts)
+        points(idx, coefs, pch=pch.pts, cex=cex.pts, col=col.pts)
         if (CI==2){
           segments (idx, coefs+sds, idx, coefs-sds, lwd=2, col=col.pts)     
           segments (idx, coefs+2*sds, idx, coefs-2*sds, lwd=1, col=col.pts)
@@ -96,7 +100,7 @@ coefplot.default <- function(coefs, sds,
       }
       else{
         idx <- idx + epsilon
-        points(idx, coefs, pch=20, cex=cex.pts, col=col.pts)
+        points(idx, coefs, pch=pch.pts, cex=cex.pts, col=col.pts)
         if (CI==2){
           segments (idx, coefs+sds, idx, coefs-sds, lwd=2, col=col.pts)     
           segments (idx, coefs+2*sds, idx, coefs-2*sds, lwd=1, col=col.pts)
@@ -109,7 +113,7 @@ coefplot.default <- function(coefs, sds,
   }
   else{
     if (vertical){
-      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
+      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10))  + 0.1
       par(mar=mar)
       plot(c(coefs.l, coefs.h), c(idx+k,idx-k), type="n",                                     
           axes=F, main="", xlab=xlab, ylab=ylab,...)
@@ -119,7 +123,7 @@ coefplot.default <- function(coefs, sds,
 #      }
     }
     else{ # horizontal
-      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
+      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + 0.1
       par(mar=mar)
       plot(c(idx+k,idx-k), c(coefs.l, coefs.h), type="n", axes=F, 
         main=main, xlab=xlab, ylab=ylab,...)                                                  
@@ -206,7 +210,7 @@ setMethod("coefplot", signature(object = "bugs"),
             CI=1, vertical=TRUE,
             v.axis=TRUE, h.axis=TRUE, 
             cex.var=0.8, cex.pts=0.9, 
-            col.pts=1, var.las=2, 
+            col.pts=1, pch.pts=20, var.las=2, 
             main=NULL, xlab=NULL, ylab=NULL, 
             plot=TRUE, add=FALSE, epsilon=.1,
             mar=c(1,3,5.1,2), ...)
@@ -227,12 +231,12 @@ setMethod("coefplot", signature(object = "bugs"),
   if (is.null(xlab)){xlab <- ""}
   if (is.null(ylab)){ylab <- ""}
   
-  
+  min.mar <- par('mar')  
   par(mar=mar)
   
   
   maxchar <- max(sapply(varnames, nchar))
-  min.mar <- par('mar')
+
   
   k <- 1/n.x
   
@@ -241,7 +245,7 @@ setMethod("coefplot", signature(object = "bugs"),
     CI50.l <- object$summary[,"25%"][var.idx]
     CI50 <- cbind(CI50.l, CI50.h)
     if (vertical){
-      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
+      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + 0.1
       par(mar=mar)
       if(add){
         segments (CI50[,1], idx+epsilon, CI50[,2], idx+epsilon, lwd=1, col=col.pts)     
@@ -265,7 +269,7 @@ setMethod("coefplot", signature(object = "bugs"),
       }
     }
     else {
-      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
+      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10))  + 0.1
       par(mar=mar)
       if(add){
           segments (idx+epsilon, CI50[,1], idx+epsilon, CI50[,2], lwd=1, col=col.pts)     
@@ -299,7 +303,7 @@ setMethod("coefplot", signature(object = "bugs"),
     CI50 <- cbind(CI50.l, CI50.h)
     CI95 <- cbind(CI95.l, CI95.h)
     if (vertical){
-      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + mar[2] + 0.1
+      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + 0.1
       par(mar=mar)
       if(add){
         segments (CI50[,1], idx+epsilon, CI50[,2], idx+epsilon, lwd=2, col=col.pts) 
@@ -325,7 +329,7 @@ setMethod("coefplot", signature(object = "bugs"),
       }
     }
     else {
-      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + mar[1] + 0.1
+      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + 0.1
       par(mar=mar)
       if(add){
         segments (idx+epsilon, CI50[,1], idx+epsilon, CI50[,2], lwd=2, col=col.pts)
