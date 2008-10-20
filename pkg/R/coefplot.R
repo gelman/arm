@@ -4,7 +4,7 @@ coefplot.default <- function(coefs, sds,
             v.axis=TRUE, h.axis=TRUE,
             cex.var=0.8, cex.pts=0.9, col.pts=1, pch.pts=20,
             var.las=2, main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
-            plot=TRUE, add=FALSE, epsilon=0.1,...)
+            plot=TRUE, add=FALSE, offset=0.1,...)
 {
   
      # collect informations
@@ -63,7 +63,7 @@ coefplot.default <- function(coefs, sds,
           }
         }
         else{
-          idx <- idx + epsilon
+          idx <- idx + offset
           points(coefs, idx, pch=pch.pts, cex=cex.pts, col=col.pts)
           if (CI==2){
             segments (coefs+sds, idx, coefs-sds, idx, lwd=2, col=col.pts)     
@@ -99,7 +99,7 @@ coefplot.default <- function(coefs, sds,
         }
       }
       else{
-        idx <- idx + epsilon
+        idx <- idx + offset
         points(idx, coefs, pch=pch.pts, cex=cex.pts, col=col.pts)
         if (CI==2){
           segments (idx, coefs+sds, idx, coefs-sds, lwd=2, col=col.pts)     
@@ -212,7 +212,7 @@ setMethod("coefplot", signature(object = "bugs"),
             cex.var=0.8, cex.pts=0.9, 
             col.pts=1, pch.pts=20, var.las=2, 
             main=NULL, xlab=NULL, ylab=NULL, 
-            plot=TRUE, add=FALSE, epsilon=.1,
+            plot=TRUE, add=FALSE, offset=.1,
             mar=c(1,3,5.1,2), ...)
 {  
     
@@ -248,8 +248,8 @@ setMethod("coefplot", signature(object = "bugs"),
       mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + 0.1
       par(mar=mar)
       if(add){
-        segments (CI50[,1], idx+epsilon, CI50[,2], idx+epsilon, lwd=1, col=col.pts)     
-        points(coefs, idx+epsilon, pch=20, cex=cex.pts, col=col.pts)
+        segments (CI50[,1], idx+offset, CI50[,2], idx+offset, lwd=1, col=col.pts)     
+        points(coefs, idx+offset, pch=20, cex=cex.pts, col=col.pts)
       }
       else{
         plot(c(CI50[,1],CI50[,2]), c(idx+k,idx-k), type="n", 
@@ -272,8 +272,8 @@ setMethod("coefplot", signature(object = "bugs"),
       mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10))  + 0.1
       par(mar=mar)
       if(add){
-          segments (idx+epsilon, CI50[,1], idx+epsilon, CI50[,2], lwd=1, col=col.pts)     
-          points(idx+epsilon, coefs, pch=20, cex=cex.pts, col=col.pts)
+          segments (idx+offset, CI50[,1], idx+offset, CI50[,2], lwd=1, col=col.pts)     
+          points(idx+offset, coefs, pch=20, cex=cex.pts, col=col.pts)
       }
       else{
         plot(c(idx+k,idx-k), c(CI50[,1],CI50[,2]), type="n",                                     
@@ -306,9 +306,9 @@ setMethod("coefplot", signature(object = "bugs"),
       mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + 0.1
       par(mar=mar)
       if(add){
-        segments (CI50[,1], idx+epsilon, CI50[,2], idx+epsilon, lwd=2, col=col.pts) 
-        segments (CI95[,1], idx+epsilon, CI95[,2], idx+epsilon, lwd=1, col=col.pts)    
-        points(coefs, idx+epsilon, pch=20, cex=cex.pts, col=col.pts)
+        segments (CI50[,1], idx+offset, CI50[,2], idx+offset, lwd=2, col=col.pts) 
+        segments (CI95[,1], idx+offset, CI95[,2], idx+offset, lwd=1, col=col.pts)    
+        points(coefs, idx+offset, pch=20, cex=cex.pts, col=col.pts)
       }
       else{
         plot(c(CI95[,1],CI95[,2]), c(idx+k,idx-k), type="n",                                     
@@ -332,9 +332,9 @@ setMethod("coefplot", signature(object = "bugs"),
       mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + 0.1
       par(mar=mar)
       if(add){
-        segments (idx+epsilon, CI50[,1], idx+epsilon, CI50[,2], lwd=2, col=col.pts)
-        segments (idx+epsilon, CI95[,1], idx+epsilon, CI95[,2], lwd=1, col=col.pts)         
-        points(idx+epsilon, coefs, pch=20, cex=cex.pts, col=col.pts)        
+        segments (idx+offset, CI50[,1], idx+offset, CI50[,2], lwd=2, col=col.pts)
+        segments (idx+offset, CI95[,1], idx+offset, CI95[,2], lwd=1, col=col.pts)         
+        points(idx+offset, coefs, pch=20, cex=cex.pts, col=col.pts)        
       }
       else{
         plot(c(idx+k,idx-k), c(CI95[,1],CI95[,2]), type="n",                                     

@@ -1,3 +1,7 @@
+2008-10-19  Yu-Sung Su     <ys463@columbia.edu>  
+    * coefplot: rename option epsilon to offset
+
+
 2008-9-24  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-16.
     * coefplot: 

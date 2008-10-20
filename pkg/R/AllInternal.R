@@ -16,7 +16,6 @@ as.matrix.VarCorr <- function (varc, useScale, digits){
 #   2.  print statement at end is removed
 #   3.  reMat is returned
 #   4.  last line kept in reMat even when there's no error term
-#
                   sc <- attr(varc, "sc")[[1]]    
 #                  recorr <- lapply(varc, function(el) el@factors$correlation)
                   recorr <- lapply(varc, function(el) attr(el, "correlation"))
