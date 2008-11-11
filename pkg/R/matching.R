@@ -63,27 +63,27 @@ matching <- function(z, score, replace=FALSE){
 }
 
 
-pscores.fun <- function(treat=Z, outs=Y, covs=X){
-  #
-  N <- nrow(covs)
-  nouts <- 1 
-  ncovs <- ncol(covs)
-  #
-  # first set up places to store results
-  res <- matrix(0,nouts,2)
-  bal <- matrix(0,ncovs,2)
-  #
-  # estimate p-scores
-  dat <- cbind.data.frame(treat=treat,covs)
-  mod <- glm(dat,family=binomial(link="logit"))
-  qx <- predict(mod, type="response")#mod$linear 
-  #
-  ### Now Matching With Replacement
-  matchout <- matching(z=treat, score=qx, replace=TRUE)
-  #
-  ### and treatment effect estimation with robust s.e.'s
-  wts <- rep(1, N)
-  wts[treat == 0] <- matchout$cnts
-  res <- .wls.all2(cbind(rep(1, sum(wts > 0)), treat[wts > 0],covs[wts > 0,  ]), wts[wts > 0], outs[wts > 0], treat[wts > 0])
-  c(res[3],sqrt(res[2]))
-}
+#pscores.fun <- function(treat=Z, outs=Y, covs=X){
+#  #
+#  N <- nrow(covs)
+#  nouts <- 1 
+#  ncovs <- ncol(covs)
+#  #
+#  # first set up places to store results
+#  res <- matrix(0,nouts,2)
+#  bal <- matrix(0,ncovs,2)
+#  #
+#  # estimate p-scores
+#  dat <- cbind.data.frame(treat=treat,covs)
+#  mod <- glm(dat,family=binomial(link="logit"))
+#  qx <- predict(mod, type="response")#mod$linear 
+#  #
+#  ### Now Matching With Replacement
+#  matchout <- matching(z=treat, score=qx, replace=TRUE)
+#  #
+#  ### and treatment effect estimation with robust s.e.'s
+#  wts <- rep(1, N)
+#  wts[treat == 0] <- matchout$cnts
+#  res <- .wls.all2(cbind(rep(1, sum(wts > 0)), treat[wts > 0],covs[wts > 0,  ]), wts[wts > 0], outs[wts > 0], treat[wts > 0])
+#  c(res[3],sqrt(res[2]))
+#}
