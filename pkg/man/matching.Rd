@@ -1,7 +1,7 @@
 \name{matching}
 \alias{matching}
 
-\title{Matching}
+\title{Single Nearest Neighborhood Matching}
 
 \description{
 Function for processing matching with propensity score 
@@ -15,6 +15,9 @@ matching(z, score)
   \item{z}{vector of indicators for treatment or control.}
   
   \item{score}{vector of the propensity scores in the same order as z.}
+  
+  \item{replace}{whether the control units could be reused for matching, 
+      default is FALSE.} 
 }
 
 \details{Function for matching each treatment unit in turn 
