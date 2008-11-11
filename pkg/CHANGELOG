@@ -1,3 +1,7 @@
+2008-11-10  Yu-Sung Su     <ys463@columbia.edu>  
+    * matching: add an option "replace".  Now matching() does matching with
+        or without replacement.
+
 2008-10-19  Yu-Sung Su     <ys463@columbia.edu>  
     * coefplot: rename option epsilon to offset
 
