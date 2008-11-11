@@ -17,7 +17,7 @@ setMethod("sim", signature(object = "lm"),
       sigma[s] <- sigma.hat*sqrt((n-k)/rchisq(1,n-k))
       beta[s,] <- mvrnorm (1, beta.hat, V.beta*sigma[s]^2)
     }
-    return (list (beta=beta, sigma=sigma))
+    return (list (coef=beta, sigma=sigma))
     }
 )
 
@@ -47,7 +47,7 @@ setMethod("sim", signature(object = "glm"),
     beta2[,dimnames(beta2)[[2]]%in%dimnames(beta)[[2]]] <- beta
     # Added by Masanao
     sigma <- rep (sqrt(summ$dispersion), n.sims)
-    return (list(beta=beta2, sigma=sigma))    
+    return (list(coef=beta2, sigma=sigma))    
     }
 )
     
@@ -134,7 +134,7 @@ setMethod("sim", signature(object = "mer"),
       }   
       dimnames (beta.bygroup[[m]]) <- c (list(NULL), dimnames(bhat))
     }
-    betas <- c (beta.unmodeled, beta.bygroup)
-    return (betas)
+    coef <- c (beta.unmodeled, beta.bygroup)
+    return (coef)
     }
 )
