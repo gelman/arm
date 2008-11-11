@@ -32,10 +32,13 @@ sim(object, ...)
 }
 
 \value{
-   \item{sigma.sim}{vector of n.sims random draws of sigma
+  \item{coef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients.
+    In the previous version, the slot name is called \code{beta}.}
+  \item{unmodeled}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients 
+    of the fixed effects for the \code{mer} objects.}
+  \item{sigma}{vector of n.sims random draws of sigma
   (for glm's, this just returns a vector of 1's or else of the
   square root of the overdispersion parameter if that is in the model)}
-  \item{beta.sim}{matrix (dimensions n.sims x k) of n.sims random draws of beta}
   }
 
 \references{Andrew Gelman and Jennifer Hill, 
@@ -74,6 +77,9 @@ sim(object, ...)
  M1 <- lm (y1 ~ x1)
  display(M1)
  M1.sim <- sim(M1)
+ ## to get the uncertainty for the simulated estimates
+ apply(M1.sim$coef, 2, quantile)
+ quantile(M1.sim$sigma)
  
 # Logistic regression 
  u.data <- cbind (1:J, u)
@@ -89,6 +95,9 @@ sim(object, ...)
  E1 <- lmer (y ~ x + (1 | group))
  display(E1)
  E1.sim <- sim (E1)
+ ## obtain intervals of the estimates
+ apply(E1.sim$unmodeled, 2, quantile, probs = c(0.025, 0.5, 0.975))
+
 
 # Example 2
  u.full <- u[group]
