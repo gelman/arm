@@ -8,7 +8,7 @@ Function for processing matching with propensity score
 }
 
 \usage{
-matching(z, score)
+matching(z, score, replace=FALSE)
 }
 
 \arguments{
