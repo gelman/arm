@@ -113,7 +113,7 @@ setMethod("sim", signature(object = "mer"),
     beta.unmodeled <- NULL
     if (length (fcoef) > 0){
       beta.unmodeled[[1]] <- mvrnorm (n.sims, fcoef, V.beta)
-      names (beta.unmodeled) <- "unmodeled"
+      names (beta.unmodeled) <- "fixef"#"unmodeled"
     }
    # simulate coefficients within groups
     sc <- attr (VarCorr (object), "sc")  # scale

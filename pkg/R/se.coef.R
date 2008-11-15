@@ -64,7 +64,7 @@ setMethod("se.coef", signature(object = "mer"),
     corF <- vcov(object)@factors$correlation
     se.unmodeled <- NULL
     se.unmodeled[[1]] <- corF@sd
-    names (se.unmodeled) <- "unmodeled"
+    names (se.unmodeled) <- "fixef"#"unmodeled"
 
     #coef <- ranef (object)
     #estimate <- ranef(object, postVar=TRUE)
