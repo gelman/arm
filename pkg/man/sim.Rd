@@ -33,9 +33,9 @@ sim(object, ...)
 
 \value{
   \item{coef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients.
-    In the previous version, the slot name is called \code{beta}.}
-  \item{unmodeled}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients 
-    of the fixed effects for the \code{mer} objects.}
+    Previously, it is called \code{beta}.}
+  \item{fixef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients 
+    of the fixed effects for the \code{mer} objects. Previously, it is called \code{unmodeled}.}
   \item{sigma}{vector of n.sims random draws of sigma
   (for glm's, this just returns a vector of 1's or else of the
   square root of the overdispersion parameter if that is in the model)}

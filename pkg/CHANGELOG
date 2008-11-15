@@ -1,3 +1,7 @@
+2008-11-14 Yu-Sung Su     <ys463@columbia.edu>  
+    * R/sim: change the slot name "unmodeled" into "fixef"
+
+
 2008-11-11 Yu-Sung Su     <ys463@columbia.edu>  
     * man/sim: add some expample codes
     * R/sim: change the slot name "beta" into "coef"
