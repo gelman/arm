@@ -96,7 +96,7 @@ sim(object, ...)
  display(E1)
  E1.sim <- sim (E1)
  ## obtain intervals of the estimates
- t(apply(E1.sim$unmodeled, 2, quantile, probs = c(0.025, 0.5, 0.975)))
+ t(apply(E1.sim$fixef, 2, quantile, probs = c(0.025, 0.5, 0.975)))
 
 
 # Example 2
