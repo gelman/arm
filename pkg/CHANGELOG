@@ -1,3 +1,7 @@
+2008-11-25  Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.1-17.
+
+
 2008-11-14 Yu-Sung Su     <ys463@columbia.edu>  
     * R/sim: change the slot name "unmodeled" into "fixef"
 
