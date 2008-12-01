@@ -1,3 +1,8 @@
+2008-12-01 Yu-Sung Su     <ys463@columbia.edu>  
+    * R/AllInternal: if(is.na(sc)) sc <- 1
+    * R/sigma.hat: return sigma=1 if sc is NA
+
+
 2008-11-25  Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.1-17.
 
