@@ -52,6 +52,7 @@ setMethod("sigma.hat", signature(object = "glm"),
 #) 
 
 
+
 setMethod("sigma.hat", signature(object = "mer"),
     function(object)
     {
@@ -66,7 +67,7 @@ setMethod("sigma.hat", signature(object = "mer"),
     recorr <- lapply(varc, function(el) attr(el, "correlation"))
     reStdDev <- c(lapply(varc, function(el) attr(el, "stddev")), list(Residual = sc))
     sigmas <- as.list (rep (NA, n.groupings+1))
-    sigmas[1] <- ifelse (useScale, sc, NA)
+    sigmas[1] <- ifelse (useScale, sc, 1) #####if NA, sd=1
     cors <- as.list (rep (NA, n.groupings+1))
     names (sigmas) <- names (cors) <- c ("data", names (varc))
     for (k in 1:n.groupings){
