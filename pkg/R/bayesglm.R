@@ -177,6 +177,11 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         x.scale <- 2 * sd(x.obs)
       }
       prior.scale[j] <- prior.scale[j]/x.scale
+      if(is.na(prior.scale[j])){
+        prior.scale[j] <- min.prior.scale
+        warning ("prior scale for variable ", j,
+          " set to min.prior.scale = ", min.prior.scale,"\n")      
+      }
       if (prior.scale[j] < min.prior.scale){
         prior.scale[j] <- min.prior.scale
         warning ("prior scale for variable ", j,
