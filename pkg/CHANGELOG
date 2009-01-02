@@ -1,5 +1,5 @@
 2009-1-03 Yu-Sung Su     <ys463@columbia.edu>  
-    * R/bayesglm: if prior.scale[j]/x.scale = NaH, 
+    * R/bayesglm: if prior.scale[j]/x.scale = NaN, 
       set prior.scale[j] = min.prior.scale
 
 2008-12-01 Yu-Sung Su     <ys463@columbia.edu>  
