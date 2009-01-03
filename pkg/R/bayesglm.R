@@ -320,6 +320,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       }
   
   # Andy 2007.12.13
+    print(coefs.hat)
       prior.sd <- ifelse(prior.df == Inf, prior.scale,
       sqrt(((centered.coefs - prior.mean)^2 + sampling.var * dispersion + 
         prior.df * prior.scale^2)/(1 + prior.df)))  
