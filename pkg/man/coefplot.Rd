@@ -11,7 +11,7 @@
 
 \title{Generic Function for Making Coefficient Plot}
 \description{
- Functions that plot the coefficients $\pm$ 1 and 2 sd 
+ Functions that plot the coefficients plus and minus 1 and 2 sd 
  from a lm, glm, bugs, and polr fits.
 }
 \usage{
@@ -48,8 +48,8 @@ coefplot(object,\dots)
   \item{varnames}{a vector of variable names, default is NULL, which will use
     the names of variables; if specified, the length of varnames must be equal to
     the length of predictors, including the intercept.}
-  \item{CI}{confidence interval, default is 2, which will plot $\pm 2$ sds or
-    95\% CI. If CI=1, plot $\pm 1$ sds or 50\% CI instead.}
+  \item{CI}{confidence interval, default is 2, which will plot plus and minus 2 sds or
+    95\% CI. If CI=1, plot plus and minus 1 sds or 50\% CI instead.}
   \item{vertical}{orientation of the plot, default is TRUE which will plot
     variable names in the 2nd axis. If FALSE, plot variable names in the first
     axis instead.}

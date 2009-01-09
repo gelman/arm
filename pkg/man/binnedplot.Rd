@@ -40,7 +40,7 @@ on their fitted values, plots the average residual versus the average fitted
 value for each bin.
 }
 \value{
-A plot in which the gray lines indicate $\pm$2 standard-error
+A plot in which the gray lines indicate plus and minus 2 standard-error
 bounds, within which one would expect about 95\% of the binned residuals to fall,
 if the model were actually true. 
 }
