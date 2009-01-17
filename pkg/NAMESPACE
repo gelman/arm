@@ -15,6 +15,7 @@ exportMethods(
               "sigma.hat",
               "print",
               "show",
+              "standardize",
               "traceplot"
               )
 
@@ -46,7 +47,6 @@ export(
        "se.ranef",
        "sigma.hat",
        "sim",
-       "standardize",
        "triangleplot"
 )
 

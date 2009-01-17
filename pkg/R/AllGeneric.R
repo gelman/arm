@@ -56,6 +56,13 @@ if (!isGeneric("se.coef")) {
 
 
 
+if (!isGeneric("standardize")) {
+    setGeneric("standardize",
+               function(object, ...)
+               standardGeneric("standardize"))
+}
+
+
 
 #if (!isGeneric("terms.bayes")) {
 #    setGeneric("terms.bayes",
