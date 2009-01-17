@@ -1,5 +1,10 @@
 \name{standardize}
+\docType{genericFunction}
 \alias{standardize}
+\alias{standardize,lm-method}
+\alias{standardize,glm-method}
+\alias{standardize,mer-method}
+
 
 \title{Function for Standardizing Regression Predictors by Centering and 
     Dividing by 2 sd's}
@@ -13,7 +18,11 @@
 
 }
 \usage{
-standardize(object, unchanged = NULL, 
+\S4method{standardize}{lm}(object, unchanged = NULL, 
+    standardize.y = FALSE, binary.inputs = "center")
+\S4method{standardize}{glm}(object, unchanged = NULL, 
+    standardize.y = FALSE, binary.inputs = "center")
+\S4method{standardize}{mer}(object, unchanged = NULL, 
     standardize.y = FALSE, binary.inputs = "center")
 }
 
@@ -60,7 +69,7 @@ standardize(object, unchanged = NULL,
   y <- rbinom (n, 1, invlogit(b0+b1*x1+b2*x2))
   M1 <- glm (y ~ x, family=binomial(link="logit"))
   display(M1)
-  M2 <-standardize(M1)
+  M2 <- standardize(M1)
   display(M2)
 }
 \keyword{manip}
