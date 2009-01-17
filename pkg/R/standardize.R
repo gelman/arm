@@ -12,8 +12,12 @@ standardize.default <- function(call, unchanged=NULL,
   }
   for (i in 2:n.vars){
     v <- varnames[i]
-    # if regression is using the regular workspace
-    thedata <- get(v)
+    if (is.null(call$data)) {
+      thedata <- get(v)
+    }
+    else {
+      thedata <- get(as.character(call$data))[[v]]
+    }
     if (is.na(match(v,unchanged))){
       num.categories <- length (unique(thedata[!is.na(thedata)]))
       if (num.categories==2){
@@ -35,8 +39,19 @@ standardize.default <- function(call, unchanged=NULL,
 
 
   #Define the new variables
-  for (i in transformed.variables){
-    assign (varnames.new[i], rescale(get(varnames[i]), binary.inputs))
+  if (is.null(call$data)) {
+    for (i in transformed.variables) {
+      assign(varnames.new[i], rescale(get(varnames[i]), binary.inputs))
+    }
+  }
+  else {
+    newvars <- NULL
+    for (i in transformed.variables) {
+      assign(varnames.new[i], rescale(get(as.character(call$data))[[varnames[i]]], 
+                binary.inputs))
+      newvars <- cbind(newvars, get(varnames.new[i]))
+    }
+    assign(as.character(call$data), cbind(get(as.character(call$data)), newvars))
   }
 
 # Now call the regression with the new variables
