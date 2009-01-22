@@ -21,9 +21,10 @@ rescale(x, binary.inputs="center")
 \value{
  the standardized vector
 }
-\references{Andrew Gelman, 
-    Scaling regression inputs by dividing by two standard deviations.
-    \url{http://www.stat.columbia.edu/~gelman/research/unpublished/standardizing.pdf}
+\references{Andrew Gelman, 2008, 
+    "Scaling regression inputs by dividing by two standard deviations," 
+    \emph{Statistics in Medicine} 27: 2865-2873.
+    \url{http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf}
 }
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu};

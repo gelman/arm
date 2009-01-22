@@ -55,8 +55,9 @@ unpublished paper available at \url{http://www.stat.columbia.edu/~gelman/standar
 }
 
 \seealso{
-  \code{\link{model.frame}}, \code{\link{model.extract}},
-  \code{\link{terms}}, \code{\link{terms.formula}}, \code{\link{bayesglm}}. 
+  \code{\link[stats]{model.frame}}, \code{\link[stats]{model.extract}},
+  \code{\link[stats]{terms}}, \code{\link[stats]{terms.formula}}, 
+  \code{\link{bayesglm}}. 
 }
 
 \author{Yu-Sung Su \email{ys463@columbia.edu}}
