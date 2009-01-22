@@ -1,3 +1,7 @@
+2009-1-22 Yu-Sung Su     <ys463@columbia.edu>  
+    * man/rescale: update reference.
+    * man/standardize: update reference.
+
 2009-1-16 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-1.
     * NAMESPACE: export S4 method for standardize
