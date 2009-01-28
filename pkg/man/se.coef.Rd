@@ -24,7 +24,7 @@ se.ranef (object)
 }
 
 \arguments{
-  \item{object}{object of lm, glm, lmer and glmer fit}
+  \item{object}{object of \code{lm}, \code{glm} and \code{mer} fit}
   \item{\dots}{other arguments}
 }
 \value{
@@ -47,9 +47,9 @@ se.ranef (object)
   \code{\link{sigma.hat}},
 }
 
-\references{Andrew Gelman and Jennifer Hill, 
-            Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-            Cambridge University Press, 2006.}
+\references{Andrew Gelman and Jennifer Hill. (2006).
+            \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+            Cambridge University Press.}
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu}; 
         Yu-Sung Su \email{ys463@columbia.edu}

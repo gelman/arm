@@ -17,7 +17,7 @@ matching(z, score, replace=FALSE)
   \item{score}{vector of the propensity scores in the same order as z.}
   
   \item{replace}{whether the control units could be reused for matching, 
-      default is FALSE.} 
+      default is \code{FALSE}.} 
 }
 
 \details{Function for matching each treatment unit in turn 
@@ -28,8 +28,9 @@ matching(z, score, replace=FALSE)
 The function returns a vector of indices that the corresponding 
 unit is matched to. 0 means matched to nothing.}
  
-\references{Andrew Gelman and Jennifer Hill, Data Analysis Using 
-Regression and Multilevel/Hierarchical Models, Cambridge University Press, 2006.}
+\references{Andrew Gelman and Jennifer Hill. (2006).
+            \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+            Cambridge University Press.}
 
 \author{Jeniffer Hill \email{jh1030@columbia.edu};
         Yu-Sung Su \email{ys463@columbia.edu}

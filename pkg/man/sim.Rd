@@ -10,9 +10,9 @@
 \title{Functions to Get Posterior Distributions}
 
 \description{
-This generic function gets posterior simulations of sigma and beta from a lm object, or
-simulations of beta from a glm object, or
-simulations of beta from a mer object
+This generic function gets posterior simulations of sigma and beta from a \code{lm} object, or
+simulations of beta from a \code{glm} object, or
+simulations of beta from a \code{mer} object
 }
 
 \usage{
@@ -25,7 +25,7 @@ sim(object, ...)
 }
 
 \arguments{
-  \item{object}{the output of a call to "lm" with n data points and k predictors.}
+  \item{object}{the output of a call to \code{lm} with n data points and k predictors.}
   \item{...}{further arguments passed to or from other methods.}
   \item{n.sims}{number of independent simulation draws to create.}
 
@@ -37,18 +37,17 @@ sim(object, ...)
   \item{fixef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients 
     of the fixed effects for the \code{mer} objects. Previously, it is called \code{unmodeled}.}
   \item{sigma}{vector of n.sims random draws of sigma
-  (for glm's, this just returns a vector of 1's or else of the
+  (for \code{glm}'s, this just returns a vector of 1's or else of the
   square root of the overdispersion parameter if that is in the model)}
   }
 
-\references{Andrew Gelman and Jennifer Hill, 
-            Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-            Cambridge University Press, 2006.}
+\references{Andrew Gelman and Jennifer Hill. (2006).
+            \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+            Cambridge University Press.}
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu};
-        Yu-Sung Su \email{ys463@columbia.edu};
-        M.Grazia Pittau \email{grazia@stat.columbia.edu}
-        }
+        Yu-Sung Su \email{ys463@columbia.edu}
+}
 
 \seealso{\code{\link{display}},
         \code{\link{lm}},

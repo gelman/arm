@@ -28,7 +28,7 @@ balance(rawdata, matched, pscore.fit, factor=TRUE)
   \item{rawdata}{data before using \code{matching} function, see the example below.}
   \item{matched}{matched data using \code{matching} function, see the example below.}
   \item{pscore.fit}{glm.fit object to get propensity scores.}
-  \item{factor}{default is TRUE which will display the factorized categorical variables. In
+  \item{factor}{default is \code{TRUE} which will display the factorized categorical variables. In
         a situation where no equal levels of factorized categorical variables is observed,
         use factor=FALSE to proceed.}
   \item{x}{an object return by the balance function.}
@@ -38,14 +38,14 @@ balance(rawdata, matched, pscore.fit, factor=TRUE)
   \item{main}{The main title (on top) using font and size (character
           expansion) \code{par("font.main")} and color \code{par("col.main")};
           default title is \code{Standardized Difference in Means}.}
-  \item{v.axis}{default is TRUE, which shows the top axis--axis(3).}
+  \item{v.axis}{default is \code{TRUE}, which shows the top axis--axis(3).}
   \item{cex.main}{font size of main title}
   \item{cex.vars}{font size of variabel names}
   \item{cex.pts}{point size of the estimates}
   \item{mar}{A numerical vector of the form \code{c(bottom, left, top, right)}
           which gives the number of lines of margin to be specified on
           the four sides of the plot. The default is \code{c(0,3,5.1,2)}.}
-  \item{plot}{default is TRUE, which will plot the plot.}
+  \item{plot}{default is \code{TRUE}, which will plot the plot.}
   \item{\dots}{other plot options may be passed to this function}
 }
 \details{
@@ -62,10 +62,9 @@ balance(rawdata, matched, pscore.fit, factor=TRUE)
  them into the original dataset before doing the matching procedure.
 }
 
-\references{Andrew Gelman and Jennifer Hill, Data Analysis Using 
-Regression and Multilevel/Hierarchical Models, Cambridge University Press, 2006. 
-(Chater 10)
-}
+\references{Andrew Gelman and Jennifer Hill. (2006).
+            \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+            Cambridge University Press. (Chapter 10)}
 
 \author{Jennifer Hill \email{jh1030@columbia.edu}; 
         Yu-Sung Su \email{ys463@columbia.edu}

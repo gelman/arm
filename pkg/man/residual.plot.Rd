@@ -13,16 +13,16 @@ residual.plot(Expected, Residuals, sigma, main = deparse(substitute(Expected)), 
   \item{Expected}{ Expected value. }
   \item{Residuals}{ Residual value. }
   \item{sigma}{ Standard error. }
-  \item{main}{ main for the plot.  See plot for detail.}
+  \item{main}{ main for the plot.  See \code{plot} for detail.}
   \item{col.pts}{ Color of the points. }
   \item{col.ctr}{ Color of the line at zero. }
   \item{col.sgm}{ Color of standard error line. }
   \item{cex}{ A numerical value giving the amount by which plotting text
           and symbols should be magnified relative to the default.  See par for detail. }
-  \item{gray.scale}{ If TRUE, makes the plot into black and white.  This option overwrites the color specification.  Default is FALSE. }
+  \item{gray.scale}{ If \code{TRUE}, makes the plot into black and white.  This option overwrites the color specification.  Default is FALSE. }
   \item{xlab}{ Label for x axis. }
   \item{ylab}{ Label for y axis. }
-  \item{\dots}{ Additional parameters passed to 'plot' function. }
+  \item{\dots}{ Additional parameters passed to \code{plot} function. }
 }
 
 \value{

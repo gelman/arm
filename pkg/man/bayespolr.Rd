@@ -31,24 +31,24 @@ bayespolr(formula, data, weights, start, ...,
 
 \arguments{
   \item{formula}{a formula expression as for regression models, of the form
-          'response ~ predictors'. The response should be a factor
+          \code{response ~ predictors}. The response should be a factor
           (preferably an ordered factor), which will be interpreted as
           an ordinal response, with levels ordered as in the factor.  A
           proportional odds model will be fitted.  The model must have
           an intercept: attempts to remove one will lead to a warning
           and be ignored. An offset may be used.  See the documentation
-          of 'formula' for other details.}
+          of \code{formula} for other details.}
           
   \item{data}{an optional data frame in which to interpret the variables
-          occurring in 'formula'.}
+          occurring in \code{formula}.}
           
   \item{weights}{optional case weights in fitting.  Default to 1.}
   
   \item{start}{initial values for the parameters.  This is in the format
-          'c(coefficients, zeta)'}
+          \code{c(coefficients, zeta)}}
           
-  \item{\dots}{additional arguments to be passed to 'optim', most often a
-          'control' argument.}
+  \item{\dots}{additional arguments to be passed to \code{optim}, most often a
+          \code{control} argument.}
           
   \item{subset}{expression saying which subset of the rows of the data should
            be used in the fit.  All observations are included by
@@ -68,7 +68,7 @@ bayespolr(formula, data, weights, start, ...,
           (corresponding to a Cauchy latent variable and only available
           in R >= 2.1.0).}
   
-  \item{drop.unused.levels}{default TRUE, if FALSE, it interpolates the
+  \item{drop.unused.levels}{default \code{TRUE}, if \code{FALSE}, it interpolates the
         intermediate values if the data have integer levels.}
   
   \item{prior.mean}{prior mean for the coefficients: default is 0. 
@@ -82,17 +82,17 @@ bayespolr(formula, data, weights, start, ...,
     to the length of this vector.}
   
   \item{prior.df}{for t distribution: default is 1 (Cauchy). 
-    Set to Inf to get normal prior distributions. Can 
+    Set to \code{Inf} to get normal prior distributions. Can 
     be a vector of length equal to the number of predictors (not counting 
     the intercepts). If it is a scalar, it is expanded to the length of this 
     vector.}
    
-  \item{prior.counts.for.bins}{default is NULL, which will augment the data by 
+  \item{prior.counts.for.bins}{default is \code{NULL}, which will augment the data by 
     giving each cut point a \code{1/levels(y)}. To use a noninformative prior, assign
     prior.counts.for.bins = 0. If it is a scalar, it is expanded to the number 
     of levels of y.}
   
-  \item{scaled}{if scaled = TRUE, then the prior distribution is rescaled.
+  \item{scaled}{if \code{scaled = TRUE}, then the prior distribution is rescaled.
     Can be a vector of length equal to the number of cutpoints 
     (intercepts). If it is a scalar, it is expanded to the length of 
     this vector.}  
@@ -100,7 +100,7 @@ bayespolr(formula, data, weights, start, ...,
   \item{n.iter}{default is 100.}
   
   \item{print.unnormalized.log.posterior}{display the unnormalized log posterior 
-    likelihood for bayesglm fit, default=FALSE}
+    likelihood for bayesglm fit, default=\code{FALSE}}
 }
 \details{
 The program is a simple alteration of \code{\link[MASS]{polr}} in
