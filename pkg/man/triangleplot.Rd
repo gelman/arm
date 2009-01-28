@@ -16,15 +16,15 @@ triangleplot (x, y=NULL, cutpts=NULL, details=TRUE,
 \arguments{
   \item{x}{a square matrix.}
   \item{y}{a vector of names that corresponds to each element of the square matrix x.}
-  \item{cutpts}{a vector of cutting points for color legend, default is NULL. 
+  \item{cutpts}{a vector of cutting points for color legend, default is \code{NULL}. 
         The function will decide the cutting points if cutpts is not assigned.}
   \item{details}{show more than one digits correlaton values. Default 
-              is TRUE.  FALSE is suggested to get readable output.}
+              is \code{TRUE}. \code{FALSE} is suggested to get readable output.}
   \item{n.col.legend}{number of legend for the color thermometer}
   \item{cex.col}{font size of the color thermometer.}
   \item{cex.var}{font size of the variable names.}
   \item{digits}{number of digits shown in the text of the color theromoeter.}
-  \item{color}{color of the plot, default is FALSE, which uses gray scale.}
+  \item{color}{color of the plot, default is \code{FALSE}, which uses gray scale.}
 }
 
 \details{
@@ -34,8 +34,9 @@ will be marked \code{x}.
 }
 
 
-\author{Yu-Sung Su \email{ys463@columbia.edu}
-        }
+\author{
+Yu-Sung Su \email{ys463@columbia.edu}
+}
         
 \seealso{\code{\link{corrplot}},
         \code{\link[graphics]{par}}

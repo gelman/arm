@@ -3,13 +3,13 @@
 \alias{pfround}
 
 \title{Formating the Rounding of Numbers}
+
 \description{
     \code{fround} rounds the values in its first argument to the specified
     number of decimal places with surrounding quotes.
     
     \code{pfround} rounds the values in its first argument to the specified
     number of decimal places without surrounding quotes.
-
 
 }
 

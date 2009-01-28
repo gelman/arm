@@ -47,11 +47,11 @@ multicomp.plot(object, alpha = 0.05, main = "Multiple Comparison Plot",
   \item{significant}{Array of significance.}
 }
 
-\references{ 
-  Andrew Gelman and Jennifer Hill, 
-  \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}, 
-  Cambridge University Press, 2006.
+\references{Andrew Gelman and Jennifer Hill. (2006).
+            \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+            Cambridge University Press.
 }
+
 
 \author{ 
   Masanao Yajima \email{yajima@stat.columbia.edu},

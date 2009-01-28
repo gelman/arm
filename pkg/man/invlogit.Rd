@@ -16,16 +16,16 @@ invlogit(x)
 
 \details{
         The Inverse-logit function defined as: 
-        $logit^-1(x) = e^x/(1+e^x)$ transforms continuous values to the range (0, 1),
+        \eqn{logit^-1(x) = e^x/(1+e^x)} transforms continuous values to the range (0, 1),
         which is necessary, since probabilities must be between 0 and 1 and maps 
         from the linear predictor to the probabilities 
 }
 \value{
   A vector of estimated probabilities
 }
-\references{Andrew Gelman and Jennifer Hill, 
-            Data Analysis Using Regression and Multilevel/Hierarchical Models, 
-            Cambridge University Press, 2006.}
+\references{Andrew Gelman and Jennifer Hill. (2006).
+            \emph{Data Analysis Using Regression and Multilevel/Hierarchical Models}.
+            Cambridge University Press.}
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu}, 
         M.Grazia Pittau \email{grazia@stat.columbia.edu}

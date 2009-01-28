@@ -36,6 +36,7 @@ in the chain, with a separate plot per variable.
 
 \author{ 
   Masanao Yajima \email{yajima@stat.columbia.edu}.
+  Yu-Sung Su \email{ys463@columbia.edu}
 }
 
 \seealso{

@@ -199,9 +199,11 @@ The new arguments here are: \code{prior.mean}, \code{prior.scale},
 \item{prior.df}{prior dfs for the cofficients and the intercept.}
 }
 
-\references{Andrew Gelman, Aleks Jakulin, Maria Grazia Pittau and Yu-Sung Su, 
-            A default prior distribution for logistic and other regression models,  
-        Working paper available at \url{http://www.stat.columbia.edu/~gelman/standardize/}
+\references{Andrew Gelman, Aleks Jakulin, Maria Grazia Pittau and Yu-Sung Su. (2009).
+            \dQuote{A Weakly Informative Default Prior Distribution For
+            Logistic And Other Regression Models.}
+            \emph{The Annals of Applied Statistics} 2 (4): 1360--1383.  
+            \url{http://www.stat.columbia.edu/~gelman/research/published/priors11.pdf}
 }
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu};

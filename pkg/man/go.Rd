@@ -9,26 +9,23 @@
 \title{Function to Recall Last Source File}
 
 \description{
-    A function that like source() but recalls the last source file names by default.
+    A function that like \code{source()} but recalls the last source file names by default.
 }
 \usage{
-go(..., add=FALSE, timer=FALSE)
+go(\dots, add=FALSE, timer=FALSE)
 }
 \arguments{
-  \item{...}{list of filenames as character strings.}
-  \item{add}{add these names to the current list? if replace, then FALSE.}
-  \item{timer}{time the execution time of go().}
+  \item{\dots}{list of filenames as character strings.}
+  \item{add}{add these names to the current list; if replace, then \code{FALSE}.}
+  \item{timer}{time the execution time of \code{go()}.}
 }
 
-%\details{}
-%\value{}
-%\references{}
 
-\author{Jouni Kerman \email{jouni@kerman.com} \email{kerman@stat.columbia.edu}}
 
-%\note{}
+\author{
+Jouni Kerman \email{jouni@kerman.com} \email{kerman@stat.columbia.edu}
+}
 
-%\seealso{}
 
 \examples{
     go('myprog')            # will run source('myprog.r')

@@ -27,7 +27,7 @@
 }
 
 \arguments{
-  \item{object}{an object of class \code{lm} or \code{glm}
+  \item{object}{an object of class \code{lm} or \code{glm}}
   \item{unchanged}{vector of names of parameters to leave unstandardized}
   \item{standardize.y}{ if TRUE, the outcome variable is standardized also}
   \item{binary.inputs}{options for standardizing binary variables}
@@ -42,9 +42,9 @@
     "leave.alone" (do nothing)
 }
 
-\references{Andrew Gelman, 2008, 
-    "Scaling regression inputs by dividing by two standard deviations," 
-    \emph{Statistics in Medicine} 27: 2865-2873.
+\references{Andrew Gelman. (2008).
+    \dQuote{Scaling regression inputs by dividing by two standard deviations.} 
+    \emph{Statistics in Medicine} 27: 2865--2873.
     \url{http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf}
 }
 
