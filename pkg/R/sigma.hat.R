@@ -11,15 +11,18 @@ setMethod("sigma.hat", signature(object = "lm"),
 setMethod("sigma.hat", signature(object = "glm"),
     function(object)
     {
-     dispersion <- if (is.null(object$dispersion))
-        summary(object)$dispersion
-    else object$dispersion
+    dispersion <- if (is.null(object$dispersion)){
+                    summary(object)$dispersion
+                  }
+                  else{
+                    object$dispersion
+                  }
     object.class <- class(object)[[1]]
     if (object$family$family == "gaussian") {
-        sigma <- sqrt(dispersion)
+      sigma <- sqrt(dispersion)
     }
     else {
-        sigma <- summary(object, correlation = TRUE)$sigma
+      sigma <- summary(object, correlation = TRUE)$sigma
     }
     return(sigma)
     }
