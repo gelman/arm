@@ -23,6 +23,7 @@ setMethod("sigma.hat", signature(object = "glm"),
     }
     else {
       sigma <- summary(object, correlation = TRUE)$sigma
+      #sigma <- sqrt(deviance(object)/df.residual(object))
     }
     return(sigma)
     }
