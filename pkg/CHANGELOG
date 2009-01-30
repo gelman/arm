@@ -1,3 +1,7 @@
+2009-1-30 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.2-3.
+    * R/coefplot: fixed margin bugs in coefplot.default
+
 2009-1-29 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-2.
     * R/sim: for mer method, add option ranef. Users choose to return 

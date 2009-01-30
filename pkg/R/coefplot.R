@@ -38,7 +38,7 @@ coefplot.default <- function(coefs, sds,
     if(plot){
       if (vertical){
 
-        mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10)) + 0.1
+        mar[2] <- max(min.mar[2], trunc(mar[2] + maxchar/10)) + 0.1
 
         par(mar=mar)
         if(!add){
@@ -75,7 +75,7 @@ coefplot.default <- function(coefs, sds,
         }
     } # end of if vertical
     else{ # horizontal
-      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + 0.1
+      mar[1] <- max(min.mar[1], trunc(mar[1] + maxchar/10)) + 0.1
       par(mar=mar)
       if(!add){
         plot(c(idx+k,idx-k), c(coefs.l, coefs.h), type="n", axes=F, 
@@ -113,7 +113,7 @@ coefplot.default <- function(coefs, sds,
   }
   else{
     if (vertical){
-      mar[2] <- min(min.mar[2], trunc(mar[2] + maxchar/10))  + 0.1
+      mar[2] <- max(min.mar[2], trunc(mar[2] + maxchar/10))  + 0.1
       par(mar=mar)
       plot(c(coefs.l, coefs.h), c(idx+k,idx-k), type="n",                                     
           axes=F, main="", xlab=xlab, ylab=ylab,...)
@@ -123,7 +123,7 @@ coefplot.default <- function(coefs, sds,
 #      }
     }
     else{ # horizontal
-      mar[1] <- min(min.mar[1], trunc(mar[1] + maxchar/10)) + 0.1
+      mar[1] <- max(min.mar[1], trunc(mar[1] + maxchar/10)) + 0.1
       par(mar=mar)
       plot(c(idx+k,idx-k), c(coefs.l, coefs.h), type="n", axes=F, 
         main=main, xlab=xlab, ylab=ylab,...)                                                  
