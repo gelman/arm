@@ -1,3 +1,9 @@
+2009-2-1 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.2-4.
+    * man/coefplot: fixed doc error
+    * man/sim: fixed doc error
+
+
 2009-1-30 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-3.
     * R/coefplot: fixed margin bugs in coefplot.default

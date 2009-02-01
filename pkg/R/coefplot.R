@@ -145,7 +145,7 @@ setMethod("coefplot", signature(object = "numeric"),
 
 
 setMethod("coefplot", signature(object = "lm"), 
-    function(object, varnames=NULL, intercept=FALSE, add=FALSE, ...)
+    function(object, varnames=NULL, intercept=FALSE, ...)
     {
     # collect informations
     coefs <- summary(object)$coef[,1]
