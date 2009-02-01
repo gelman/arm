@@ -28,7 +28,7 @@ sim(object, ...)
   \item{object}{the output of a call to \code{lm} with n data points and k predictors.}
   \item{...}{further arguments passed to or from other methods.}
   \item{n.sims}{number of independent simulation draws to create.}
-  \item{ranef}{default is \code{TRUE}, which will not return simulated random effects.}
+  \item{ranef}{default is \code{TRUE}, which will return simulated random effects.}
 }
 
 \value{

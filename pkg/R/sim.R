@@ -103,7 +103,7 @@ setMethod("sim", signature(object = "glm"),
 #)
 
 setMethod("sim", signature(object = "mer"),
-    function(object, n.sims=100, ranef=FALSE)
+    function(object, n.sims=100, ranef=TRUE)
     {
     # simulate unmodeled coefficients
     fcoef <- fixef(object)
