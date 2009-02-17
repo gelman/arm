@@ -1,3 +1,7 @@
+2009-2-17 Yu-Sung Su     <ys463@columbia.edu>  
+    * NAMESPACE: export binned.resids
+
+
 2009-2-4 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-4, no longer need car
     * R/load.first: car is no longer required

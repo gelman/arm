@@ -1,5 +1,6 @@
 \name{binnedplot}
 \alias{binnedplot}
+\alias{binned.resids}
 
 \title{Binned Residual Plot}
 \description{
