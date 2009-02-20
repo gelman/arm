@@ -262,6 +262,6 @@ function (formula, data, weights, start, ..., subset, na.action,
 }
 
 setMethod("print", signature(x = "bayespolr"), 
-    function(x, digits= getOption("digits")) display(object=x, digits=digits))
+    function(x, digits= 2) display(object=x, digits=digits))
 setMethod("show", signature(object = "bayespolr"), 
-    function(object) display(object, digits=getOption("digits")))
+    function(object) display(object, digits=2))

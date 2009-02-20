@@ -77,7 +77,7 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
 }
 
 
-print.balance <- function(x, ..., digits= getOption("digits"))
+print.balance <- function(x, ..., digits= 2)
 {
  cat("Differences in Means of Unmatched Data\n")
  cat("--\n") 

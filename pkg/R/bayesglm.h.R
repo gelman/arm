@@ -526,6 +526,6 @@ function (x, y, weights = rep(1, nobs), start = NULL, etastart = NULL,
 }
 
 setMethod("print", signature(x = "bayesglm.h"), 
-  function(x, digits=2) display(object=x, digits=getOption("digits")))
+  function(x, digits=2) display(object=x, digits=2))
 setMethod("show", signature(object = "bayesglm.h"), 
-    function(object) display(object, digits=getOption("digits")))
+    function(object) display(object, digits=2))

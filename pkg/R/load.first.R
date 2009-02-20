@@ -4,8 +4,8 @@
   builddate <- packageDescription("arm", lib = mylib)$Date
   cat(paste("\narm (Version ", ver, ", built: ", builddate, ")\n", sep = ""))
   cat ("Working directory is", getwd(), "\n")
-  options(digits = 2, papersize="letter")
-  cat ("options( digits = ", getOption("digits"), ")\n")
+#  options(digits = 2, papersize="letter")
+#  cat ("options( digits = ", getOption("digits"), ")\n")
 #  if(!any(search()=="package:car"))
 #    require(car)
   if(!any(search()=="package:foreign"))

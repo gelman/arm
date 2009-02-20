@@ -15,7 +15,7 @@
 \usage{
 balance(rawdata, matched, pscore.fit, factor=TRUE)
 
-\method{print}{balance}(x, \dots, digits = getOption("digits"))
+\method{print}{balance}(x, \dots, digits = 2)
 
 \method{plot}{balance}(x, longcovnames = NULL, 
     main = "Standardized Difference in Means",
@@ -32,7 +32,7 @@ balance(rawdata, matched, pscore.fit, factor=TRUE)
         a situation where no equal levels of factorized categorical variables is observed,
         use factor=FALSE to proceed.}
   \item{x}{an object return by the balance function.}
-  \item{digits}{minimal number of \emph{significant} digits}
+  \item{digits}{minimal number of \emph{significant} digits, default is 2.}
   \item{longcovnames}{long covariate names.  If not provided, plot will 
             use covariate variable name by default}
   \item{main}{The main title (on top) using font and size (character
