@@ -3,8 +3,8 @@ setMethod("display", signature(object = "lm"),
     {
     call <- object$call
     summ <- summary (object)
-    coef <- summ$coef[,1:2,drop=FALSE]
-    dimnames(coef)[[2]] <- c("coef.est","coef.se")
+    coef <- summ$coef[,,drop=FALSE]
+    dimnames(coef)[[2]][1:2] <- c("coef.est","coef.se")
     n <- summ$df[1] + summ$df[2]
     k <- summ$df[1]
     print (call)
@@ -23,10 +23,10 @@ setMethod("display", signature(object = "bayesglm"),
     {
     call <- object$call
     summ <- summary(object, dispersion = object$dispersion)
-    coef <- matrix( NA, length( object$coefficients ),2 )
-    rownames(coef) <- names( object$coefficients )          ## M
-    dimnames(coef)[[2]] <- c( "coef.est", "coef.se" )
-    coef[ rownames( coef ) %in% rownames( summ$coef[, 1:2, drop = FALSE]) , ] <- summ$coef[ , 1:2, drop = FALSE ]  ## M
+    coef <- summ$coefficients
+#    rownames(coef) <- names( object$coefficients )          ## M
+    dimnames(coef)[[2]][1:2] <- c( "coef.est", "coef.se")
+    coef[ rownames( coef ) %in% rownames( summ$coef[, , drop = FALSE]) , ] <- summ$coef[ , , drop = FALSE ]  ## M
     #n <- summ$df[1] + summ$df[2]
     n <- summ$df.residual
     k <- summ$df[1]
@@ -101,8 +101,8 @@ setMethod("display", signature(object = "glm"),
     {
     call <- object$call
     summ <- summary(object, dispersion = object$dispersion)
-    coef <- summ$coef[, 1:2, drop = FALSE]
-    dimnames(coef)[[2]] <- c("coef.est", "coef.se")
+    coef <- summ$coef[, , drop = FALSE]
+    dimnames(coef)[[2]][1:2] <- c("coef.est", "coef.se")
     n <- summ$df[1] + summ$df[2]
     k <- summ$df[1]
     print(call)
@@ -175,13 +175,14 @@ setMethod("display", signature(object = "mer"),
     call <- object@call
     print (call)
     #object <- summary(object)
-    fcoef <- fixef(object)
+    coefs <- summary(object)@coefs
     #useScale <- attr (VarCorr (object), "sc")
     useScale <- object@dims["useSc"]
     corF <- vcov(object)@factors$correlation
-    coefs <- cbind(fcoef, corF@sd)
-    if (length (fcoef) > 0){
-      dimnames(coefs) <- list(names(fcoef), c("coef.est", "coef.se"))
+#    coefs <- cbind(fcoef, corF@sd)
+    if (length (coefs) > 0){
+#      dimnames(coefs)[[1]] <- names(fcoef)
+      dimnames(coefs)[[2]][1:2] <- c("coef.est", "coef.se")
       pfround (coefs, digits)
     }
     cat("\nError terms:\n")
@@ -215,8 +216,8 @@ setMethod("display", signature(object = "polr"),
     {
     call <- object$call
     summ <- summary(object)
-    coef <- summ$coef[, 1:2, drop = FALSE]
-    dimnames(coef)[[2]] <- c("coef.est", "coef.se")
+    coef <- summ$coef[, , drop = FALSE]
+    dimnames(coef)[[2]][1:2] <- c("coef.est", "coef.se")
     n <- summ$n  
     k <- nrow (coef)
     k.intercepts <- length (summ$zeta)
