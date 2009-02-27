@@ -175,7 +175,8 @@ setMethod("display", signature(object = "mer"),
     call <- object@call
     print (call)
     #object <- summary(object)
-    coefs <- summary(object)@coefs
+    summ <- summary(object)
+    coefs <- attr(summ, "coefs")
     #useScale <- attr (VarCorr (object), "sc")
     useScale <- object@dims["useSc"]
     corF <- vcov(object)@factors$correlation
