@@ -175,16 +175,26 @@ setMethod("display", signature(object = "mer"),
     call <- object@call
     print (call)
     #object <- summary(object)
-    summ <- summary(object)
-    coefs <- attr(summ, "coefs")
+    #summ <- summary(object)
+    fcoef <- fixef(object)
+    #coefs <- attr(summ, "coefs")
     #useScale <- attr (VarCorr (object), "sc")
     useScale <- object@dims["useSc"]
     corF <- vcov(object)@factors$correlation
-#    coefs <- cbind(fcoef, corF@sd)
-    if (length (coefs) > 0){
-#      dimnames(coefs)[[1]] <- names(fcoef)
-      dimnames(coefs)[[2]][1:2] <- c("coef.est", "coef.se")
-      pfround (coefs, digits)
+    coefs <- cbind(fcoef, corF@sd)
+    if (length (fcoef) > 0){
+      if (!object@dims["useSc"]) {
+        coefs <- coefs[, 1:2, drop = FALSE]
+        stat <- coefs[, 1]/coefs[, 2]
+        pval <- 2 * pnorm(abs(stat), lower = FALSE)
+        coefs <- cbind(coefs, `z value` = stat, `Pr(>|z|)` = pval)
+      }
+      else {
+        stat <- coefs[, 1]/coefs[, 2]
+        coefs <- cbind(coefs, `t value` = stat)
+      }
+    dimnames(coefs)[[2]][1:2] <- c("coef.est", "coef.se")
+    pfround (coefs, digits)
     }
     cat("\nError terms:\n")
     vc <- as.matrix.VarCorr (VarCorr (object), useScale=useScale, digits)
