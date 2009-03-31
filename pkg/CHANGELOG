@@ -1,3 +1,8 @@
+2009-3-31 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.2-8.
+    * R/display: add option detail
+
+
 2009-3-1 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-7.
     * R/display: fix a bug in display.mer
