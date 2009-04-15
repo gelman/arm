@@ -32,7 +32,7 @@ matching <- function(z, score, replace=FALSE){
       ind.mt[nearest[j], cnts[nearest[j]]] <- ind.t[j]
     }
     #
-    ind.mt <- ind.mt[ind.mt[, 1], 1:max(cnts)]
+    ind.mt <- ind.mt[ind.mt[, 1] != 0, 1:max(cnts)]
     # now create list of indicators to pull off appropriate dataset
     ind <- numeric(nt + sum(cnts))
     # first get treat indicators
