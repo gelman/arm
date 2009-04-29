@@ -238,8 +238,8 @@ setMethod("display", signature(object = "mer"),
     cat("---\n")
     cat(sprintf("number of obs: %d, groups: ", n))
     cat(paste(paste(names(ngrps), ngrps, sep = ", "), collapse = "; "))
-    cat(sprintf("\nAIC = %g, DIC = ", fround(AIC,1)))
-    cat(fround(DIC, 1))
+    cat(sprintf("\nAIC = %g, DIC = ", round(AIC,1)))
+    cat(round(DIC, 1))
     cat("\ndeviance =", fround (dev, 1), "\n")
     if (useScale < 0){
       cat("overdispersion parameter =", fround (.Call("mer_sigma", 

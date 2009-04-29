@@ -1,3 +1,6 @@
+2009-4-29 Yu-Sung Su     <ys463@columbia.edu>  
+    * R/display: fix format inconsistency in sprintf (fround)
+
 2009-4-13 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-9.
     * R/macthing: fix a bug in matching replace=TRUE
