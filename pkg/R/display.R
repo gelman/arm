@@ -63,7 +63,7 @@ setMethod("display", signature(object = "bayesglm"),
 )
 
 setMethod("display", signature(object = "bayesglm.h"),
-    function (object, digits = 2) 
+    function (object, digits = 2, detail = FALSE) 
     {
     call <- object$call
     summ <- summary(object, dispersion = object$dispersion)
