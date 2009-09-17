@@ -99,7 +99,7 @@ coefplot(object,\dots)
          \code{\link[stats]{lm}},
          \code{\link[stats]{glm}},
          \code{\link{bayesglm}},
-         \code{\link[graphic]{plot}}
+         \code{\link[graphics]{plot}}
         }
 \examples{
 old.par <- par(no.readonly = TRUE)
