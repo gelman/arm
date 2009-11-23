@@ -1,12 +1,14 @@
 \name{invlogit}
 \alias{invlogit}
+\alias{logit}
 
-\title{Inverse logistic function}
+\title{Logistic and Inverse logistic functions}
 
 \description{
-  Inverse-logit function, transforms continuous values to the range (0, 1)
+  logit function; and Inverse-logit function, transforms continuous values to the range (0, 1)
 }
 \usage{
+logit(x)
 invlogit(x)
 }
 
