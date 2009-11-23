@@ -36,6 +36,7 @@ export(
        "G",
        "go",
        "invlogit",
+       "logit",
        "matching", 
        "model.matrix.bayes",
        "multicomp.plot",
