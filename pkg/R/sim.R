@@ -102,42 +102,42 @@ setMethod("sim", signature(object = "glm"),
 #    }
 #)
 
-setMethod("sim", signature(object = "mer"),
-    function(object, n.sims=100, ranef=TRUE)
-    {
-    # simulate unmodeled coefficients
-    fcoef <- fixef(object)
-    corF <- vcov(object)@factors$correlation
-    se.unmodeled <- corF@sd
-    V.beta <- (se.unmodeled %o% se.unmodeled) * as.matrix(corF)
-    beta.unmodeled <- NULL
-    if (length (fcoef) > 0){
-      beta.unmodeled[[1]] <- mvrnorm (n.sims, fcoef, V.beta)
-      names (beta.unmodeled) <- "fixef"#"unmodeled"
-      coef <- beta.unmodeled
-    }
-    if(ranef){
-      # simulate coefficients within groups
-      sc <- attr (VarCorr (object), "sc")  # scale
-      #coef <- ranef (object)
-      #estimate <- ranef(object, postVar=TRUE)
-      coef <- ranef(object, postVar=TRUE)
-      beta.bygroup <- coef
-      n.groupings <- length (coef)
-      for (m in 1:n.groupings){
-        bhat <- as.matrix(coef[[m]]) # to suit the use of mvrnorm
-        vars.m <- attr (coef[[m]], "postVar")
-        K <- dim(vars.m)[1]
-        J <- dim(vars.m)[3]
-        beta.bygroup[[m]] <- array (NA, c(n.sims, J, K))
-        for (j in 1:J){
-          V.beta <- .untriangle(vars.m[,,j])#*sc^2
-          beta.bygroup[[m]][,j,] <- mvrnorm (n.sims, bhat[j,], V.beta)
-        }   
-        dimnames (beta.bygroup[[m]]) <- c (list(NULL), dimnames(bhat))
-      }
-      coef <- c (beta.unmodeled, beta.bygroup)
-      }
-    return (coef)
-    }
-)
+#setMethod("sim", signature(object = "mer"),
+#    function(object, n.sims=100, ranef=TRUE)
+#    {
+#    # simulate unmodeled coefficients
+#    fcoef <- fixef(object)
+#    corF <- vcov(object)@factors$correlation
+#    se.unmodeled <- corF@sd
+#    V.beta <- (se.unmodeled %o% se.unmodeled) * as.matrix(corF)
+#    beta.unmodeled <- NULL
+#    if (length (fcoef) > 0){
+#      beta.unmodeled[[1]] <- mvrnorm (n.sims, fcoef, V.beta)
+#      names (beta.unmodeled) <- "fixef"#"unmodeled"
+#      coef <- beta.unmodeled 
+#    }
+#    if(ranef){
+#      # simulate coefficients within groups
+#      sc <- attr (VarCorr (object), "sc")  # scale
+#      #coef <- ranef (object)
+#      #estimate <- ranef(object, postVar=TRUE)
+#      coef <- ranef(object, postVar=TRUE)
+#      beta.bygroup <- coef
+#      n.groupings <- length (coef)
+#      for (m in 1:n.groupings){
+#        bhat <- as.matrix(coef[[m]]) # to suit the use of mvrnorm
+#        vars.m <- attr (coef[[m]], "postVar")
+#        K <- dim(vars.m)[1]
+#        J <- dim(vars.m)[3]
+#        beta.bygroup[[m]] <- array (NA, c(n.sims, J, K))
+#        for (j in 1:J){
+#          V.beta <- .untriangle(vars.m[,,j])#*sc^2
+#          beta.bygroup[[m]][,j,] <- mvrnorm (n.sims, bhat[j,], V.beta)
+#        }   
+#        dimnames (beta.bygroup[[m]]) <- c (list(NULL), dimnames(bhat))
+#      }
+#      coef <- c (beta.unmodeled, beta.bygroup)
+#      }
+#    return (coef)
+#    }
+#)
