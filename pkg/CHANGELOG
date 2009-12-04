@@ -1,5 +1,9 @@
 2009-11-22 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-10.
+    * R/simer: new sim functions for "mer" class
+
+2009-11-22 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.2-10.
     * NAMESPACE: export logit
 
 2009-4-29 Yu-Sung Su     <ys463@columbia.edu>  
