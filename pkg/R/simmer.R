@@ -7,7 +7,7 @@ getAugmentedDesignMatrix <- function(model) {
   # [ I       0 ]
   designMatrix <- array(0, c(numObservations + numRanef, numRanef + numFixef));
   if (numRanef > 0) {
-    designMatrix[1:numObservations, 1:numRanef] <- as.matrix(t(model@A));
+    designMatrix[1:numObservations, 1:numRanef] <- t(as.matrix(model@A));
     designMatrix[(1 + numObservations):(numObservations + numRanef), 1:numRanef] <- diag(1, numRanef);
   }
   if (numFixef > 0) {
@@ -98,7 +98,7 @@ getLinearCovarianceEstimate <- function(model) {
   
   designMatrix <- getAugmentedDesignMatrix(model);
   responseCovariance <- array(0, rep(numObservations + numRanef, 2));
-  responseCovariance[1:numObservations, 1:numObservations] <- as.matrix(diag(1, numObservations) + crossprod(model@A));
+  responseCovariance[1:numObservations, 1:numObservations] <- as.matrix(diag(1, numObservations) + crossprod(as.matrix(model@A)));
   
   designCrossprodInverse <- solve(crossprod(designMatrix));
 
