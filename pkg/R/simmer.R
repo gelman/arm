@@ -220,7 +220,7 @@ setMethod("sim", signature(object = "mer"),
   # where Lambda is the left factor of Sigma and P is the permutation matrix calculated
   # when taking the left factor of (Lambda Z Z' Lambda' + I)
   rotation <- diag(1, numRanef + numFixef);
-  rotation[1:numRanef, 1:numRanef] <- getSphericalCovarianceLeftFactor(object) %*% t(getPermutationMatrix(object));
+  rotation[1:numRanef, 1:numRanef] <- getSphericalCovarianceLeftFactor(object) %*% t(as.matrix(getPermutationMatrix(object)));
   
   effectsCovariance <- rotation %*% effectsCovariance %*% t(rotation);
   
