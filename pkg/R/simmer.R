@@ -182,6 +182,7 @@ setMethod("sim", signature(object = "mer"),
   beta.unmodeled <- NULL#array(NA, c(n.sims, numFixef))
   beta.unmodeled[[1]] <- matrix(NA, n.sims, numFixef)
   names(beta.unmodeled) <- "fixef"
+  colnames(beta.unmodeled[[1]]) <- fixefLabel
   
   # beta.bygroup
   nt <- attr(object, "dim")["nt"]
