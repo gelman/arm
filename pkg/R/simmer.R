@@ -194,7 +194,7 @@ setMethod("sim", signature(object = "mer"),
   
   beta.bygroup <- NULL
   for(m in 1:nt){
-    rowRanefLabel <- levels(ranefLabel[[colRanefLabel[m]]][[2]])
+    rowRanefLabel <- levels(ranefLabel[[grpRanefLabel[m]]][[2]])
     colRanefLabel <- ranefStructure[[m]][[2]]
     K <- length(ranefStructure[[m]][[2]])
     J <- length(ranefStructure[[m]][[1]])/K
