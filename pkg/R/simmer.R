@@ -149,7 +149,7 @@ getObservedInformation <- function(model) {
   observedInformation <- matrix(0, numRanef + numFixef, numRanef + numFixef);
   # diagonal blocks
   observedInformation[1:numRanef, 1:numRanef] <-
-    as(tcrossprod(ranefWeightedJacobianTrans) + diag(1, numRanef), "matrix");
+    tcrossprod(as.matrix(ranefWeightedJacobianTrans)) + diag(1, numRanef)
   observedInformation[(numRanef + 1):(numRanef + numFixef), (numRanef + 1):(numRanef + numFixef)] <-
     crossprod(fixefWeightedJacobian);
 
