@@ -157,7 +157,7 @@ getObservedInformation <- function(model) {
   observedInformation[1:numRanef, (numRanef + 1):(numRanef + numFixef)] <- upperRightBlock;
   observedInformation[(numRanef + 1):(numRanef + numFixef), 1:numRanef] <- t(upperRightBlock);
 
-  return(observedInformation);
+  return(as.matrix(observedInformation));
 }
 
 sampleSigma <- function(model) {
