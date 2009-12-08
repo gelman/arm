@@ -1,7 +1,7 @@
 importFrom("Matrix",
-      t,
-      crossprod,
-      tcrossprod
+      "t",
+      "crossprod",
+      "tcrossprod"
 )
 
 
