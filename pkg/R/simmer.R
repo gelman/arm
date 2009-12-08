@@ -5,9 +5,9 @@ getAugmentedDesignMatrix <- function(model) {
   # set up design matrix:
   # [ ZLambda X ]
   # [ I       0 ]
-  designMatrix <- array(0, c(numObservations + numRanef, numRanef + numFixef));
+  designMatrix <- Matrix(0, numObservations + numRanef, numRanef + numFixef, sparse=TRUE);
   if (numRanef > 0) {
-    designMatrix[1:numObservations, 1:numRanef] <- t(as.matrix(model@A));
+    designMatrix[1:numObservations, 1:numRanef] <- t(model@A);
     designMatrix[(1 + numObservations):(numObservations + numRanef), 1:numRanef] <- diag(1, numRanef);
   }
   if (numFixef > 0) {
@@ -21,7 +21,7 @@ getAugmentedResponse <- function(model) {
   numRanef <- model@dims[['q']];
   numObservations <- model@dims[['n']];
 
-  response <- array(0, numRanef + numObservations);
+  response <- Matrix(0, numRanef + numObservations, sparse=TRUE);
   response[1:numObservations] <- model@y;
 
   return(response);
@@ -48,8 +48,14 @@ getNumLevelsPerTerm <- function(model) {
 }
 
 getTermIndex <- function(index, numTerms, termPointers) {
-  for (i in 1:numTerms) if (index < termPointers[i + 1]) return (i + 1);
-  return (-1);
+  for (i in 1:numTerms){
+    if (index < termPointers[i + 1]){
+      return (i + 1);
+    }
+    else{
+      return (-1);
+    }
+  }
 }
 
 getSphericalCovarianceLeftFactor <- function(model) {
@@ -68,8 +74,8 @@ getSphericalCovarianceLeftFactor <- function(model) {
   numColumnsPerTerm <- getNumColumnsPerTerm(model);
 
   triangularMatrix <- diag(1, numRanef);
-  diagonalMatrix <- array(0, c(numRanef, numRanef));
-  covarianceMatrix <- array(0, c(numRanef, numRanef));
+  diagonalMatrix <- Matrix(0, numRanef, numRanef, sparse=TRUE);
+  covarianceMatrix <- Matrix(0, numRanef, numRanef, sparse=TRUE);
   
   covarianceIndex <- 1;
   for (i in 1:numTerms) {
@@ -97,8 +103,8 @@ getLinearCovarianceEstimate <- function(model) {
   numRanef <- model@dims[["q"]];
   
   designMatrix <- getAugmentedDesignMatrix(model);
-  responseCovariance <- array(0, rep(numObservations + numRanef, 2));
-  responseCovariance[1:numObservations, 1:numObservations] <- as.matrix(diag(1, numObservations) + crossprod(as.matrix(model@A)));
+  responseCovariance <- Matrix(0, numObservations + numRanef, numObservations + numRanef, sparse=TRUE);
+  responseCovariance[1:numObservations, 1:numObservations] <- diag(1, numObservations) + crossprod(model@A);
   
   designCrossprodInverse <- solve(crossprod(designMatrix));
 
@@ -119,45 +125,53 @@ getObservedInformation <- function(model) {
   # the matrix C, which corresponds to ST'Z'diag(d mu / d eta)W^.5,
   # is closely related to the update matrix for the random effects
   # in literature, this is U'
-  ranefWeightedJacobianTrans <- NULL;
+  #ranefWeightedJacobianTrans <- NULL;
+  #sparseWeightMatrix <- NULL;
   if (length(model@sqrtXWt) > 0) {
     if (all(dim(model@Cm) > 0)) {
       ranefWeightedJacobianTrans <- model@Cm;
-    } else {
+    } 
+    else {
       # this should be obtained from model@Cx, but that requires rebuilding
       # the matrix from A. For now, it is re-computed
-    
-      ranefWeightedJacobianTrans <- model@A %*% diag(as.vector(model@sqrtXWt));
+      sparseWeightMatrix <- Diagonal(length(as.vector(model@sqrtXWt)), as.vector(model@sqrtXWt));
+      
+      ranefWeightedJacobianTrans <- model@A %*% sparseWeightMatrix;
     }
-  } else {
+  } 
+  else {
     ranefWeightedJacobianTrans <- model@A;
   }
 
   # matrix for beta is more difficult
   # X (d mu / d eta) W ^.5
   # in literature, this is V
-  fixefWeightedJacobian <- NULL;
+  #fixefWeightedJacobian <- NULL;
   if (all(dim(model@sqrtXWt) > 0)) {
-    fixefWeightedJacobian <- diag(as.vector(model@sqrtXWt)) %*% model@X;
-  } else {
+    if (is.null(sparseWeightMatrix)) {
+      sparseWeightMatrix <- Diagonal(length(as.vector(model@sqrtXWt)), as.vector(model@sqrtXWt));
+    }
+    fixefWeightedJacobian <- sparseWeightMatrix %*% model@X;
+  } 
+  else {
     fixefWeightedJacobian <- model@X;
   }
 
   # if the above are U and V, the observed information is:
   # [ U'U + I   U'V ]
   # [ V'U       V'V ]
-  observedInformation <- matrix(0, numRanef + numFixef, numRanef + numFixef);
-  # diagonal blocks
-  observedInformation[1:numRanef, 1:numRanef] <-
-    tcrossprod(as.matrix(ranefWeightedJacobianTrans)) + diag(1, numRanef)
-  observedInformation[(numRanef + 1):(numRanef + numFixef), (numRanef + 1):(numRanef + numFixef)] <-
-    crossprod(fixefWeightedJacobian);
+  upperLeftBlock <- tcrossprod(ranefWeightedJacobianTrans) + diag(1, numRanef);
+  lowerRightBlock <- crossprod(fixefWeightedJacobian);
+  upperRightBlock <- ranefWeightedJacobianTrans %*% fixefWeightedJacobian;
+  lowerLeftBlock <- t(upperRightBlock);
 
-  upperRightBlock <- as(ranefWeightedJacobianTrans %*% fixefWeightedJacobian, "matrix");
+  observedInformation <- Matrix(0, numRanef + numFixef, numRanef + numFixef, sparse=TRUE);
+  observedInformation[1:numRanef, 1:numRanef] <- upperLeftBlock;
+  observedInformation[(numRanef + 1):(numRanef + numFixef), (numRanef + 1):(numRanef + numFixef)] <- lowerRightBlock;
   observedInformation[1:numRanef, (numRanef + 1):(numRanef + numFixef)] <- upperRightBlock;
-  observedInformation[(numRanef + 1):(numRanef + numFixef), 1:numRanef] <- t(upperRightBlock);
+  observedInformation[(numRanef + 1):(numRanef + numFixef), 1:numRanef] <- lowerLeftBlock;
 
-  return(as.matrix(observedInformation));
+  return(observedInformation);
 }
 
 sampleSigma <- function(model) {
@@ -220,8 +234,8 @@ setMethod("sim", signature(object = "mer"),
   #
   # where Lambda is the left factor of Sigma and P is the permutation matrix calculated
   # when taking the left factor of (Lambda Z Z' Lambda' + I)
-  rotation <- diag(1, numRanef + numFixef);
-  rotation[1:numRanef, 1:numRanef] <- getSphericalCovarianceLeftFactor(object) %*% t(as.matrix(getPermutationMatrix(object)));
+  rotation <- Diagonal(numRanef + numFixef, 1);
+  rotation[1:numRanef, 1:numRanef] <- getSphericalCovarianceLeftFactor(object) %*% t(getPermutationMatrix(object));
   
   effectsCovariance <- rotation %*% effectsCovariance %*% t(rotation);
   
