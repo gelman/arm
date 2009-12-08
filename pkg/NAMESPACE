@@ -1,3 +1,10 @@
+importFrom("Matrix",
+      t,
+      crossprod,
+      tcrossprod
+)
+
+
 exportClasses(
               "balance",
               "bayesglm",
