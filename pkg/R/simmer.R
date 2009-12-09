@@ -245,6 +245,7 @@ setMethod("sim", signature(object = "mer"),
   if (isLinearMixedModel) {
     for (i in 1:n.sims) {
       simulatedSD[[1]][i] <- sampleSigma(object);
+      browser()
       simulatedEffects <- mvrnorm(1, effectsMean, (simulatedSD[[1]][i] ^ 2) * effectsCovariance);
       beta.unmodeled[[1]][i,] <- simulatedEffects[(numRanef + 1):(numRanef + numFixef)]
       for(m in 1:nt){
