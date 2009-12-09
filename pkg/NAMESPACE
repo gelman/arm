@@ -1,8 +1,10 @@
-importFrom("Matrix",
+importFrom(Matrix,
       "t",
       "crossprod",
       "tcrossprod"
 )
+
+importMethodsFrom(Matrix, "%*%")
 
 
 exportClasses(
