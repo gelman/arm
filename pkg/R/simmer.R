@@ -8,6 +8,7 @@ getAugmentedDesignMatrix <- function(model) {
   designMatrix <- Matrix(0, numObservations + numRanef, numRanef + numFixef, sparse=TRUE);
   if (numRanef > 0) {
     designMatrix[1:numObservations, 1:numRanef] <- t(model@A);
+    browser()
     designMatrix[(1 + numObservations):(numObservations + numRanef), 1:numRanef] <- diag(1, numRanef);
   }
   if (numFixef > 0) {
@@ -103,11 +104,8 @@ getLinearCovarianceEstimate <- function(model) {
   numRanef <- model@dims[["q"]];
   
   designMatrix <- getAugmentedDesignMatrix(model);
-#  responseCovariance <- Matrix(0, numObservations + numRanef, numObservations + numRanef, sparse=TRUE);
-#  responseCovariance[1:numObservations, 1:numObservations] <- Diagonal(numObservations, 1) + crossprod(model@A);
-#   This is ugly because of a bug in Matrix. Fix this when Matrix fix it
-  responseCovariance <- matrix(0, numObservations + numRanef, numObservations + numRanef);
-  responseCovariance[1:numObservations, 1:numObservations] <- as.matrix(Diagonal(numObservations, 1) + crossprod(model@A));
+  responseCovariance <- Matrix(0, numObservations + numRanef, numObservations + numRanef, sparse=TRUE);
+  responseCovariance[1:numObservations, 1:numObservations] <- Diagonal(numObservations, 1) + crossprod(model@A);
   responseCovariance <- Matrix(responseCovariance, sparse=TRUE)
   designCrossprodInverse <- solve(crossprod(designMatrix));
 

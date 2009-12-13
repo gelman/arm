@@ -1,6 +1,10 @@
-2009-11-22 Yu-Sung Su     <ys463@columbia.edu>  
-    * DESCRIPTION (Version, Date): 1.2-10.
-    * R/simer: new sim functions for "mer" class
+2009-12-12 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.2-12.
+    * R/simmer: use of sparse matrix in sim.mer
+
+2009-12-08 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.2-11; add abind pacakge dependency
+    * R/simmer: new sim functions for "mer" class
 
 2009-11-22 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-10.
