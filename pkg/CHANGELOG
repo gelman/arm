@@ -3,7 +3,7 @@
     * R/simmer: use of sparse matrix in sim.mer
 
 2009-12-08 Yu-Sung Su     <ys463@columbia.edu>  
-    * DESCRIPTION (Version, Date): 1.2-11; add abind pacakge dependency
+    * DESCRIPTION (Version, Date): 1.2-11; add abind pacakge dependencyR 
     * R/simmer: new sim functions for "mer" class
 
 2009-11-22 Yu-Sung Su     <ys463@columbia.edu>  
