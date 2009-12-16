@@ -8,7 +8,6 @@ getAugmentedDesignMatrix <- function(model) {
   designMatrix <- Matrix(0, numObservations + numRanef, numRanef + numFixef, sparse=TRUE);
   if (numRanef > 0) {
     designMatrix[1:numObservations, 1:numRanef] <- t(model@A);
-    browser()
     designMatrix[(1 + numObservations):(numObservations + numRanef), 1:numRanef] <- diag(1, numRanef);
   }
   if (numFixef > 0) {
