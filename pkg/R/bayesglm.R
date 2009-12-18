@@ -305,7 +305,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         break
       }
       coefs.hat <- fit$coefficients
-      fit$qr <- as.matrix (fit$qr)
+      fit$qr <- as.matrix(fit$qr)
       V.coefs <- chol2inv(fit$qr[1:ncol(x.star), 1:ncol(x.star), drop = FALSE])
       #V.beta <- chol2inv (t(x.star) %*% diag(w.star^2) %*% x.star)
   
@@ -316,7 +316,8 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       sampling.var <- diag(V.coefs)
       if (intercept & scaled){
         centered.coefs[1] <- sum(coefs.hat*colMeans(x))
-        sampling.var[1] <- t(colMeans(x))%*%V.coefs%*%colMeans(x)
+        #sampling.var[1] <- t(colMeans(x))%*%V.coefs%*%colMeans(x)
+        sampling.var[1] <- crossprod(colMeans(x), V.coefs) %*% colMeans(x)
       }
   
   # Andy 2007.12.13
