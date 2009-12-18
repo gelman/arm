@@ -80,19 +80,22 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
     min.prior.scale = min.prior.scale, scaled = scaled, 
     Warning=Warning)$deviance
   }
-  if (model)
+  if (model){
     fit$model <- mf
+  }
   fit$na.action <- attr(mf, "na.action")
-  if (x)
+  if (x){
     fit$x <- X
-  if (!y)
+  }
+  if (!y){
     fit$y <- NULL
+  }
   fit <- c(fit, list(call = call, formula = formula, terms = mt,
     data = data, offset = offset, control = control, method = method,
     contrasts = attr(X, "contrasts"), xlevels = .getXlevels(mt, mf)))
   class(fit) <- c("bayesglm", "glm", "lm")
-  fit
-  }
+  return(fit)
+}
   
 bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL, 
   etastart = NULL, mustart = NULL, offset = rep(0, nobs), 
@@ -111,15 +114,17 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
   ##### 12.13 ####
   if (is.null(prior.scale)){
     prior.scale <- 2.5
-  if (family$link == "probit")
-    prior.scale <- prior.scale*1.6
+    if (family$link == "probit"){
+      prior.scale <- prior.scale*1.6
+    }
   }
   #prior.scale <- prior.scale
   
   if (is.null(prior.scale.for.intercept)){
     prior.scale.for.intercept <- 10
-  if (family$link == "probit")
-    prior.scale.for.intercept <- prior.scale.for.intercept*1.6
+    if (family$link == "probit"){
+      prior.scale.for.intercept <- prior.scale.for.intercept*1.6
+    }
   }
   #prior.scale.for.intercept <- prior.scale.for.intercept
   ################
@@ -132,9 +137,6 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (intercept) {
       prior.mean <- c(prior.mean.for.intercept, prior.mean)
     }
-#   else {
-#      prior.mean <- prior.mean
-#    }
   }
   if (length(prior.scale)==1){
     prior.scale <- rep(prior.scale, J)
@@ -143,9 +145,6 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (intercept) {
       prior.scale <- c(prior.scale.for.intercept, prior.scale)
     }
-#    else {
-#      prior.scale <- prior.scale
-#    }
   }
   if (length(prior.df) == 1) {
     prior.df <- rep(prior.df, J)
@@ -154,9 +153,6 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (intercept) {
       prior.df <- c(prior.df.for.intercept, prior.df)
     }
-#    else {
-#      prior.df <- prior.df
-#    }
   }
   
   
@@ -197,25 +193,31 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
   nobs <- NROW(y)
   nvars <- ncol(x)
   EMPTY <- nvars == 0
-  if (is.null(weights))
+  if (is.null(weights)){
     weights <- rep.int(1, nobs)
-  if (is.null(offset))
+  }
+  if (is.null(offset)){
     offset <- rep.int(0, nobs)
+  }
   variance <- family$variance
   dev.resids <- family$dev.resids
   aic <- family$aic
   linkinv <- family$linkinv
   mu.eta <- family$mu.eta
-  if (!is.function(variance) || !is.function(linkinv))
+  if (!is.function(variance) || !is.function(linkinv)){
     stop("'family' argument seems not to be a valid family object")
+  }
   valideta <- family$valideta
-  if (is.null(valideta))
+  if (is.null(valideta)){
     valideta <- function(eta) TRUE
-    validmu <- family$validmu
-  if (is.null(validmu))
+  }
+  validmu <- family$validmu
+  if (is.null(validmu)){
     validmu <- function(mu) TRUE
-  if (is.null(mustart))
+  }
+  if (is.null(mustart)){
     eval(family$initialize)
+  }
   else {
     mukeep <- mustart
     eval(family$initialize)
@@ -223,11 +225,13 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
   }
   if (EMPTY) {
     eta <- rep.int(0, nobs) + offset
-    if (!valideta(eta))
+    if (!valideta(eta)){
       stop("invalid linear predictor values in empty model")
+    }
     mu <- linkinv(eta)
-    if (!validmu(mu))
+    if (!validmu(mu)){
       stop("invalid fitted means in empty model")
+    }
     dev <- sum(dev.resids(y, mu, weights))
     w <- ((weights * mu.eta(eta)^2)/variance(mu))^0.5
     residuals <- (y - mu)/mu.eta(eta)
@@ -246,7 +250,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         stop(gettextf("length of 'start' should equal %d and correspond to initial coefs for %s", 
           nvars, paste(deparse(xnames), collapse = ", ")), domain = NA)
       else {
-        eta <- offset + as.vector(ifelse((NCOL(x) == 1), x *start, x %*% start))
+        eta <- offset + as.vector(ifelse((NCOL(x) == 1), x*start, x %*% start))
         coefold <- start
       }
     }
