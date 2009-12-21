@@ -232,7 +232,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (!validmu(mu)){
       stop("invalid fitted means in empty model")
     }
-    dev <- sum(dev.resids(y, mu, weights))
+    devold <- sum(dev.resids(y, mu, weights))
     w <- ((weights * mu.eta(eta)^2)/variance(mu))^0.5
     residuals <- (y - mu)/mu.eta(eta)
     good <- rep(TRUE, length(residuals))
