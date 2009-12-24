@@ -1,7 +1,8 @@
 importFrom(Matrix,
       "t",
       "crossprod",
-      "tcrossprod"
+      "tcrossprod",
+      "colMeans"
 )
 
 importMethodsFrom(Matrix, "%*%")

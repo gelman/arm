@@ -1,6 +1,5 @@
 bayesglm <- function (formula, family = gaussian, data, weights, subset,
-  na.action, start = NULL, etastart, mustart, offset, control =
-  glm.control(...),
+  na.action, start = NULL, etastart, mustart, offset, control = glm.control(...),
   model = TRUE, method = "glm.fit", x = FALSE, y = TRUE, contrasts = NULL,
   drop.unused.levels = TRUE,
   prior.mean = 0, prior.scale = NULL, prior.df = 1,
