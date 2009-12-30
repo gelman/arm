@@ -1,3 +1,8 @@
+2009-12-30 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.2-13.
+    * R/bayesglm: smarter use of x matrix to save memory usage
+
+
 2009-12-12 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.2-12.
     * R/simmer: use of sparse matrix in sim.mer
