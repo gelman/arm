@@ -44,7 +44,7 @@ bayesglm.h <- function ( formula, family = gaussian, data, weights, subset,
         X <- if (!is.empty.model(mt)){ 
             #class(mt) <- c("bayesglm.h", "terms", "formula")
             model.matrix.bayes.h( mt, mf, contrasts, keep.order=keep.order, batch=batch ) 
-            }
+            }z
         else matrix(, NROW(Y), 0)
     }
     else {
