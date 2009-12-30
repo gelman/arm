@@ -105,8 +105,7 @@ model.matrix.bayes.h <- function (object, data = environment(object),
         namD <- names(data)
         for (i in namD) if (is.character(data[[i]])) {
             data[[i]] <- factor(data[[i]])
-            warning(gettextf("variable '%s' converted to a factor", 
-                i), domain = NA)
+            warning(gettextf("variable '%s' converted to a factor", i), domain = NA)
         }
         isF <- sapply(data, function(x) is.factor(x) || is.logical(x))
         isF[int] <- FALSE
