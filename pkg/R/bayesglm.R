@@ -283,6 +283,14 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     dispersion <- ifelse((family$family %in% c("poisson", "binomial")),  1, var(y)/10000)
     #==================================
     dispersionold <- dispersion
+    
+    if (intercept & scaled) {
+      x[nobs+1,] <- colMeans(x[1:nobs,])
+    }
+    if (family$family == "gaussian" & scaled){
+      prior.scale <- prior.scale.0 #*sqrt(dispersion)
+    }
+    
     for (iter in 1:control$maxit) {
       good <- weights > 0
       varmu <- variance(mu)[good]
@@ -305,15 +313,13 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       z <- (eta - offset)[good] + (y - mu)[good]/mu.eta.val[good]
       w <- sqrt((weights[good] * mu.eta.val[good]^2)/variance(mu)[good])
       ngoodobs <- as.integer(nobs - sum(!good))
-      coefs.hat <- rep(0, ncol(x))
+      #coefs.hat <- rep(0, ncol(x))
       z.star <- c(z, prior.mean)
-      if (intercept & scaled) {
-        x[nobs+1,] <- colMeans(x[1:nobs,])
-      }
       #x.star <- rbind (x, x.extra)
       w.star <- c(w, sqrt(dispersion)/prior.sd)
       good.star <- c(good, rep(TRUE, NCOL(x)))
       ngoodobs.star <- ngoodobs + NCOL(x)
+      
       fit <- .Fortran("dqrls", qr = x[good.star, ] * w.star, 
         n = ngoodobs.star, p = nvars, y = w.star * z.star, 
         ny = as.integer(1), tol = min(1e-07, control$epsilon/1000), 
@@ -321,19 +327,17 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         effects = double(ngoodobs.star), rank = integer(1), 
         pivot = 1:nvars, qraux = double(nvars),
         work = double(2 * nvars), PACKAGE = "base")
+      
       if (any(!is.finite(fit$coefficients))) {
         conv <- FALSE
         warning("non-finite coefficients at iteration ", iter)
         break
       }
+      
       coefs.hat <- fit$coefficients
       fit$qr <- as.matrix(fit$qr)
       V.coefs <- chol2inv(fit$qr[1:ncol(x), 1:ncol(x), drop = FALSE])
       #V.beta <- chol2inv (t(x.star) %*% diag(w.star^2) %*% x.star)
-  
-      if (family$family == "gaussian" & scaled){
-        prior.scale <- prior.scale.0 #*sqrt(dispersion)
-      }
       centered.coefs <- coefs.hat
       sampling.var <- diag(V.coefs)
       if (intercept & scaled){
@@ -436,6 +440,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         coef <- coefold <- start
       }
     }
+    
     if(Warning){
       if (!conv){
         warning("algorithm did not converge")
