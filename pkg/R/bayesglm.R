@@ -308,7 +308,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       coefs.hat <- rep(0, ncol(x))
       z.star <- c(z, prior.mean)
       if (intercept & scaled) {
-        x[nobs+1,] <- colMeans(x)
+        x[nobs+1,] <- colMeans(x[1:nobs,])
       }
       #x.star <- rbind (x, x.extra)
       w.star <- c(w, sqrt(dispersion)/prior.sd)
