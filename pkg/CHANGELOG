@@ -1,3 +1,8 @@
+2010-1-11 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.3-02
+    * R/bayesglm: new bayesglm.fit (written by Daniel Lee)
+
+
 2010-1-8 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.3-01.
     * R/bayesglm: a bug in x.matrix augmentation
