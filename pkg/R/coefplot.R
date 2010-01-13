@@ -16,7 +16,6 @@ coefplot.default <- function(coefs, sds,
     
     coefs.h <- coefs + CI*sds 
     coefs.l <- coefs - CI*sds                                                          
-    
     min.mar <- par('mar')
     
     if (is.null(main)){main <- "Regression Estimates"}
