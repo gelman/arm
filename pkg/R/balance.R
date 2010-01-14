@@ -2,18 +2,20 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
 {
     
     #int <- attr(terms(pscore.fit), "intercept")
-    pscore.fit$call$intercept <- FALSE
     call.raw <- call.matched <- pscore.fit$call
     call.raw$data <- substitute(rawdata)
     call.matched$data <- substitute(matched)    
-
     if (!factor){
         form <- gsub("factor(", "", call.raw$formula, fixed = TRUE)
         form <- gsub(")", "", form, fixed = TRUE)
-        form <- as.formula(paste(form[2], form[1], form[3]))
+        form <- as.formula(paste(form[2], form[1], form[3], -1))
         call.raw$formula <- call.matched$formula <- form
     }
-
+    else{
+        form <- call.raw$formula
+        form <- as.formula(paste(form[2], form[1], form[3], -1))
+        call.raw$formula <- call.matched$formula <- form
+    }
     fit.raw <- eval(call.raw)
     fit.matched <- eval(call.matched)
     class(fit.raw$formula) <- class(fit.matched$formula) <- c("bayesglm", "formula")
