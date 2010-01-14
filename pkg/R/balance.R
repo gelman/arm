@@ -176,4 +176,5 @@ plot.balance <- function(x, longcovnames=NULL,
       #xlim=x.range,
       main="", cex.main=cex.main,...)
   }
+  return(list("raw"=pts, "matched"=pts2))
 }
