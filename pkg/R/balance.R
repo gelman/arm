@@ -2,6 +2,7 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
 {
     
     #int <- attr(terms(pscore.fit), "intercept")
+    pscore.fit$call$intercept <- FALSE
     call.raw <- call.matched <- pscore.fit$call
     call.raw$data <- substitute(rawdata)
     call.matched$data <- substitute(matched)    
