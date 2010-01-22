@@ -68,10 +68,11 @@
   b1 <- 1.5
   b2 <- 2
   y <- rbinom (n, 1, invlogit(b0+b1*x1+b2*x2))
-  M1 <- glm (y ~ x, family=binomial(link="logit"))
+  M1 <- glm (y ~ rescale(x), family=binomial(link="logit"))
   display(M1)
   M2 <- standardize(M1)
   display(M2)
+  # M1 & M2 should be the same
 }
 \keyword{manip}
 \keyword{models}
