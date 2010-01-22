@@ -4,6 +4,7 @@
 \alias{standardize,lm-method}
 \alias{standardize,glm-method}
 \alias{standardize,mer-method}
+\alias{standardize,polr-method}
 
 
 \title{Function for Standardizing Regression Predictors by Centering and 
@@ -23,6 +24,8 @@
 \S4method{standardize}{glm}(object, unchanged = NULL, 
     standardize.y = FALSE, binary.inputs = "center")
 \S4method{standardize}{mer}(object, unchanged = NULL, 
+    standardize.y = FALSE, binary.inputs = "center")
+\S4method{standardize}{polr}(object, unchanged = NULL, 
     standardize.y = FALSE, binary.inputs = "center")
 }
 
@@ -68,11 +71,21 @@
   b1 <- 1.5
   b2 <- 2
   y <- rbinom (n, 1, invlogit(b0+b1*x1+b2*x2))
-  M1 <- glm (y ~ rescale(x), family=binomial(link="logit"))
+  y2 <- sample(1:5, n, replace=TRUE)
+  M1 <- glm (y ~ x, family=binomial(link="logit"))
   display(M1)
-  M2 <- standardize(M1)
+  M1.1 <- glm (y ~ rescale(x), family=binomial(link="logit"))
+  display(M1.1)
+  M1.2 <- standardize(M1.1)
+  display(M1.2)
+  # M1.1 & M1.2 should be the same
+  M2 <- polr(ordered(y2) ~ x)
   display(M2)
-  # M1 & M2 should be the same
+  M2.1 <- polr(ordered(y2) ~ rescale(x))
+  display(M2.1)
+  M2.2 <- standardize(M2.1)
+  display(M2.2)
+  # M2.1 & M2.2 should be the same
 }
 \keyword{manip}
 \keyword{models}

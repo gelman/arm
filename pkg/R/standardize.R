@@ -32,7 +32,6 @@ standardize.default <- function(call, unchanged=NULL,
 # New variable names:
 #   prefix with "c." if centered or "z." if centered and scaled
 #
-  browser()
   varnames.new <- ifelse (transform=="leave.alone", varnames,
     ifelse (transform=="full", paste ("z", varnames, sep="."),
     paste ("c", varnames, sep=".")))
@@ -89,12 +88,24 @@ setMethod("standardize", signature(object = "glm"),
     standardize.y=FALSE, binary.inputs="center")
 {
   call <- object$call
-  browser()
   out <- standardize.default(call=call, unchanged=unchanged, 
     standardize.y=standardize.y, binary.inputs=binary.inputs)
   return(out)
 }
 )
+
+setMethod("standardize", signature(object = "polr"),
+  function(object, unchanged=NULL, 
+    standardize.y=FALSE, binary.inputs="center")
+{
+  call <- object$call
+  out <- standardize.default(call=call, unchanged=unchanged, 
+    standardize.y=standardize.y, binary.inputs=binary.inputs)
+  return(out)
+}
+)
+
+
 
 setMethod("standardize", signature(object = "mer"),
   function(object, unchanged=NULL, 
