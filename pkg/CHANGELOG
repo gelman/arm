@@ -1,4 +1,5 @@
 2010-1-21 Yu-Sung Su     <ys463@columbia.edu>  
+    * R/standardize: add polr method
     * Rd/standardize: change the example code to make M1 and M2 equivalent. 
 
 2010-1-15 Yu-Sung Su     <ys463@columbia.edu>  
