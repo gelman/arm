@@ -552,8 +552,11 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             sampling.var <- diag.V.coefs
             # DL: sampling.var[1] <- crossprod(colMeans.x, V.coefs) %*% colMeans.x
             sampling.var[1] <- crossprod (crossprod(V.coefs, colMeans.x), colMeans.x)
-            
-            sd <- sqrt(((centered.coefs - priors$mean)^2 + sampling.var * state$dispersion + priors$df * priors$scale^2)/(1 + priors$df))
+            sd.tmp <- ((centered.coefs - priors$mean)^2 + sampling.var * state$dispersion + priors$df * priors$scale^2)/(1 + priors$df)
+            if(sd.tmp < 0){
+              browser()
+            }
+            sd <- sqrt(sd.tmp)
             
             state$prior.sd[priors$df != Inf] <- sd[priors$df != Inf]
         }
