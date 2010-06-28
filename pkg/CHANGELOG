@@ -1,3 +1,7 @@
+2010-6-28 Yu-Sung Su     <ys463@columbia.edu>  
+    * R/extractDIC: add s3 methods for extractDIC and extractAIC for the mer class
+    * Rd/extractDIC
+
 2010-1-21 Yu-Sung Su     <ys463@columbia.edu>  
     * R/standardize: add polr method
     * Rd/standardize: change the example code to make M1 and M2 equivalent. 
