@@ -561,8 +561,11 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             state$prior.sd[priors$df != Inf] <- sd[priors$df != Inf]
         }
     }
-    
-    predictions <- x.nobs %*% fit$coefficients
+    if(NCOL(x.nobs)==1){
+      predictions <- x.nobs * fit$coefficients
+    }else{
+      predictions <- x.nobs %*% fit$coefficients
+    }
     
     if (!(family$family %in% c("poisson", "binomial"))) {
         if (exists ("V.coefs") == FALSE) {
@@ -670,14 +673,15 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     residuals <- rep.int(NA, nobs)
     residuals[state$good] <- state$z[state$good] - (state$eta[state$good] - offset[state$good])
     
-    #fit$qr <- as.matrix(fit$qr)
+    state$fit$qr <- as.matrix(state$fit$qr)
+    
     nr <- min(sum(state$good), nvars)
     if (nr < nvars) {
-        Rmat <- diag(x = 0, nvars)
-        Rmat[1:nr, 1:nvars] <- state$fit$qr[1:nr, 1:nvars]
+      Rmat <- diag(x = 0, nvars)
+      Rmat[1:nr, 1:nvars] <- state$fit$qr[1:nr, 1:nvars]
     }
     else{
-        Rmat <- state$fit$qr[1:nvars, 1:nvars]
+      Rmat <- state$fit$qr[1:nvars, 1:nvars]
     }
     Rmat <- as.matrix(Rmat)
     Rmat[row(Rmat) > col(Rmat)] <- 0
