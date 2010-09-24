@@ -1,5 +1,6 @@
 2010-9-24 Yu-Sung Su     <ys463@columbia.edu>  
     * R/bayesglm: fix a bug when a model of one predictor with no intercept is fitted
+    * man/several: CRAN no longer alows genericFunction docType
 
 
 2010-6-28 Yu-Sung Su     <ys463@columbia.edu>  

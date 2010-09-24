@@ -1,5 +1,5 @@
 \name{sim}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{sim}
 \alias{sim,lm-method}
 \alias{sim,glm-method}

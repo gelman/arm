@@ -1,5 +1,5 @@
 \name{standardize}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{standardize}
 \alias{standardize,lm-method}
 \alias{standardize,glm-method}

@@ -1,5 +1,5 @@
 \name{sigma.hat}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{sigma.hat}
 \alias{sigma.hat,lm-method}
 \alias{sigma.hat,glm-method}
