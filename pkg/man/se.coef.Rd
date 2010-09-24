@@ -1,5 +1,5 @@
 \name{se.coef}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{se.coef}
 \alias{se.coef,lm-method}
 \alias{se.coef,glm-method}

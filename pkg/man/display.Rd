@@ -1,5 +1,5 @@
 \name{display}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{display}
 \alias{display,lm-method}
 \alias{display,bayesglm-method}

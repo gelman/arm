@@ -1,5 +1,5 @@
 \name{traceplot}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{traceplot}
 \alias{traceplot.default}
 \alias{traceplot,mcmc.list-method}

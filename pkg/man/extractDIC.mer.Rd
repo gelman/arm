@@ -1,5 +1,5 @@
 \name{extractDIC}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{extractDIC}
 \alias{extractDIC.mer}
 \alias{extractAIC.mer}
