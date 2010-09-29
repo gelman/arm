@@ -1,5 +1,5 @@
 \name{coefplot}
-\docType{genericFunction}
+%\docType{genericFunction}
 \alias{coefplot}
 \alias{coefplot.default}
 \alias{coefplot,numeric-method}
