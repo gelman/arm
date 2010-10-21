@@ -77,8 +77,8 @@ sim(object, ...)
  display(M1)
  M1.sim <- sim(M1)
  ## to get the uncertainty for the simulated estimates
- apply(M1.sim$coef, 2, quantile)
- quantile(M1.sim$sigma)
+ apply(coef(M1.sim), 2, quantile)
+ quantile(sigma.hat(M1.sim))
  
 # Logistic regression 
  u.data <- cbind (1:J, u)

@@ -18,12 +18,12 @@ exportClasses(
               "bayesglm",
               "bayesglm.h",
               "bayespolr",
-              "sim.lm",
-              "sim.glm",
+              "sim",
               "sim.mer"
               )
 
 exportMethods(
+              "coef",
               "coefplot",
               "display",
               #"mcsamp",
