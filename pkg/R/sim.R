@@ -18,8 +18,8 @@ setMethod("sim", signature(object = "lm"),
       beta[s,] <- mvrnorm (1, beta.hat, V.beta*sigma[s]^2)
     }
     
-    ans <- new("sim.lm", 
-                coef = beta
+    ans <- new("sim", 
+                coef = beta,
                 sigma = sigma)
     return (ans)
     }
@@ -52,8 +52,8 @@ setMethod("sim", signature(object = "glm"),
     # Added by Masanao
     sigma <- rep (sqrt(summ$dispersion), n.sims)
 
-    ans <- new("sim.glm", 
-                coef = beta2
+    ans <- new("sim", 
+                coef = beta2,
                 sigma = sigma)
     return(ans)
     }

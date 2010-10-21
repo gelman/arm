@@ -66,23 +66,18 @@ setClass("bayespolr",
 )
 
 
-setClass("sim.lm",
+setClass("sim",
      representation(
-            coef = "list",
-            sigma = "list")
+            coef = "matrix",
+            sigma = "numeric")
 )
 
-setClass("sim.glm",
-     representation(
-            coef = "list",
-            sigma = "list")
-)
+
 
 setClass("sim.mer",
      representation(
-            fixef = "list"
-            sigma = "list")
+            fixef = "matrix",
+            sigma = "numeric")
 )
-
 
 setClass("GO")
