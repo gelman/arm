@@ -17,7 +17,11 @@ setMethod("sim", signature(object = "lm"),
       sigma[s] <- sigma.hat*sqrt((n-k)/rchisq(1,n-k))
       beta[s,] <- mvrnorm (1, beta.hat, V.beta*sigma[s]^2)
     }
-    return (list (coef=beta, sigma=sigma))
+    
+    ans <- new("sim.lm", 
+                coef = beta
+                sigma = sigma)
+    return (ans)
     }
 )
 
@@ -47,7 +51,11 @@ setMethod("sim", signature(object = "glm"),
     beta2[,dimnames(beta2)[[2]]%in%dimnames(beta)[[2]]] <- beta
     # Added by Masanao
     sigma <- rep (sqrt(summ$dispersion), n.sims)
-    return (list(coef=beta2, sigma=sigma))    
+
+    ans <- new("sim.glm", 
+                coef = beta2
+                sigma = sigma)
+    return(ans)
     }
 )
     

@@ -6,7 +6,8 @@ importFrom(Matrix,
 )
 
 importFrom(stats,
-      "extractAIC"
+      "extractAIC",
+      "coef"
 )
 
 importMethodsFrom(Matrix, "%*%")
@@ -16,7 +17,10 @@ exportClasses(
               "balance",
               "bayesglm",
               "bayesglm.h",
-              "bayespolr"
+              "bayespolr",
+              "sim.lm",
+              "sim.glm",
+              "sim.mer"
               )
 
 exportMethods(
