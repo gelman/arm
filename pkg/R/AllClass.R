@@ -65,4 +65,24 @@ setClass("bayespolr",
      contains = "polr"
 )
 
+
+setClass("sim.lm",
+     representation(
+            coef = "list",
+            sigma = "list")
+)
+
+setClass("sim.glm",
+     representation(
+            coef = "list",
+            sigma = "list")
+)
+
+setClass("sim.mer",
+     representation(
+            fixef = "list"
+            sigma = "list")
+)
+
+
 setClass("GO")

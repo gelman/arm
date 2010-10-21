@@ -290,7 +290,12 @@ setMethod("sim", signature(object = "mer"),
       dimnames(beta.bygroup[[m]]) <- c(list(NULL), dimnames(rr[[m]]))
     }
     #####################
-    ans <- c(beta.unmodeled, beta.bygroup)
+    
+    ans <- new("sim.mer", 
+                "fixef" = beta.unmodeled,
+                beta.bygroup,
+                "sigma" = sigma.hat(object)$sigma)
+
     return(ans)
   }
 })
