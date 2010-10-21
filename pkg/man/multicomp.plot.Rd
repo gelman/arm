@@ -78,7 +78,8 @@ mcplot(simulation.array, shortlabel = short.lab)
 # example 2
 data(lalonde)
 M1 <- lm(re78 ~ treat + re74 + re75 + age + educ + u74 + u75, data=lalonde)
-lm.sim <- sim(M1)[["coef"]][,-1]
+M1.sim <- sim(M1)
+lm.sim <- coef(M1.sim)[,-1]
 multicomp.plot(lm.sim, label.as.shortlabel=TRUE, label.on.which.axis=2)
 
 par(old.par)

@@ -264,7 +264,7 @@ setMethod("sim", signature(object = "mer"),
       dimnames(beta.bygroup[[m]]) <- c(list(NULL), dimnames(rr[[m]]))
     }
     #####################
-    browser()
+
     ans <- new("sim.mer", 
                "fixef" = beta.unmodeled$fixef,
                "ranef" = beta.bygroup,
@@ -295,8 +295,8 @@ setMethod("sim", signature(object = "mer"),
     #####################
     
     ans <- new("sim.mer", 
-                beta.unmodeled,
-                beta.bygroup,
+                "fixef" = beta.unmodeled$fixef,
+                "ranef" = beta.bygroup,
                 "sigma" = NA)
 
     return(ans)

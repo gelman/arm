@@ -4,6 +4,8 @@
 \alias{sigma.hat,lm-method}
 \alias{sigma.hat,glm-method}
 \alias{sigma.hat,mer-method}
+\alias{sigma.hat,sim-method}
+\alias{sigma.hat,sim.mer-method}
 
 
 
@@ -18,6 +20,8 @@ sigma.hat(object,\dots)
 \S4method{sigma.hat}{lm}(object)
 \S4method{sigma.hat}{glm}(object)
 \S4method{sigma.hat}{mer}(object)
+\S4method{sigma.hat}{sim}(object)
+\S4method{sigma.hat}{sim.mer}(object)
 
 }
 
