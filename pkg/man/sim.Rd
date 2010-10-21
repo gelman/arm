@@ -1,9 +1,13 @@
 \name{sim}
 %\docType{genericFunction}
 \alias{sim}
+\alias{sim-class}
+\alias{sim.mer-class}
 \alias{sim,lm-method}
 \alias{sim,glm-method}
 \alias{sim,mer-method}
+\alias{coef,sim-method}
+
 
 
 
@@ -21,6 +25,9 @@ sim(object, ...)
 \S4method{sim}{lm}(object, n.sims = 100)
 \S4method{sim}{glm}(object, n.sims = 100)
 \S4method{sim}{mer}(object, n.sims = 100)
+
+\S4method{coef}{sim}(object)
+
 
 }
 

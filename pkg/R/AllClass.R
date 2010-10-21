@@ -77,7 +77,8 @@ setClass("sim",
 setClass("sim.mer",
      representation(
             fixef = "matrix",
-            sigma = "numeric")
+            ranef = "list",
+            sigma = "ANY")
 )
 
 setClass("GO")
