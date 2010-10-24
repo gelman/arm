@@ -10,6 +10,12 @@ importFrom(stats,
       "coef"
 )
 
+importFrom(lme4,
+      "fixef",
+      "ranef"
+)
+      
+
 importMethodsFrom(Matrix, "%*%")
 
 
@@ -26,12 +32,14 @@ exportMethods(
               "coef",
               "coefplot",
               "display",
+              "fixef",
               #"mcsamp",
               #"model.matrix.bayes",
               "se.coef",
               "sim",
               "sigma.hat",
               "print",
+              "ranef",
               "show",
               "standardize",
               "traceplot"
