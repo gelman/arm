@@ -1,50 +1,73 @@
-getAugmentedDesignMatrix <- function(model) {
-  numRanef <- model@dims[['q']];
-  numFixef <- model@dims[['p']];
+getAugmentedAndRotatedDesignMatrix <- function(model) {
+  numModeledParameters <- model@dims[['q']];
+  numUnmodeledParameters <- model@dims[['p']];
   numObservations <- model@dims[['n']];
+  
+  numParameters <- numUnmodeledParameters + numModeledParameters;
+  numAugmentedRows <- numModeledParameters + numObservations;
+  
   # set up design matrix:
   # [ ZLambda X ]
   # [ I       0 ]
-  designMatrix <- Matrix(0, numObservations + numRanef, numRanef + numFixef, sparse=TRUE);
-  if (numRanef > 0) {
-    designMatrix[1:numObservations, 1:numRanef] <- t(model@A);
-    designMatrix[(1 + numObservations):(numObservations + numRanef), 1:numRanef] <- diag(1, numRanef);
+  designMatrix <- Matrix(0, numAugmentedRows, numParameters, sparse=TRUE);
+  if (numModeledParameters > 0) {
+    designMatrix[1:numObservations, 1:numModeledParameters] <- t(model@A);
+    designMatrix[(1 + numObservations):numAugmentedRows, 1:numModeledParameters] <- diag(1, numModeledParameters);
   }
-  if (numFixef > 0) {
-    designMatrix[1:numObservations, (numRanef + 1):(numRanef + numFixef)] <- model@X;
+  if (numUnmodeledParameters > 0) {
+    designMatrix[1:numObservations, (numModeledParameters + 1):numParameters] <- model@X;
+  }
+
+  return(designMatrix);
+}
+
+getAugmentedDesignMatrix <- function(model) {
+  numModeledParameters <- model@dims[['q']];
+  numUnmodeledParameters <- model@dims[['p']];
+  numObservations <- model@dims[['n']];
+  
+  numParameters <- numUnmodeledParameters + numModeledParameters;
+  numAugmentedRows <- numModeledParameters + numObservations;
+  
+  # set up design matrix:
+  # [ Z          X ]
+  # [ Lambda^-1  0 ]
+  designMatrix <- Matrix(0, numAugmentedRows, numParameters, sparse=TRUE);
+  if (numModeledParameters > 0) {
+    designMatrix[1:numObservations, 1:numModeledParameters] <- t(model@Zt);
+    designMatrix[(1 + numObservations):numAugmentedRows, 1:numModeledParameters] <-
+      solve(getSphericalCovarianceLeftFactor(model));
+  }
+  if (numUnmodeledParameters > 0) {
+    designMatrix[1:numObservations, (numModeledParameters + 1):numParameters] <- model@X;
   }
 
   return(designMatrix);
 }
 
 getAugmentedResponse <- function(model) {
-  numRanef <- model@dims[['q']];
+  numModeledParameters <- model@dims[['q']];
   numObservations <- model@dims[['n']];
 
-  response <- Matrix(0, numRanef + numObservations, sparse=TRUE);
+  numAugmentedRows <- numModeledParameters + numObservations;
+
+  response <- Matrix(0, numAugmentedRows, sparse=TRUE);
   response[1:numObservations] <- model@y;
 
   return(response);
 }
 
-getNumColumnsPerTerm <- function(model) {
-  numTerms <- length(model@ST);
-  numColumns <- rep(0, numTerms);
-  
-  for (i in 1: numTerms) {
-    numColumns[i] <- dim(model@ST[[i]])[1];
-  }
-  return(numColumns);
+getNumModeledParametersPerLevel <- function(model) {
+  numLevels <- model@dims[["nt"]];
+
+  return(sapply(model@ST, nrow))
 }
 
-getNumLevelsPerTerm <- function(model) {
-  numTerms <- length(model@ST);
-  numLevels <- rep(0, numTerms);
-  
-  for (i in 1:numTerms) {
-    numLevels[i] <- (model@Gp[i + 1] - model@Gp[i]) / dim(model@ST[[i]])[1];
-  }
-  return(numLevels);
+getNumGroupsPerLevel <- function(model) {
+  numLevels <- model@dims[["nt"]];
+  return (sapply(1:numLevels, function(i) {
+    return ((model@Gp[i + 1] - model@Gp[i]) / nrow(model@ST[[i]]));
+  }));
 }
 
 getTermIndex <- function(index, numTerms, termPointers) {
@@ -66,30 +89,33 @@ getSphericalCovarianceLeftFactor <- function(model) {
 
   # should be lower triangular
 
-  numTerms <- model@dims[["nt"]];
-  numRanef <- model@dims[["q"]];
-  termPointers <- model@Gp;
+  numLevels <- model@dims[["nt"]];
+  numModeledParametersPerLevel <- getNumModeledParametersPerLevel(model);
+  numGroupsPerLevel <- getNumGroupsPerLevel(model);
+  
+  numModeledParameters <- model@dims[["q"]];
 
-  numLevelsPerTerm <- getNumLevelsPerTerm(model);
-  numColumnsPerTerm <- getNumColumnsPerTerm(model);
-
-  triangularMatrix <- diag(1, numRanef);
-  diagonalMatrix <- Matrix(0, numRanef, numRanef, sparse=TRUE);
-  covarianceMatrix <- Matrix(0, numRanef, numRanef, sparse=TRUE);
+  covarianceMatrix <- Matrix(0, numModeledParameters, numModeledParameters, sparse=TRUE);
   
   covarianceIndex <- 1;
-  for (i in 1:numTerms) {
-    triangularMatrix <- model@ST[[i]];
-    diag(triangularMatrix) <- rep(1, dim(model@ST[[i]])[1]);
-    diagonalMatrix <- diag(diag(model@ST[[i]]), dim(model@ST[[i]])[1]);
+  for (k in 1:numLevels) {
+    # store L = T %*% S
+    triangularMatrix <- model@ST[[k]];
+    diag(triangularMatrix) <- rep(1, numModeledParametersPerLevel[k]);
     
-    for (j in 1:numLevelsPerTerm[i]) {
+    diagonalMatrix <- diag(diag(model@ST[[k]]), numModeledParametersPerLevel[k]);
+
+    leftFactor <- triangularMatrix %*% diagonalMatrix;
+
+    # copy in L into covariance as many times as needed, one block for each group
+    # at this level
+    for (j in 1:numGroupsPerLevel[k]) {
       firstRow <- covarianceIndex;
-      lastRow <- covarianceIndex + numColumnsPerTerm[i] - 1;
+      lastRow <- covarianceIndex + numModeledParametersPerLevel[k] - 1;
       
       covarianceMatrix[firstRow:lastRow, firstRow:lastRow] <- triangularMatrix %*% diagonalMatrix;
       
-      covarianceIndex <- covarianceIndex + numColumnsPerTerm[i];
+      covarianceIndex <- covarianceIndex + numModeledParametersPerLevel[k];
     }
   }
   
@@ -100,16 +126,25 @@ getSphericalCovarianceLeftFactor <- function(model) {
 # simulated on its own
 getLinearCovarianceEstimate <- function(model) {
   numObservations <- model@dims[["n"]];
-  numRanef <- model@dims[["q"]];
+  numModeledParameters <- model@dims[["q"]];
+  
+  numAugmentedRows <- numObservations + numModeledParameters;
   
   designMatrix <- getAugmentedDesignMatrix(model);
-  responseCovariance <- Matrix(0, numObservations + numRanef, numObservations + numRanef, sparse=TRUE);
-  responseCovariance[1:numObservations, 1:numObservations] <- Diagonal(numObservations, 1) + crossprod(model@A);
-  responseCovariance <- Matrix(responseCovariance, sparse=TRUE)
-  designCrossprodInverse <- solve(crossprod(designMatrix));
 
-  # (X'X)^-1 X' covar([y 0]') X (X'X)^-1'
-  return (designCrossprodInverse %*% t(designMatrix) %*% responseCovariance %*% designMatrix %*% designCrossprodInverse);
+  return(solve(crossprod(designMatrix)));
+  
+  #responseCovariance <- Matrix(0, numAugmentedRows, numAugmentedRows, sparse=TRUE);
+  #responseCovariance[1:numObservations, 1:numObservations] <-
+  #  Diagonal(numObservations, 1) + crossprod(model@A);
+  #responseCovariance <- Matrix(responseCovariance, sparse=TRUE);
+  #designCrossprodInverse <- solve(crossprod(designMatrix));
+
+  # (X'X)^-1 X' covar([y, 0]') X (X'X)^-1',
+  # covar([ y ]) = [ I.n + ZL L'Z'  0 ]
+  #      ([ 0 ]) = [       0        0 ]
+  #return (designCrossprodInverse %*% t(designMatrix) %*% responseCovariance %*%
+  #        designMatrix %*% designCrossprodInverse);
 }
 
 getPermutationMatrix <- function(model) {
@@ -119,8 +154,10 @@ getPermutationMatrix <- function(model) {
 # information is conditional on hyperparameters
 # information is of [ranef, fixef]
 getObservedInformation <- function(model) {
-  numRanef <- model@dims[["q"]];
-  numFixef <- model@dims[["p"]];
+  numModeledParameters <- model@dims[["q"]];
+  numUnmodeledParameters <- model@dims[["p"]];
+
+  numParameters <- numModeledParameters + numUnmodeledParameters;
   
   # the matrix C, which corresponds to ST'Z'diag(d mu / d eta)W^.5,
   # is closely related to the update matrix for the random effects
@@ -160,23 +197,29 @@ getObservedInformation <- function(model) {
   # if the above are U and V, the observed information is:
   # [ U'U + I   U'V ]
   # [ V'U       V'V ]
-  upperLeftBlock <- tcrossprod(ranefWeightedJacobianTrans) + diag(1, numRanef);
+  upperLeftBlock <- tcrossprod(ranefWeightedJacobianTrans) + diag(1, numModeledParameters);
   lowerRightBlock <- crossprod(fixefWeightedJacobian);
   upperRightBlock <- ranefWeightedJacobianTrans %*% fixefWeightedJacobian;
   lowerLeftBlock <- t(upperRightBlock);
 
-  observedInformation <- Matrix(0, numRanef + numFixef, numRanef + numFixef, sparse=TRUE);
-  observedInformation[1:numRanef, 1:numRanef] <- upperLeftBlock;
-  observedInformation[(numRanef + 1):(numRanef + numFixef), (numRanef + 1):(numRanef + numFixef)] <- lowerRightBlock;
-  observedInformation[1:numRanef, (numRanef + 1):(numRanef + numFixef)] <- upperRightBlock;
-  observedInformation[(numRanef + 1):(numRanef + numFixef), 1:numRanef] <- lowerLeftBlock;
+  observedInformation <- Matrix(0, numParameters, numParameters, sparse=TRUE);
+  observedInformation[1:numModeledParameters, 1:numModeledParameters] <-
+    upperLeftBlock;
+  observedInformation[(numModeledParameters + 1):numParameters, (numModeledParameters + 1):numParameters] <-
+    lowerRightBlock;
+  observedInformation[1:numModeledParameters, (numModeledParameters + 1):numParameters] <-
+    upperRightBlock;
+  observedInformation[(numModeledParameters + 1):numParameters, 1:numModeledParameters] <-
+    lowerLeftBlock;
 
   return(observedInformation);
 }
 
 sampleSigma <- function(model) {
   # proportional to a chi-square with d.o.f. = num observations + num ranef
-  return(sqrt(model@deviance[["pwrss"]] / rchisq(1, model@dims[["n"]] + model@dims[["q"]])));
+  return(1 / rgamma(1, model@dims[["n"]] / 2, model@deviance[["pwrss"]] / 2));
+  
+  return(sqrt(model@deviance[["pwrss"]] / rchisq(1, model@dims[["n"]])));# + model@dims[["q"]])));
 }
 
 setMethod("sim", signature(object = "mer"),
@@ -233,20 +276,17 @@ setMethod("sim", signature(object = "mer"),
   #
   # where Lambda is the left factor of Sigma and P is the permutation matrix calculated
   # when taking the left factor of (Lambda Z Z' Lambda' + I)
-  rotation <- Diagonal(numRanef + numFixef, 1);
-  rotation[1:numRanef, 1:numRanef] <- getSphericalCovarianceLeftFactor(object) %*% t(getPermutationMatrix(object));
-  
-  effectsCovariance <- rotation %*% effectsCovariance %*% t(rotation);
-  
-  #simulatedEffects <- array(0, c(n.sims, numRanef + numFixef));
+  #rotation <- Diagonal(numRanef + numFixef, 1);
+  #rotation[1:numRanef, 1:numRanef] <- getSphericalCovarianceLeftFactor(object) %*% t(getPermutationMatrix(object));
+  #effectsCovariance <- rotation %*% tcrossprod(effectsCovariance, rotation);
 
-  # I am not yet clear on R's ability to optimize loops, so I've moved the conditional outside
   if (isLinearMixedModel) {
     for (i in 1:n.sims) {
-      simulatedSD[[1]][i] <- sampleSigma(object);
+      simulatedSD[[1]][i] <- #sampleSigma(object);
+        ifelse(object@dims[["REML"]] == 1, object@deviance[["sigmaREML"]], object@deviance[["sigmaML"]]);
       simulatedEffects <- mvrnorm(1, effectsMean, (simulatedSD[[1]][i] ^ 2) * effectsCovariance);
       beta.unmodeled[[1]][i,] <- simulatedEffects[(numRanef + 1):(numRanef + numFixef)]
-      for(m in 1:nt){
+      for (m in 1:nt){
         dim.ranef <- dim(beta.bygroup[[m]])
         idx <- ranefStructure[[m]][[1]]
         beta.bygroup[[m]][i,,] <- matrix(simulatedEffects[idx], dim.ranef[2], dim.ranef[3])
