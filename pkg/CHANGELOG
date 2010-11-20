@@ -1,4 +1,9 @@
-2010-9-24 Yu-Sung Su     <ys463@columbia.edu>  
+2010-11-20 Yu-Sung Su     <ys463@columbia.edu>  
+    * DESCRIPTION (Version, Date): 1.3-08
+    * R/simmer: samples directly from the posterior 
+        of the fixed and random effects, given sigma and Sigma
+
+2010-10-24 Yu-Sung Su     <ys463@columbia.edu>  
     * DESCRIPTION (Version, Date): 1.3-07
     add new methods for sim object, coef, fixef, ranef and sigm.hat
 
