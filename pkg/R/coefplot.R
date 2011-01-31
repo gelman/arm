@@ -4,7 +4,7 @@ coefplot.default <- function(coefs, sds,
             v.axis=TRUE, h.axis=TRUE,
             cex.var=0.8, cex.pts=0.9, col.pts=1, pch.pts=20,
             var.las=2, main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
-            plot=TRUE, add=FALSE, offset=0.1,...)
+            plot=TRUE, add=FALSE, offset=0.1, lower.bound=-Inf,...)
 {
   
      # collect informations
@@ -14,8 +14,17 @@ coefplot.default <- function(coefs, sds,
     n.x <- length(coefs)
     idx <- seq(1, n.x)   
     
+    bound <- lower.bound
+    
     coefs.h <- coefs + CI*sds 
-    coefs.l <- coefs - CI*sds                                                          
+    coefs.l <- coefs - CI*sds
+    coefs.l <- ifelse(coefs.l < lower.bound, lower.bound, coefs.l)
+    
+    est1 <- cbind(coefs - 1*sds, coefs + 1*sds)
+    est2 <- cbind(coefs - 2*sds, coefs + 2*sds)
+    est1 <- ifelse(est1 < lower.bound, lower.bound, est1)
+    est2 <- ifelse(est2 < lower.bound, lower.bound, est2)    
+
     min.mar <- par('mar')
     
     if (is.null(main)){main <- "Regression Estimates"}
@@ -54,22 +63,22 @@ coefplot.default <- function(coefs, sds,
           abline(v=0, lty=2)                                                 
           points(coefs, idx, pch=pch.pts, cex=cex.pts, col=col.pts)
           if (CI==2){
-            segments (coefs+sds, idx, coefs-sds, idx, lwd=2, col=col.pts)     
-            segments (coefs+2*sds, idx, coefs-2*sds, idx, lwd=1, col=col.pts)
+            segments (est1[,1], idx, est1[,2], idx, lwd=2, col=col.pts)     
+            segments (est2[,1], idx, est2[,2], idx, lwd=1, col=col.pts)
           }
           else{
-            segments (coefs+sds, idx, coefs-sds, idx, lwd=1, col=col.pts)    
+            segments (est1[,1], idx, est1[,2], idx, lwd=2, col=col.pts)     
           }
         }
         else{
           idx <- idx + offset
           points(coefs, idx, pch=pch.pts, cex=cex.pts, col=col.pts)
           if (CI==2){
-            segments (coefs+sds, idx, coefs-sds, idx, lwd=2, col=col.pts)     
-            segments (coefs+2*sds, idx, coefs-2*sds, idx, lwd=1, col=col.pts)
+            segments (est1[,1], idx, est1[,2], idx, lwd=2, col=col.pts)     
+            segments (est2[,1], idx, est2[,2], idx, lwd=1, col=col.pts)
           }
           else{
-            segments (coefs+sds, idx, coefs-sds, idx, lwd=1, col=col.pts)    
+            segments (est1[,1], idx, est1[,2], idx, lwd=2, col=col.pts)     
           }
         }
     } # end of if vertical
@@ -90,22 +99,22 @@ coefplot.default <- function(coefs, sds,
         abline(h=0, lty=2)                                                 
         points(idx, coefs, pch=pch.pts, cex=cex.pts, col=col.pts)
         if (CI==2){
-          segments (idx, coefs+sds, idx, coefs-sds, lwd=2, col=col.pts)     
-          segments (idx, coefs+2*sds, idx, coefs-2*sds, lwd=1, col=col.pts)
+          segments (idx, est1[,1], idx, est1[,2], lwd=2, col=col.pts)     
+          segments (idx, est2[,1], idx, est2[,2], lwd=1, col=col.pts)
         }
         else if (CI==1) {
-          segments (idx, coefs+sds, idx, coefs-sds, lwd=1, col=col.pts)     
+          segments (idx, est1[,1], idx, est1[,2], lwd=2, col=col.pts)     
         }
       }
       else{
         idx <- idx + offset
         points(idx, coefs, pch=pch.pts, cex=cex.pts, col=col.pts)
         if (CI==2){
-          segments (idx, coefs+sds, idx, coefs-sds, lwd=2, col=col.pts)     
-          segments (idx, coefs+2*sds, idx, coefs-2*sds, lwd=1, col=col.pts)
+          segments (idx, est1[,1], idx, est1[,2], lwd=2, col=col.pts)     
+          segments (idx, est2[,1], idx, est2[,2], lwd=1, col=col.pts)
         }
         else if (CI==1) {
-            segments (idx, coefs+sds, idx, coefs-sds, lwd=1, col=col.pts)     
+          segments (idx, est1[,1], idx, est1[,2], lwd=2, col=col.pts)     
         }
       }
     }   
