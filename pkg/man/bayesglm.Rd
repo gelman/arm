@@ -207,7 +207,7 @@ The new arguments here are: \code{prior.mean}, \code{prior.scale},
 }
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu};
-        Yu-Sung Su \email{ys463@columbia.edu};
+        Yu-Sung Su \email{suyusung@tsinghua.edu.cn};
         Daniel Lee \email{bearlee@alum.mit.edu};
         Aleks Jakulin \email{Jakulin@stat.columbia.edu}}
 

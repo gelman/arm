@@ -33,7 +33,7 @@ unit is matched to. 0 means matched to nothing.}
             Cambridge University Press.}
 
 \author{Jeniffer Hill \email{jh1030@columbia.edu};
-        Yu-Sung Su \email{ys463@columbia.edu}
+        Yu-Sung Su \email{suyusung@tsinghua.edu.cn}
 }
 
 \seealso{\code{\link{balance}}

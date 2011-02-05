@@ -67,7 +67,7 @@ balance(rawdata, matched, pscore.fit, factor=TRUE)
             Cambridge University Press. (Chapter 10)}
 
 \author{Jennifer Hill \email{jh1030@columbia.edu}; 
-        Yu-Sung Su \email{ys463@columbia.edu}
+        Yu-Sung Su \email{suyusung@tsinghua.edu.cn}
         }
 
 \seealso{\code{\link{matching}},

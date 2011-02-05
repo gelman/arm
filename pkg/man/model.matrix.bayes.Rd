@@ -62,7 +62,7 @@ though; they can be identified using \code{\link{bayesglm}} and
   \code{\link{bayesglm}}. 
 }
 
-\author{Yu-Sung Su \email{ys463@columbia.edu}}
+\author{Yu-Sung Su \email{suyusung@tsinghua.edu.cn}}
 
 \examples{
 ff <- log(Volume) ~ log(Height) + log(Girth)

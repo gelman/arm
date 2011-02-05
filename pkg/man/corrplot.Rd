@@ -46,7 +46,7 @@ Journal of the American Statistical Association, Vol.101, N0. 474: p.409-23.
 Journal of the American Statistical Association, Vol.101, N0. 474: p.409-23}
 
 \author{Tian Zheng \email{tzheng@stat.columbia.edu};
-        Yu-Sung Su \email{ys463@columbia.edu}
+        Yu-Sung Su \email{suyusung@tsinghua.edu.cn}
         }
         
 
