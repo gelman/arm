@@ -35,7 +35,7 @@ will be marked \code{x}.
 
 
 \author{
-Yu-Sung Su \email{ys463@columbia.edu}
+Yu-Sung Su \email{suyusung@tsinghua.edu.cn}
 }
         
 \seealso{\code{\link{corrplot}},

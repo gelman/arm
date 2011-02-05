@@ -52,7 +52,7 @@ se.ranef (object)
             Cambridge University Press.}
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu}; 
-        Yu-Sung Su \email{ys463@columbia.edu}
+        Yu-Sung Su \email{suyusung@tsinghua.edu.cn}
         }
         
 \examples{

@@ -23,7 +23,7 @@ coefplot(object,\dots)
                 cex.var=0.8, cex.pts=0.9, 
                 col.pts=1, pch.pts=20, var.las=2,
                 main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
-                plot=TRUE, add=FALSE, offset=.1, \dots)
+                plot=TRUE, add=FALSE, offset=.1, lower.bound=-Inf, \dots)
 
 \S4method{coefplot}{bugs}(object, var.idx=NULL, varnames=NULL, 
             CI=1, vertical=TRUE,
@@ -72,6 +72,7 @@ coefplot(object,\dots)
   \item{plot}{default is TRUE, plot the estimates.}
   \item{add}{if add=TRUE, plot over the existing plot. default is FALSE.}
   \item{offset}{add extra spaces to separate from the existing dots. default is 0.1.}
+  \item{lower.bound}{default is -Inf.}
   \item{var.idx}{the index of the variables of a bugs object, default
         is NULL which will plot all the variables.}
   \item{intercept}{If TRUE will plot intercept, default=FALSE to get better presentation.}
@@ -91,7 +92,7 @@ coefplot(object,\dots)
             Data Analysis Using Regression and Multilevel/Hierarchical Models, 
             Cambridge University Press, 2006.}
             
-\author{Yu-Sung Su \email{ys463@columbia.edu}
+\author{Yu-Sung Su \email{suyusung@tsinghua.edu.cn}
 }
         
 \seealso{\code{\link{display}},

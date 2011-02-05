@@ -34,7 +34,7 @@ contr.bayes.ordered (n, scores = 1:n, contrasts = TRUE)
 }
 
 
-\author{Yu-Sung Su \email{ys463@columbia.edu}}
+\author{Yu-Sung Su \email{suyusung@tsinghua.edu.cn}}
 
 \seealso{
   \code{\link{C}},

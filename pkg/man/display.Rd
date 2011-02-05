@@ -51,7 +51,7 @@ display (object, ...)
             Cambridge University Press, 2006.}
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu}; 
-        Yu-Sung Su \email{ys463@columbia.edu};
+        Yu-Sung Su \email{suyusung@tsinghua.edu.cn};
         Maria Grazia Pittau \email{grazia@stat.columbia.edu}
         }
         

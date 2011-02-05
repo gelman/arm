@@ -50,7 +50,7 @@ if the model were actually true.
              Cambridge University Press, 2006.}
 
 \author{M. Grazia Pittau \email{grazia@stat.columbia.edu};
-        Yu-Sung Su \email{ys463@columbia.edu}
+        Yu-Sung Su \email{suyusung@tsinghua.edu.cn}
 }
         
 \note{There is typically some arbitrariness in choosing the number of bins: 
