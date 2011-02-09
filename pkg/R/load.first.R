@@ -1,6 +1,6 @@
 .onAttach <- function(...) {
   mylib <- dirname(system.file(package = "arm"))
-  ver <- packageDescription("arm", lib = mylib)$Version
+  ver <- packageDescription("arm", lib.loc = mylib)$Version
   builddate <- packageDescription("arm", lib.loc = mylib)$Date
   cat(paste("\narm (Version ", ver, ", built: ", builddate, ")\n", sep = ""))
   cat ("Working directory is", getwd(), "\n")
