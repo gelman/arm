@@ -1,3 +1,7 @@
+2011-02-14 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.4-02
+   * R/bayesglm: fix some dimension issues when NCOL(x.nobs)==1
+
 2011-02-05 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.4-01
    * R/load.first: lib --> lib.loc in packageDescription

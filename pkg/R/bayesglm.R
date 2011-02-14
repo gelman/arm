@@ -343,7 +343,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 .bayesglm.fit.initialize.x <- function (x, nvars, nobs, intercept, scaled) {
     x <- as.matrix (rbind(x, diag(nvars)))
     xnames <- dimnames(x)[[2]]
-    x.nobs <- x[1:nobs, ]
+    x.nobs <- x[1:nobs, ,drop=FALSE]
     # TODO: **** I moved it here because I think it's right, and changed it to x.nobs
     if (intercept & scaled) {
         x[nobs+1,] <- colMeans(x.nobs)
@@ -546,8 +546,11 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             
             centered.coefs <- fit$coefficients
             centered.coefs[1] <- sum(fit$coefficients*colMeans.x)
-            
-            V.coefs <- chol2inv(fit$qr[1:nvars, 1:nvars, drop = FALSE])
+            if(NCOL(x.nobs)==1){
+              V.coefs <- chol2inv(fit$qr[1:nvars])
+            }else{
+              V.coefs <- chol2inv(fit$qr[1:nvars, 1:nvars, drop = FALSE])
+            }
             diag.V.coefs <- diag(V.coefs)
             sampling.var <- diag.V.coefs
             # DL: sampling.var[1] <- crossprod(colMeans.x, V.coefs) %*% colMeans.x
@@ -569,7 +572,11 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     
     if (!(family$family %in% c("poisson", "binomial"))) {
         if (exists ("V.coefs") == FALSE) {
-            V.coefs <- chol2inv(fit$qr[1:nvars, 1:nvars, drop = FALSE])
+            if(NCOL(x.nobs)==1){
+              V.coefs <- chol2inv(fit$qr[1:nvars])            
+            }else{
+              V.coefs <- chol2inv(fit$qr[1:nvars, 1:nvars, drop = FALSE])
+            }
         }
         #mse.resid <- mean((w * (z - x.nobs %*% fit$coefficients))^2) ## LOCAL VARIABLE
         mse.resid <- mean ( (fit$y[1:nobs] - w * predictions)^2)
@@ -678,10 +685,14 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     nr <- min(sum(state$good), nvars)
     if (nr < nvars) {
       Rmat <- diag(x = 0, nvars)
-      Rmat[1:nr, 1:nvars] <- state$fit$qr[1:nr, 1:nvars]
+      Rmat[1:nr, 1:nvars] <- state$fit$qr[1:nr, 1:nvars, drop=FALSE]
     }
     else{
-      Rmat <- state$fit$qr[1:nvars, 1:nvars]
+      if(NCOL(state$fit$qr)==1){
+        Rmat <- state$fit$qr[1:nvars]
+      }else{
+        Rmat <- state$fit$qr[1:nvars, 1:nvars, drop=FALSE]
+      }
     }
     Rmat <- as.matrix(Rmat)
     Rmat[row(Rmat) > col(Rmat)] <- 0
@@ -724,7 +735,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         print.unnormalized.log.posterior,
         Warning) {
     xnames <- dimnames(x)[[2]]
-    x.nobs <- x[1:nobs, ]
+    x.nobs <- x[1:nobs, ,drop=FALSE]
     
     .bayesglm.fit.loop.validateInputs (etastart, start, nvars, dimnames(x)[[2]])
     
