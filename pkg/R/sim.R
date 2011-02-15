@@ -6,7 +6,7 @@ setMethod("sim", signature(object = "lm"),
     coef <- summ$coef[,1:2,drop=FALSE]
     dimnames(coef)[[2]] <- c("coef.est","coef.sd")
     sigma.hat <- summ$sigma
-    beta.hat <- coef[,1]
+    beta.hat <- coef[,1,drop = FALSE]
     V.beta <- summ$cov.unscaled
     n <- summ$df[1] + summ$df[2]
     k <- summ$df[1]
@@ -34,14 +34,14 @@ setMethod("sim", signature(object = "glm"),
     summ <- summary (object, correlation=TRUE, dispersion = object$dispersion)
     coef <- summ$coef[,1:2,drop=FALSE]
     dimnames(coef)[[2]] <- c("coef.est","coef.sd")
-    beta.hat <- coef[,1]
-    sd.beta <- coef[,2]
+    beta.hat <- coef[,1,drop=FALSE]
+    sd.beta <- coef[,2,drop=FALSE]
     corr.beta <- summ$corr
     n <- summ$df[1] + summ$df[2]
     k <- summ$df[1]
     V.beta <- corr.beta * array(sd.beta,c(k,k)) * t(array(sd.beta,c(k,k)))
     beta <- array (NA, c(n.sims,k))
-    dimnames(beta) <- list (NULL, names(beta.hat))
+    dimnames(beta) <- list (NULL, dimnames(beta.hat)[[1]])
     for (s in 1:n.sims){
       beta[s,] <- mvrnorm (1, beta.hat, V.beta)
     }

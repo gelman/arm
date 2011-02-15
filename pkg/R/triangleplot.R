@@ -122,7 +122,7 @@ triangleplot <- function(x, y=NULL, cutpts=NULL, details=TRUE,
             cex=cex.col, adj=1, xpd=TRUE)
     }
     rect(xleft=0.5, ybottom=z.breaks[length(z.breaks)],
-        xright=1, y=z.breaks[length(z.breaks)],
+        xright=1, ytop=z.breaks[length(z.breaks)],
         col=z.colors[length(z.colors)])
     text(x=0.45, y=z.breaks[length(z.breaks)],
         labels=format(round(z.breaks[length(z.breaks)], digits)),

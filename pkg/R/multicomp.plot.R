@@ -70,7 +70,7 @@ multicomp.plot <- function(object, alpha=0.05, main = "Multiple Comparison Plot"
           bayes.signif, ylab = "", xlab = "", yaxt = "n", xaxt = "n",
           col = c( col.low, col.same, col.high ) )
   box( "plot" )
-  axis(2, at = 0, label = "", las = 1, line = 0, tick = FALSE, 
+  axis(2, at = 0, labels = "", las = 1, line = 0, tick = FALSE, 
           xaxs = "i", yaxs = "i" )
   axis(mar.idx, at = 1:nrow( bayes.signif ),line = -0.8, las = 2 , cex = 0.3,
           labels = label, tick = FALSE, xaxs = "i") 
