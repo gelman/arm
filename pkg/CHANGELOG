@@ -1,3 +1,7 @@
+2011-02-23 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.4-04
+   * R/binnedplot: pass addition graphical parameters to the function.
+
 2011-02-15 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.4-03
    * R/sim: fix a bug in sim.glm() when there is only an intercept 
