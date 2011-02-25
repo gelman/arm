@@ -11,7 +11,7 @@
  binnedplot(x ,y, nclass=NULL, 
     xlab="Expected Values", ylab="Average residual", 
     main="Binned residual plot", 
-    cex.pts=0.8, col.pts=1, col.int="gray")
+    cex.pts=0.8, col.pts=1, col.int="gray", ...)
 }
 
 \arguments{
@@ -30,6 +30,7 @@
   \item{cex.pts}{The size of points, default=0.8.}
   \item{col.pts}{color of points, default is black}
   \item{col.int}{color of intervals, default is gray}
+  \item{...}{Graphical parameters to be passed to methods}
 }
 
 \details{

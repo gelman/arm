@@ -5,7 +5,7 @@
 binnedplot <- function(x, y, nclass=NULL, 
     xlab="Expected Values", ylab="Average residual", 
     main="Binned residual plot", 
-    cex.pts=0.8, col.pts=1, col.int="gray")
+    cex.pts=0.8, col.pts=1, col.int="gray", ...)
 {
 
     n <- length(x)     
@@ -24,7 +24,7 @@ binnedplot <- function(x, y, nclass=NULL,
     aa <- data.frame(binned.resids (x, y, nclass)$binned)
     
     plot(range(aa$xbar), range(aa$ybar, aa$X2se, -aa$X2se), 
-        xlab=xlab, ylab=ylab, type="n", main=main)
+        xlab=xlab, ylab=ylab, type="n", main=main, ...)
     abline (0,0, lty=2)
     lines (aa$xbar, aa$X2se, col=col.int)
     lines (aa$xbar, -aa$X2se, col=col.int)
