@@ -1,29 +1,60 @@
-coefplot.default <- function(coefs, sds, 
-            varnames=NULL, CI=2, 
+coefplot.default <- function(coefs, sds, CI=2, 
+            lower.conf.bounds, upper.conf.bounds,
+            varnames=NULL, 
             vertical=TRUE,
             v.axis=TRUE, h.axis=TRUE,
             cex.var=0.8, cex.pts=0.9, col.pts=1, pch.pts=20,
             var.las=2, main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
-            plot=TRUE, add=FALSE, offset=0.1, lower.bound=-Inf,...)
+            plot=TRUE, add=FALSE, offset=0.1, ...)
 {
   
      # collect informations
     if (is.list(coefs)){
       coefs <- unlist(coefs)
     }
+    
+    
     n.x <- length(coefs)
     idx <- seq(1, n.x)   
-    
-    bound <- lower.bound
-    
-    coefs.h <- coefs + CI*sds 
-    coefs.l <- coefs - CI*sds
-    coefs.l <- ifelse(coefs.l < lower.bound, lower.bound, coefs.l)
-    
-    est1 <- cbind(coefs - 1*sds, coefs + 1*sds)
-    est2 <- cbind(coefs - 2*sds, coefs + 2*sds)
-    est1 <- ifelse(est1 < lower.bound, lower.bound, est1)
-    est2 <- ifelse(est2 < lower.bound, lower.bound, est2)    
+    #bound <- lower.bound
+    if(!missing(lower.conf.bounds)){
+      if(length(coefs)!=length(lower.conf.bounds)){
+        stop("Number of conf.bounds does not equal to number of estimates")
+      }
+    }
+    if(!missing(upper.conf.bounds)){
+      if(length(coefs)!=length(upper.conf.bounds)){
+        stop("Number of conf.bounds does not equal to number of estimates")
+      }
+    }
+
+    if(!missing(sds)){
+      coefs.h <- coefs + CI*sds 
+      coefs.l <- coefs - CI*sds
+      est1 <- cbind(coefs - sds, coefs + sds)
+      est2 <- cbind(coefs - 2*sds, coefs + 2*sds)
+      if(!missing(lower.conf.bounds)){
+        est1[,1] <- lower.conf.bounds
+        CI <- 1
+      }
+      if(!missing(upper.conf.bounds)){
+        est1[,2] <- upper.conf.bounds
+        CI <- 1
+      }
+
+    }else{
+      #coefs.h <- upper.conf.bounds
+      #coefs.l <- lower.conf.bounds
+      est1 <- cbind(coefs, coefs)
+      if(!missing(lower.conf.bounds)){
+        est1[,1] <- lower.conf.bounds
+        CI <- 1
+      }
+      if(!missing(upper.conf.bounds)){
+        est1[,2] <- upper.conf.bounds
+        CI <- 1
+      }
+    }
 
     min.mar <- par('mar')
     
@@ -67,7 +98,7 @@ coefplot.default <- function(coefs, sds,
             segments (est2[,1], idx, est2[,2], idx, lwd=1, col=col.pts)
           }
           else{
-            segments (est1[,1], idx, est1[,2], idx, lwd=2, col=col.pts)     
+            segments (est1[,1], idx, est1[,2], idx, lwd=1, col=col.pts)     
           }
         }
         else{
@@ -78,7 +109,7 @@ coefplot.default <- function(coefs, sds,
             segments (est2[,1], idx, est2[,2], idx, lwd=1, col=col.pts)
           }
           else{
-            segments (est1[,1], idx, est1[,2], idx, lwd=2, col=col.pts)     
+            segments (est1[,1], idx, est1[,2], idx, lwd=1, col=col.pts)     
           }
         }
     } # end of if vertical
@@ -103,7 +134,7 @@ coefplot.default <- function(coefs, sds,
           segments (idx, est2[,1], idx, est2[,2], lwd=1, col=col.pts)
         }
         else if (CI==1) {
-          segments (idx, est1[,1], idx, est1[,2], lwd=2, col=col.pts)     
+          segments (idx, est1[,1], idx, est1[,2], lwd=1, col=col.pts)     
         }
       }
       else{
@@ -114,7 +145,7 @@ coefplot.default <- function(coefs, sds,
           segments (idx, est2[,1], idx, est2[,2], lwd=1, col=col.pts)
         }
         else if (CI==1) {
-          segments (idx, est1[,1], idx, est1[,2], lwd=2, col=col.pts)     
+          segments (idx, est1[,1], idx, est1[,2], lwd=1, col=col.pts)     
         }
       }
     }   
