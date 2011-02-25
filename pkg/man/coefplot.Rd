@@ -17,13 +17,14 @@
 \usage{
 coefplot(object,\dots)
 
-\method{coefplot}{default}(coefs, sds, 
-                varnames=NULL, CI=2, vertical=TRUE, 
+\method{coefplot}{default}(coefs, sds, CI=2, 
+                lower.conf.bounds, upper.conf.bounds,
+                varnames=NULL, vertical=TRUE, 
                 v.axis=TRUE, h.axis=TRUE,
                 cex.var=0.8, cex.pts=0.9, 
                 col.pts=1, pch.pts=20, var.las=2,
                 main=NULL, xlab=NULL, ylab=NULL, mar=c(1,3,5.1,2),
-                plot=TRUE, add=FALSE, offset=.1, lower.bound=-Inf, \dots)
+                plot=TRUE, add=FALSE, offset=.1, \dots)
 
 \S4method{coefplot}{bugs}(object, var.idx=NULL, varnames=NULL, 
             CI=1, vertical=TRUE,
@@ -45,11 +46,13 @@ coefplot(object,\dots)
   \item{...}{further arguments passed to or from other methods.}
   \item{coefs}{a vector of coefficients.}
   \item{sds}{a vector of sds of coefficients.}
+  \item{CI}{confidence interval, default is 2, which will plot plus and minus 2 sds or
+    95\% CI. If CI=1, plot plus and minus 1 sds or 50\% CI instead.}
+  \item{lower.conf.bounds}{lower bounds of confidence intervals.}
+  \item{upper.conf.bounds}{upper bounds of confidence intervals.}
   \item{varnames}{a vector of variable names, default is NULL, which will use
     the names of variables; if specified, the length of varnames must be equal to
     the length of predictors, including the intercept.}
-  \item{CI}{confidence interval, default is 2, which will plot plus and minus 2 sds or
-    95\% CI. If CI=1, plot plus and minus 1 sds or 50\% CI instead.}
   \item{vertical}{orientation of the plot, default is TRUE which will plot
     variable names in the 2nd axis. If FALSE, plot variable names in the first
     axis instead.}
@@ -72,7 +75,7 @@ coefplot(object,\dots)
   \item{plot}{default is TRUE, plot the estimates.}
   \item{add}{if add=TRUE, plot over the existing plot. default is FALSE.}
   \item{offset}{add extra spaces to separate from the existing dots. default is 0.1.}
-  \item{lower.bound}{default is -Inf.}
+%  \item{lower.bound}{default is -Inf.}
   \item{var.idx}{the index of the variables of a bugs object, default
         is NULL which will plot all the variables.}
   \item{intercept}{If TRUE will plot intercept, default=FALSE to get better presentation.}
@@ -181,8 +184,8 @@ old.par <- par(no.readonly = TRUE)
  coef.vect <- c(0.2, 1.4, 2.3, 0.5)
  sd.vect <- c(0.12, 0.24, 0.23, 0.15)
  longnames <- c("var1", "var2", "var3", "var4")
- coefplot (coef.vect, sd.vect, longnames, main="Regression Estimates")
- coefplot (coef.vect, sd.vect, longnames, vertical=FALSE, 
+ coefplot (coef.vect, sd.vect, varnames=longnames, main="Regression Estimates")
+ coefplot (coef.vect, sd.vect, varnames=longnames, vertical=FALSE, 
     var.las=1, main="Regression Estimates")
     
 par(old.par)
