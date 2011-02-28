@@ -1,7 +1,6 @@
-2011-02-26 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
-   * DESCRIPTION (Version, Date): 1.4-05
-   * R/coefplot: add options of upper and lower conf.bounds.
-   * R/discrete.histogram: add a new plot function
+2011-03-1 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.4-06
+   * NAMESPACE: export distcrete.histogram
 
 2011-02-23 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.4-04
