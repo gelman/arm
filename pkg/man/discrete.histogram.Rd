@@ -28,6 +28,22 @@ discrete.histogram (x, prob, prob2=NULL, prob3=NULL,
   }
   
 \details{This function displays a histogram for discrete
-	probability distributions.
+  probability distributions.
 }
  
+        
+\examples{
+a <- c(3,4,0,0,5,1,1,1,1,0)
+discrete.histogram (a)
+
+x <- c(0,1,3,4,5)
+p <- c(.3,.4,.1,.1,.1)
+discrete.histogram (x,p)
+
+x <- c(0,1,3,4,5)
+y <- c(3,4,1,1,1)
+discrete.histogram (x,y)
+}
+
+
+\keyword{dplot}
