@@ -1,4 +1,10 @@
 2011-03-1 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.4-07
+   * AllClass:  add sim.polr class
+   * coef: add coef() for sim.polr 
+   * sim: add sim() for polr 
+
+2011-03-1 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.4-06
    * NAMESPACE: export distcrete.histogram
 

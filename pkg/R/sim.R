@@ -58,7 +58,29 @@ setMethod("sim", signature(object = "glm"),
     return(ans)
     }
 )
-    
+
+
+
+
+
+setMethod("sim", signature(object = "polr"),
+    function(object, n.sims=100){
+  x <- as.matrix(model.matrix(object))
+  coefs <- coef(object)
+  k <- length(coefs)
+  zeta <- object$zeta
+  Sigma <- vcov(object)
+
+  if(n.sims==1){
+    parameters <- t(mvrnorm(n.sims, c(coefs, zeta), Sigma))
+  }else{
+    parameters <- mvrnorm(n.sims, c(coefs, zeta), Sigma)
+  }
+  ans <- new("sim.polr", 
+              coef = parameters[,1:k,drop=FALSE],
+              zeta = parameters[,-(1:k),drop=FALSE])
+  return(ans)
+})
 
 
 

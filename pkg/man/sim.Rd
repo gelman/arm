@@ -5,8 +5,10 @@
 \alias{sim.mer-class}
 \alias{sim,lm-method}
 \alias{sim,glm-method}
+\alias{sim,polr-method}
 \alias{sim,mer-method}
 \alias{coef,sim-method}
+\alias{coef,sim.polr-method}
 \alias{coef,sim.mer-method}
 \alias{fixef,sim.mer-method}
 \alias{ranef,sim.mer-method}
@@ -27,9 +29,11 @@ sim(object, ...)
 
 \S4method{sim}{lm}(object, n.sims = 100)
 \S4method{sim}{glm}(object, n.sims = 100)
+\S4method{sim}{polr}(object, n.sims = 100)
 \S4method{sim}{mer}(object, n.sims = 100)
 
 \S4method{coef}{sim}(object)
+\S4method{coef}{sim.polr}(object, slot=c("ALL", "coef", "zeta"))
 \S4method{coef}{sim.mer}(object)
 \S4method{fixef}{sim.mer}(object)
 \S4method{ranef}{sim.mer}(object)
@@ -39,13 +43,14 @@ sim(object, ...)
 
 \arguments{
   \item{object}{the output of a call to \code{lm} with n data points and k predictors.}
+  \item{slot}{return which slot of \code{sim.polr}, available options are \code{coef, zeta, ALL}.}
   \item{...}{further arguments passed to or from other methods.}
   \item{n.sims}{number of independent simulation draws to create.}
 }
 
 \value{
-  \item{coef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients.
-    Previously, it is called \code{beta}.}
+  \item{coef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients.}
+  \item{zeta}{matrix (dimensions n.sims x k) of n.sims random draws of zetas (cut points in polr).}
   \item{fixef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients 
     of the fixed effects for the \code{mer} objects. Previously, it is called \code{unmodeled}.}
   \item{sigma}{vector of n.sims random draws of sigma
@@ -105,6 +110,14 @@ sim(object, ...)
  M2.sim <- sim (M2)
  coef.M2.sim <- coef(M2.sim)
  sigma.M2.sim <- sigma.hat(M2.sim)
+
+# Ordered Logistic regression 
+house.plr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
+display(house.plr)
+M.plr <- sim(house.plr)
+coef.sim <- coef(M.plr, slot="coef")   
+zeta.sim <- coef(M.plr, slot="zeta")
+coefall.sim <- coef(M.plr)
 
 # Using lmer:
 # Example 1
