@@ -72,6 +72,12 @@ setClass("sim",
             sigma = "numeric")
 )
 
+setClass("sim.polr",
+     representation(
+            coef = "matrix",
+            zeta = "matrix")
+)
+
 
 
 setClass("sim.mer",
