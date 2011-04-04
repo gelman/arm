@@ -1,8 +1,11 @@
 setMethod("display", signature(object = "lm"),
     function(object, digits=2, detail=FALSE)
     {
-    call <- object$call
+    out <- NULL
+    out$call <- object$call
     summ <- summary (object)
+    out$sigma.hat <- summ$sigma
+    out$r.squared <- summ$r.squared
     if(detail){
       coef <- summ$coef[,,drop=FALSE]
     }
@@ -10,14 +13,19 @@ setMethod("display", signature(object = "lm"),
       coef <- summ$coef[,1:2,drop=FALSE]
     }
     dimnames(coef)[[2]][1:2] <- c("coef.est","coef.se")
-    n <- summ$df[1] + summ$df[2]
-    k <- summ$df[1]
-    print (call)
-    pfround (coef, digits)
+    out$coef <- coef[,"coef.est"]#,drop=FALSE]
+    out$se <- coef[,"coef.se"]#,drop=FALSE]
+    out$t.value <- summ$coef[,3]
+    out$p.value <- summ$coef[,4]
+    out$n <- summ$df[1] + summ$df[2]
+    out$k <- summ$df[1]
+    print (out$call)
+    pfround (out$coef, digits)
     cat("---\n")
-    cat (paste ("n = ", n, ", k = ", k,
-    "\nresidual sd = ", fround (summ$sigma, digits),
-    ", R-Squared = ", fround (summ$r.squared, 2), "\n", sep=""))
+    cat (paste ("n = ", out$n, ", k = ", out$k,
+    "\nresidual sd = ", fround (out$sigma.hat, digits),
+    ", R-Squared = ", fround (out$r.squared, 2), "\n", sep=""))
+    return(invisible(out))
     }
 )
 
@@ -26,11 +34,14 @@ setMethod("display", signature(object = "lm"),
 setMethod("display", signature(object = "bayesglm"),
     function(object, digits=2, detail=FALSE)
     {
-    call <- object$call
+    out <- NULL
+    out$call <- object$call
     summ <- summary(object, dispersion = object$dispersion)
     if(detail){
       coef <- summ$coefficients
       coef[ rownames( coef ) %in% rownames( summ$coef[, , drop = FALSE]) , ] <- summ$coef[ , , drop = FALSE ] 
+      out$z.value <- coef[,3]#,drop=FALSE]
+      out$p.value <- coef[,4]#,drop=FALSE]
     }
     else{
       coef <- matrix( NA, length( object$coefficients ),2 )
@@ -38,27 +49,32 @@ setMethod("display", signature(object = "bayesglm"),
       coef[ rownames( coef ) %in% rownames( summ$coef[, 1:2, drop = FALSE]) , ] <- summ$coef[ , 1:2, drop = FALSE ]  ## M
     }
     dimnames(coef)[[2]][1:2] <- c( "coef.est", "coef.se")
+    out$coef <- coef[,"coef.est"]#,drop=FALSE]
+    out$se <- coef[,"coef.se"]#,drop=FALSE]
     #n <- summ$df[1] + summ$df[2]
-    n <- summ$df.residual
-    k <- summ$df[1]
-    print(call)
+    out$n <- summ$df.residual
+    out$k <- summ$df[1]
+    out$deviance <- summ$deviance
+    out$null.deviance <- summ$null.deviance
+    print(out$call)
     pfround(coef, digits)
     cat("---\n")
-    cat(paste("n = ", n, ", k = ", k, "\nresidual deviance = ", 
-        fround(summ$deviance, 1), ", null deviance = ", fround(summ$null.deviance, 
-            1), " (difference = ", fround(summ$null.deviance - 
-            summ$deviance, 1), ")", "\n", sep = ""))
-    dispersion <- if (is.null(object$dispersion)) 
-        summ$dispersion
-    else object$dispersion
-    if (dispersion != 1) {
-        cat(paste("overdispersion parameter = ", fround(dispersion, 
-            1), "\n", sep = ""))
+    cat(paste("n = ", out$n, ", k = ", out$k, "\nresidual deviance = ", 
+        fround(out$deviance, 1), ", null deviance = ", fround(out$null.deviance, 1), " (difference = ", fround(out$null.deviance - out$deviance, 1), ")", "\n", sep = ""))
+    out$dispersion <- if (is.null(object$dispersion)){
+                        summ$dispersion
+                      } else {
+                        object$dispersion
+                      }
+    if (out$dispersion != 1) {
+        out$overdispersion.parameter <- out$dispersion
+        cat(paste("overdispersion parameter = ", fround(out$dispersion, 1), "\n", sep = ""))
         if (family(object)$family == "gaussian") {
-            cat(paste("residual sd is sqrt(overdispersion) = ", 
-                fround(sqrt(dispersion), digits), "\n", sep = ""))
+          out$sigma.hat <- sqrt(out$dispersion)
+          cat(paste("residual sd is sqrt(overdispersion) = ", fround(out$sigma.hat, digits), "\n", sep = ""))
         }
     }
+    return(invisible(out))
     }
 )
 
@@ -116,36 +132,44 @@ setMethod("display", signature(object = "bayesglm.h"),
 setMethod("display", signature(object = "glm"),
     function(object, digits=2, detail=FALSE)
     {
-    call <- object$call
+    out <- NULL
+    out$call <- object$call
     summ <- summary(object, dispersion = object$dispersion)
     if(detail){
       coef <- summ$coef[, , drop = FALSE]
+      out$z.value <- coef[,3]#,drop=FALSE]
+      out$p.value <- coef[,4]#,drop=FALSE]
     }
     else{
       coef <- summ$coef[, 1:2, drop = FALSE]
     }
     dimnames(coef)[[2]][1:2] <- c("coef.est", "coef.se")
-    n <- summ$df[1] + summ$df[2]
-    k <- summ$df[1]
-    print(call)
+    out$n <- summ$df[1] + summ$df[2]
+    out$k <- summ$df[1]
+    out$coef <- coef[,"coef.est"]
+    out$se <- coef[,"coef.se"]
+     print(out$call)
     pfround(coef, digits)
+    out$deviance <- summ$deviance
+    out$null.deviance <- summ$null.deviance
     cat("---\n")
-    cat(paste("  n = ", n, ", k = ", k, "\n  residual deviance = ", 
-        fround(summ$deviance, 1), ", null deviance = ", fround(summ$null.deviance, 
-            1), " (difference = ", fround(summ$null.deviance - 
-            summ$deviance, 1), ")", "\n", sep = ""))
-    dispersion <- if (is.null(object$dispersion))
-      summ$dispersion
-    else object$dispersion
-    if (dispersion != 1) {
-      cat(paste("  overdispersion parameter = ",
-                fround(dispersion, 1), "\n", sep = ""))
+    cat(paste("  n = ", out$n, ", k = ", out$k, "\n  residual deviance = ", 
+        fround(out$deviance, 1), ", null deviance = ", fround(out$null.deviance, 1), " (difference = ", fround(summ$null.deviance - summ$deviance, 1), ")", "\n", sep = ""))
+    out$dispersion <- if (is.null(object$dispersion)){
+                        summ$dispersion
+                      } else {
+                        object$dispersion
+                      }
+    if (out$dispersion != 1) {
+      cat(paste("  overdispersion parameter = ", fround(out$dispersion, 1), "\n", sep = ""))
       if (family(object)$family=="gaussian") {
+        out$sigma.hat <- sqrt(out$dispersion)
         cat(paste("  residual sd is sqrt(overdispersion) = ",
-                  fround(sqrt(dispersion), digits), "\n", sep = ""))
+                  fround(out$sigma.hat, digits), "\n", sep = ""))
       }
     }
-    }
+    return(invisible(out))
+  }
 )
 
 
@@ -194,8 +218,9 @@ setMethod("display", signature(object = "glm"),
 setMethod("display", signature(object = "mer"),
     function(object, digits=2, detail=FALSE)
     {
-    call <- object@call
-    print (call)
+    out <- NULL
+    out$call <- object@call
+    print (out$call)
     #object <- summary(object)
     #summ <- summary(object)
     fcoef <- fixef(object)
@@ -208,7 +233,7 @@ setMethod("display", signature(object = "mer"),
       if (!object@dims["useSc"]) {
         coefs <- coefs[, 1:2, drop = FALSE]
         stat <- coefs[, 1]/coefs[, 2]
-        pval <- 2 * pnorm(abs(stat), lower = FALSE)
+        out$pval <- 2 * pnorm(abs(stat), lower = FALSE)
         coefs <- cbind(coefs, `z value` = stat, `Pr(>|z|)` = pval)
       }
       else {
@@ -252,27 +277,32 @@ setMethod("display", signature(object = "mer"),
 setMethod("display", signature(object = "polr"),
     function(object, digits=2, detail=FALSE)
     {
-    call <- object$call
+    out <- NULL
+    out$call <- object$call
     summ <- summary(object)
     if(detail){
       coef <- summ$coef[, , drop = FALSE]
+      out$t.value <- coef[,"t.value"]
     }
     else{
       coef <- summ$coef[, 1:2, drop = FALSE]
     }
     dimnames(coef)[[2]][1:2] <- c("coef.est", "coef.se")
-    n <- summ$n  
-    k <- nrow (coef)
-    k.intercepts <- length (summ$zeta)
-    print(call)
+    out$coef <- coef[,"coef.est"]
+    out$se <- coef[,"coef.se"]
+    out$n <- summ$n  
+    out$k <- nrow (coef)
+    out$k.intercepts <- length (summ$zeta)
+    print(out$call)
     pfround(coef, digits)
     cat("---\n")
-    cat(paste("n = ", n, ", k = ", k, " (including ", k.intercepts,
+    cat(paste("n = ", out$n, ", k = ", out$k, " (including ", out$k.intercepts,
         " intercepts)\nresidual deviance = ",
         fround(deviance(object), 1), 
         ", null deviance is not computed by polr",
         "\n", sep = ""))
     #cat("AIC:", fround(AIC(object), 1), "\n")
+    return(invisible(out))
     }
 )
 
