@@ -1,3 +1,9 @@
+2011-04-24 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.4-08
+   * display: now return objects after displaying the fitted model.
+   * sigma.hat: fix a bug in sigma.hat for mer
+   
+   
 2011-03-1 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.4-07
    * AllClass:  add sim.polr class

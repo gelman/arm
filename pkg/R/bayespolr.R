@@ -150,7 +150,7 @@ function (formula, data, weights, start, ..., subset, na.action,
             pc <- ncol(x)
         }
         spacing <- logit((1:q)/(q + 1))
-        if (method != "logit") 
+        if (method != "logistic") 
             spacing <- spacing/1.7
         gammas <- -coefs[1] + spacing - spacing[q1]
         thetas <- c(gammas[1], log(diff(gammas)))

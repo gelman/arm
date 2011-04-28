@@ -1,6 +1,6 @@
 \name{invlogit}
 \alias{invlogit}
-%\alias{logit}
+\alias{logit}
 
 \title{Logistic and Inverse logistic functions}
 
@@ -8,7 +8,7 @@
   Inverse-logit function, transforms continuous values to the range (0, 1)
 }
 \usage{
-%logit(x)
+logit(x)
 invlogit(x)
 }
 

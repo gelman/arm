@@ -75,12 +75,13 @@ setMethod("sigma.hat", signature(object = "mer"),
     fcoef <- fixef(object)
     #useScale <- attr (VarCorr (object), "sc")  # =sc?
     useScale <- object@dims["useSc"]
-    ngrps <- lapply(object@flist, function(x) length(levels(x)))
-    n.groupings <- length (ngrps)
+    #ngrps <- lapply(object@flist, function(x) length(levels(x)))
+    #n.groupings <- length (ngrps)
     varc <- VarCorr (object)
     sc <- attr(varc, "sc")  # =useScale
     recorr <- lapply(varc, function(el) attr(el, "correlation"))
     reStdDev <- c(lapply(varc, function(el) attr(el, "stddev")), list(Residual = sc))
+    n.groupings <- length(recorr)
     sigmas <- as.list (rep (NA, n.groupings+1))
     sigmas[1] <- ifelse (useScale, sc, 1) #####if NA, sd=1
     cors <- as.list (rep (NA, n.groupings+1))
