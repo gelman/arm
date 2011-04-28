@@ -24,16 +24,16 @@ setClass("bayesglm",
 )
 
 
-setClass("bayesglm.h",
-     representation(
-            formula = "formula",
-            family = "family",
-            prior.mean = "numeric", 
-            prior.scale = "numeric", 
-            prior.df = "numeric",
-            batch = "numeric"),
-    contains = "bayesglm"
-)
+#setClass("bayesglm.h",
+#     representation(
+#            formula = "formula",
+#            family = "family",
+#            prior.mean = "numeric", 
+#            prior.scale = "numeric", 
+#            prior.df = "numeric",
+#            batch = "numeric"),
+#    contains = "bayesglm"
+#)
 
 #setClass("polr",
 #     representation(

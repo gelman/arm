@@ -22,7 +22,7 @@ importMethodsFrom(Matrix, "%*%")
 exportClasses(
               "balance",
               "bayesglm",
-              "bayesglm.h",
+              #"bayesglm.h",
               "bayespolr",
               "sim",
               "sim.mer"

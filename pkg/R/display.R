@@ -78,53 +78,53 @@ setMethod("display", signature(object = "bayesglm"),
     }
 )
 
-setMethod("display", signature(object = "bayesglm.h"),
-    function (object, digits = 2, detail = FALSE) 
-    {
-    call <- object$call
-    summ <- summary(object, dispersion = object$dispersion)
-    if(detail){
-      coef <- summ$coefficients
-      coef[ rownames( coef ) %in% rownames( summ$coef[, , drop = FALSE]) , ] <- summ$coef[ , , drop = FALSE ] 
-    }
-    else{
-      coef <- matrix( NA, length( object$coefficients ),2 )
-      rownames(coef) <- names( object$coefficients )          ## M
-      coef[ rownames( coef ) %in% rownames( summ$coef[, 1:2, drop = FALSE]) , ] <- summ$coef[ , 1:2, drop = FALSE ]  ## M
-    }
-    dimnames(coef)[[2]][1:2] <- c( "coef.est", "coef.se")
-    #n <- summ$df[1] + summ$df[2]
-    n <- summ$df.residual
-    k <- summ$df[1]
-    print(call)
-    if(max(object$batch)>0){
-        nn<- strsplit( rownames( coef )[seq( from= length( object$batch ) + 1 ,to = nrow( coef ))], "." , fixed=TRUE)
-        bb<- c( object$batch,unlist( lapply (nn , function( lst ) { lst[[3]] } ) ) ) 
-    }
-    else {bb<- c( object$batch)}
-    cc<- cbind( fround( coef, digits ), bb )
-    dimnames(cc)[[2]][3]<-"batch"
-    print( cc , quote = FALSE )
-    cat("---\n")
-    cat(paste("n = ", n, ", k = ", k, "\nresidual deviance = ", 
-        fround(summ$deviance, 1), ", null deviance = ", fround(summ$null.deviance, 
-            1), " (difference = ", fround(summ$null.deviance - 
-            summ$deviance, 1), ")", "\n", sep = ""))
-    dispersion <- if (is.null(object$dispersion)) 
-        summ$dispersion
-    else object$dispersion
-    if (dispersion != 1) {
-        cat(paste("overdispersion parameter = ", fround(dispersion, 
-            1), "\n", sep = ""))
-        if (family(object)$family == "gaussian") {
-            cat(paste("residual sd is sqrt(overdispersion) = ", 
-                fround(sqrt(dispersion), digits), "\n", sep = ""))
-            cat(paste("group sd is sigma.batch = ", 
-                fround(object$sigma.batch, digits), "\n", sep = ""))
-        }
-    }
-    }
-)
+#setMethod("display", signature(object = "bayesglm.h"),
+#    function (object, digits = 2, detail = FALSE) 
+#    {
+#    call <- object$call
+#    summ <- summary(object, dispersion = object$dispersion)
+#    if(detail){
+#      coef <- summ$coefficients
+#      coef[ rownames( coef ) %in% rownames( summ$coef[, , drop = FALSE]) , ] <- summ$coef[ , , drop = FALSE ] 
+#    }
+#    else{
+#      coef <- matrix( NA, length( object$coefficients ),2 )
+#      rownames(coef) <- names( object$coefficients )          ## M
+#      coef[ rownames( coef ) %in% rownames( summ$coef[, 1:2, drop = FALSE]) , ] <- summ$coef[ , 1:2, drop = FALSE ]  ## M
+#    }
+#    dimnames(coef)[[2]][1:2] <- c( "coef.est", "coef.se")
+#    #n <- summ$df[1] + summ$df[2]
+#    n <- summ$df.residual
+#    k <- summ$df[1]
+#    print(call)
+#    if(max(object$batch)>0){
+#        nn<- strsplit( rownames( coef )[seq( from= length( object$batch ) + 1 ,to = nrow( coef ))], "." , fixed=TRUE)
+#        bb<- c( object$batch,unlist( lapply (nn , function( lst ) { lst[[3]] } ) ) ) 
+#    }
+#    else {bb<- c( object$batch)}
+#    cc<- cbind( fround( coef, digits ), bb )
+#    dimnames(cc)[[2]][3]<-"batch"
+#    print( cc , quote = FALSE )
+#    cat("---\n")
+#    cat(paste("n = ", n, ", k = ", k, "\nresidual deviance = ", 
+#        fround(summ$deviance, 1), ", null deviance = ", fround(summ$null.deviance, 
+#            1), " (difference = ", fround(summ$null.deviance - 
+#            summ$deviance, 1), ")", "\n", sep = ""))
+#    dispersion <- if (is.null(object$dispersion)) 
+#        summ$dispersion
+#    else object$dispersion
+#    if (dispersion != 1) {
+#        cat(paste("overdispersion parameter = ", fround(dispersion, 
+#            1), "\n", sep = ""))
+#        if (family(object)$family == "gaussian") {
+#            cat(paste("residual sd is sqrt(overdispersion) = ", 
+#                fround(sqrt(dispersion), digits), "\n", sep = ""))
+#            cat(paste("group sd is sigma.batch = ", 
+#                fround(object$sigma.batch, digits), "\n", sep = ""))
+#        }
+#    }
+#    }
+#)
 
 
 
@@ -232,13 +232,13 @@ setMethod("display", signature(object = "mer"),
     if (length (fcoef) > 0){
       if (!object@dims["useSc"]) {
         coefs <- coefs[, 1:2, drop = FALSE]
-        stat <- coefs[, 1]/coefs[, 2]
-        out$pval <- 2 * pnorm(abs(stat), lower = FALSE)
-        coefs <- cbind(coefs, `z value` = stat, `Pr(>|z|)` = pval)
+        out$z.value <- coefs[, 1]/coefs[, 2]
+        out$p.value <- 2 * pnorm(abs(out$z.value), lower = FALSE)
+        coefs <- cbind(coefs, `z value` = out$z.value, `Pr(>|z|)` = out$p.value)
       }
       else {
-        stat <- coefs[, 1]/coefs[, 2]
-        coefs <- cbind(coefs, `t value` = stat)
+        out$t.value <- coefs[, 1]/coefs[, 2]
+        coefs <- cbind(coefs, `t value` = out$t.value)
       }
     dimnames(coefs)[[2]][1:2] <- c("coef.est", "coef.se")
       if(detail){
@@ -248,28 +248,31 @@ setMethod("display", signature(object = "mer"),
         pfround(coefs[,1:2], digits)
       }
     }
+    out$coef <- coefs[,"coef.est"]
+    out$se <- coefs[,"coef.se"]
     cat("\nError terms:\n")
     vc <- as.matrix.VarCorr (VarCorr (object), useScale=useScale, digits)
     print (vc[,c(1:2,4:ncol(vc))], quote=FALSE)
-    ngrps <- lapply(object@flist, function(x) length(levels(x)))
+    out$ngrps <- lapply(object@flist, function(x) length(levels(x)))
     REML <- object@dims["REML"]
     llik <- logLik(object, REML)
-    AIC <- AIC(llik)
-    dev <- object@deviance["ML"]     # Dbar
-    n <- object@dims["n"]
+    out$AIC <- AIC(llik)
+    out$deviance <- object@deviance["ML"]     # Dbar
+    out$n <- object@dims["n"]
     Dhat <- -2*(llik) # Dhat
-    pD <- dev - Dhat              # pD
-    DIC <- dev + pD               # DIC=Dbar+pD=Dhat+2pD
+    pD <- out$deviance - Dhat              # pD
+    out$DIC <- out$deviance + pD               # DIC=Dbar+pD=Dhat+2pD
     cat("---\n")
-    cat(sprintf("number of obs: %d, groups: ", n))
-    cat(paste(paste(names(ngrps), ngrps, sep = ", "), collapse = "; "))
-    cat(sprintf("\nAIC = %g, DIC = ", round(AIC,1)))
-    cat(round(DIC, 1))
-    cat("\ndeviance =", fround (dev, 1), "\n")
+    cat(sprintf("number of obs: %d, groups: ", out$n))
+    cat(paste(paste(names(out$ngrps), out$ngrps, sep = ", "), collapse = "; "))
+    cat(sprintf("\nAIC = %g, DIC = ", round(out$AIC,1)))
+    cat(round(out$DIC, 1))
+    cat("\ndeviance =", fround (out$deviance, 1), "\n")
     if (useScale < 0){
-      cat("overdispersion parameter =", fround (.Call("mer_sigma", 
-        object, FALSE, PACKAGE = "lme4"), 1), "\n")
+      out$sigma.hat <- .Call("mer_sigma", object, FALSE, PACKAGE = "lme4")
+      cat("overdispersion parameter =", fround (out$sigma.hat, 1), "\n")
     }
+    return(invisible(out))
     }
 )
 
@@ -282,7 +285,7 @@ setMethod("display", signature(object = "polr"),
     summ <- summary(object)
     if(detail){
       coef <- summ$coef[, , drop = FALSE]
-      out$t.value <- coef[,"t.value"]
+      out$t.value <- coef[,"t value"]
     }
     else{
       coef <- summ$coef[, 1:2, drop = FALSE]

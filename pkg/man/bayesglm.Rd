@@ -2,7 +2,7 @@
 \docType{class}
 % Classes
 \alias{bayesglm-class}
-\alias{bayesglm.h-class}
+%\alias{bayesglm.h-class}
 % functions
 \alias{bayesglm}
 \alias{bayesglm.fit}
