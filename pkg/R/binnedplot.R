@@ -64,10 +64,13 @@ binned.resids <- function (x, y, nclass=floor(sqrt(length(x)))){
         ybar <- mean(y[items])
         n <- length(items)
         #p <- xbar                 
-        sdev <- sd(y[items])
+        #sdev <- sd(y[items])
+        sdev <- if(length(y[items] > 1)) sd(y[items]) else 0
         output <- rbind (output, c(xbar, ybar, n, x.range, 2*sdev/sqrt(n)))
+        
     }
-    
+
     colnames (output) <- c("xbar", "ybar", "n", "x.lo", "x.hi", "2se")
+    #output <- output[output[,"sdev"] != 0,]
     return (list (binned=output, xbreaks=xbreaks))
 }
