@@ -20,7 +20,7 @@ setMethod("display", signature(object = "lm"),
     out$n <- summ$df[1] + summ$df[2]
     out$k <- summ$df[1]
     print (out$call)
-    pfround (out$coef, digits)
+    pfround (coef, digits)
     cat("---\n")
     cat (paste ("n = ", out$n, ", k = ", out$k,
     "\nresidual sd = ", fround (out$sigma.hat, digits),
