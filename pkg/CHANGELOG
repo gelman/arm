@@ -1,3 +1,7 @@
+2011-05-25 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.4-11
+   * R/bayesglm: fix a bug  when there are some observation-weights that are zero.
+
 2011-05-9 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.4-10
    * R/display: fix a bug in display.lm that fails to print out se.

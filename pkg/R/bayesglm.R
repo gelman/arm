@@ -579,7 +579,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             }
         }
         #mse.resid <- mean((w * (z - x.nobs %*% fit$coefficients))^2) ## LOCAL VARIABLE
-        mse.resid <- mean ( (fit$y[1:nobs] - w * predictions)^2)
+        #mse.resid <- mean ( (fit$y[1:nobs] - w * predictions)^2)
+        mse.resid <- mean ( (fit$y[1:sum(state$good)] - w * predictions[state$good,])^2)
+        
         
         ## mse.uncertainty <- mean(diag(x.nobs %*% V.coefs %*% t(x.nobs))) * state$dispersion
         mse.uncertainty <- max (0, mean(rowSums(( x.nobs %*% V.coefs ) * x.nobs)) * state$dispersion) #faster  ## LOCAL VARIABLE
