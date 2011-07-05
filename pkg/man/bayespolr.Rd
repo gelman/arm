@@ -24,6 +24,7 @@ bayespolr(formula, data, weights, start, ...,
     prior.scale = 2.5, 
     prior.df = 1, 
     prior.counts.for.bins = NULL,
+    min.prior.scale=1e-12,    
     scaled = TRUE, 
     n.iter = 100,
     print.unnormalized.log.posterior = FALSE) 
@@ -91,6 +92,9 @@ bayespolr(formula, data, weights, start, ...,
     giving each cut point a \code{1/levels(y)}. To use a noninformative prior, assign
     prior.counts.for.bins = 0. If it is a scalar, it is expanded to the number 
     of levels of y.}
+
+  \item{min.prior.scale}{Minimum prior scale for the coefficients: default is 1e-12.}  
+
   
   \item{scaled}{if \code{scaled = TRUE}, then the prior distribution is rescaled.
     Can be a vector of length equal to the number of cutpoints 

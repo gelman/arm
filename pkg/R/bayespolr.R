@@ -5,13 +5,16 @@ function (formula, data, weights, start, ..., subset, na.action,
     contrasts = NULL, Hess = TRUE, model = TRUE, method = c("logistic", 
         "probit", "cloglog", "cauchit"), drop.unused.levels = TRUE, 
     prior.mean = 0, prior.scale = 2.5, prior.df = 1, prior.counts.for.bins = NULL,
+    min.prior.scale = 1e-12,
     scaled = TRUE, n.iter = 100, print.unnormalized.log.posterior = FALSE) 
 {
     logit <- function(p) log(p/(1 - p))
+
     dt.deriv <- function(x, mean, scale, df, log = TRUE, delta = 0.001) {
         (dt((x + delta - mean)/scale, df, log = log) - dt((x - 
             delta - mean)/scale, df, log = log))/(2 * delta)
     }
+
     fmin <- function(beta) {
         theta <- beta[pc + 1:q]
         gamm <- c(-100, cumsum(c(theta[1], exp(theta[-1]))), 
@@ -28,6 +31,7 @@ function (formula, data, weights, start, ..., subset, na.action,
                 prior.df, log = TRUE))
         return(f)
     }
+
     gmin <- function(beta) {
         jacobian <- function(theta) {
             k <- length(theta)
@@ -71,6 +75,16 @@ function (formula, data, weights, start, ..., subset, na.action,
     prior.scale <- prior.scale*1.6
   }
   ################
+  
+  for(jj in 1:length(prior.scale)){
+    if (prior.scale[jj] < min.prior.scale){
+      prior.scale[jj] <- min.prior.scale
+      warning ("prior scale for variable ", jj, " set to min.prior.scale = ", min.prior.scale,"\n")
+    }
+  }
+
+  
+  
 
     pfun <- switch(method, logistic = plogis, probit = pnorm, 
         cloglog = pgumbel, cauchit = pcauchy)
@@ -119,25 +133,32 @@ function (formula, data, weights, start, ..., subset, na.action,
               prior.mean = prior.mean, prior.scale = prior.scale, 
               prior.df = prior.df, prior.mean.for.intercept = 0, 
               prior.scale.for.intercept = 10, prior.df.for.intercept = 1, 
+              min.prior.scale = min.prior.scale,
               scaled = scaled, control = glm.control(maxit = n.iter), 
               print.unnormalized.log.posterior = print.unnormalized.log.posterior), 
             probit = bayesglm.fit(X, y1, wt, family = binomial("probit"), 
                 offset = offset, intercept = TRUE, prior.mean = prior.mean, 
                 prior.scale = prior.scale, prior.df = prior.df, 
                 prior.mean.for.intercept = 0, prior.scale.for.intercept = 10, 
-                prior.df.for.intercept = 1, scaled = scaled, 
+                prior.df.for.intercept = 1, 
+                min.prior.scale = min.prior.scale,
+                scaled = scaled, 
                 control = glm.control(maxit = n.iter), print.unnormalized.log.posterior = print.unnormalized.log.posterior), 
             cloglog = bayesglm.fit(X, y1, wt, family = binomial("probit"), 
                 offset = offset, intercept = TRUE, prior.mean = prior.mean, 
                 prior.scale = prior.scale, prior.df = prior.df, 
                 prior.mean.for.intercept = 0, prior.scale.for.intercept = 10, 
-                prior.df.for.intercept = 1, scaled = scaled, 
+                prior.df.for.intercept = 1, 
+                min.prior.scale = min.prior.scale,
+                scaled = scaled, 
                 control = glm.control(maxit = n.iter), print.unnormalized.log.posterior = print.unnormalized.log.posterior), 
             cauchit = bayesglm.fit(X, y1, wt, family = binomial("cauchit"), 
                 offset = offset, intercept = TRUE, prior.mean = prior.mean, 
                 prior.scale = prior.scale, prior.df = prior.df, 
                 prior.mean.for.intercept = 0, prior.scale.for.intercept = 10, 
-                prior.df.for.intercept = 1, scaled = scaled, 
+                prior.df.for.intercept = 1, 
+                min.prior.scale = min.prior.scale,
+                scaled = scaled, 
                 control = glm.control(maxit = n.iter), print.unnormalized.log.posterior = print.unnormalized.log.posterior))
         if (!fit$converged) 
             warning("attempt to find suitable starting values failed")

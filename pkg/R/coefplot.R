@@ -55,7 +55,7 @@ coefplot.default <- function(coefs, sds, CI=2,
         CI <- 1
       }
     }
-
+    old.par <- par(no.readonly=TRUE)
     min.mar <- par('mar')
     
     if (is.null(main)){main <- "Regression Estimates"}
@@ -171,7 +171,8 @@ coefplot.default <- function(coefs, sds, CI=2,
 #              lty=0, cex.axis=cex.var) 
 #      }
     }
-  }   
+  } 
+  on.exit(par(old.par))  
 }
 
 setMethod("coefplot", signature(object = "numeric"),
