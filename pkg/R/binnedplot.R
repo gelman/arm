@@ -36,7 +36,8 @@ binned.resids <- function (x, y, nclass=floor(sqrt(length(x)))){
     breaks.index <- floor(length(x)*(1:(nclass-1))/nclass)
     x.sort <- sort(x)
     breaks <- -Inf
-    for (i in 1:(nclass-1)){
+    if(nclass > 1){
+      for (i in 1:(nclass-1)){
         x.lo <- x.sort[breaks.index[i]]
         x.hi <- x.sort[breaks.index[i]+1]
         if (x.lo==x.hi){
@@ -48,6 +49,11 @@ binned.resids <- function (x, y, nclass=floor(sqrt(length(x)))){
             }
         }
         breaks <- c (breaks, (x.lo + x.hi)/2)
+      }
+    }else if(nclass ==1){
+      x.lo <- min(x)
+      x.hi <- max(x)
+      breaks <- c (breaks, (x.lo + x.hi)/2)
     }
     
     breaks <- c (breaks, Inf)
@@ -65,7 +71,7 @@ binned.resids <- function (x, y, nclass=floor(sqrt(length(x)))){
         n <- length(items)
         #p <- xbar                 
         #sdev <- sd(y[items])
-        sdev <- if(length(y[items] > 1)) sd(y[items]) else 0
+        sdev <- if(length(y[items]) > 1) sd(y[items]) else 0
         output <- rbind (output, c(xbar, ybar, n, x.range, 2*sdev/sqrt(n)))
         
     }
