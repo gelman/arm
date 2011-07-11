@@ -24,7 +24,7 @@ triangleplot (x, y=NULL, cutpts=NULL, details=TRUE,
   \item{cex.col}{font size of the color thermometer.}
   \item{cex.var}{font size of the variable names.}
   \item{digits}{number of digits shown in the text of the color theromoeter.}
-  \item{color}{color of the plot, default is \code{FALSE}, which uses gray scale.}
+  \item{color}{color of the plot, default is FALSE, which uses gray scale.}
 }
 
 \details{
@@ -60,6 +60,13 @@ old.par <- par(no.readonly = TRUE)
  triangleplot(x)
  
 par(old.par)
+
+#
+#library(RColorBrewer)
+#cormat <-  cor(iris[,-5])
+#triangleplot2(cormat,color = brewer.pal( 5, "RdBu" ),
+# n.col.legend=5, cex.col=0.7, cex.var=0.5)
+
 }
 
 \keyword{dplot}
