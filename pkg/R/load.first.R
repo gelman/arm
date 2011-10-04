@@ -2,8 +2,8 @@
   mylib <- dirname(system.file(package = "arm"))
   ver <- packageDescription("arm", lib.loc = mylib)$Version
   builddate <- packageDescription("arm", lib.loc = mylib)$Date
-  cat(paste("\narm (Version ", ver, ", built: ", builddate, ")\n", sep = ""))
-  cat ("Working directory is", getwd(), "\n")
+  packageStartupMessage(paste("\narm (Version ", ver, ", built: ", builddate, ")\n", sep = ""))
+  packageStartupMessage("Working directory is", getwd(), "\n")
 #  options(digits = 2, papersize="letter")
 #  cat ("options( digits = ", getOption("digits"), ")\n")
   #if(!any(search()=="package:car"))
