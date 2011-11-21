@@ -67,7 +67,7 @@ export(
        "invlogit",
 #       "logit",
        "matching", 
-       "model.matrix.bayes",
+       "model.matrixBayes",
        "multicomp.plot",
        "mcplot",
        "pfround",
