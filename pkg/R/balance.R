@@ -21,8 +21,8 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
     class(fit.raw$formula) <- class(fit.matched$formula) <- c("bayesglm", "formula")
     treat.raw <- fit.raw$y
     treat.matched <- fit.matched$y
-    pred.raw <- model.matrix.bayes(fit.raw$formula, data=rawdata, keep.order=TRUE)
-    pred.matched <- model.matrix.bayes(fit.matched$formula, data=matched, keep.order=TRUE)
+    pred.raw <- model.matrixBayes(fit.raw$formula, data=rawdata, keep.order=TRUE)
+    pred.matched <- model.matrixBayes(fit.matched$formula, data=matched, keep.order=TRUE)
     
     #if (int){
     #    pred.raw <- model.matrix(fit.raw)[,-1]

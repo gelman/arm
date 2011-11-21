@@ -1,22 +1,22 @@
-\name{model.matrix.bayes}
+\name{model.matrixBayes}
 %\docType{genericFunction}
-\alias{model.matrix.bayes}
-\alias{model.matrix.bayes.h}
+\alias{model.matrixBayes}
+%\alias{model.matrixBayes.h}
 %\alias{model.matrix.bayes,bayesglm-method}
 %\alias{model.matrix.bayes,bayesglm.h-method}
 
 \title{Construct Design Matrices}
 
 \description{
-  \code{model.matrix.bayes} creates a design matrix.
+  \code{model.matrixBayes} creates a design matrix.
 }
 
 \usage{
-model.matrix.bayes(object, data = environment(object), 
+model.matrixBayes(object, data = environment(object), 
     contrasts.arg = NULL, xlev = NULL, keep.order = FALSE, drop.baseline=FALSE,...)
     
-model.matrix.bayes.h(object, data = environment(object), 
-    contrasts.arg = NULL, xlev = NULL, keep.order = FALSE,  batch = NULL, ...)
+%model.matrix.bayes.h(object, data = environment(object), 
+%    contrasts.arg = NULL, xlev = NULL, keep.order = FALSE,  batch = NULL, ...)
 }
 
 \arguments{
@@ -36,17 +36,17 @@ model.matrix.bayes.h(object, data = environment(object),
     all second-order, all third-order and so on.  Effects of a given
     order are kept in the order specified.} 
   \item{drop.baseline}{Drop the base level of categorical Xs, default is TRUE.}
-  \item{batch}{Not implement yet!}
+%  \item{batch}{Not implement yet!}
   \item{\dots}{further arguments passed to or from other methods.}
 }
 \details{
-\code{model.matrix.bayes} is adapted from \code{model.matrix} in the \code{stats}
-pacakge and is designed for the use of \code{\link{bayesglm}} and \code{bayesglm.hierachical} (not yet implemented!).
+\code{model.matrixBayes} is adapted from \code{model.matrix} in the \code{stats}
+pacakge and is designed for the use of \code{\link{bayesglm}}.% and \code{bayesglm.hierachical} (not yet implemented!).
 It is designed to keep baseline levels of all categorical varaibles and keep the
 variable names unodered in the output.  The design matrices created by 
-\code{model.matrix.bayes} are unidentifiable using classical regression methods, 
-though; they can be identified using \code{\link{bayesglm}} and 
-\code{bayesglm.hierachical}.
+\code{model.matrixBayes} are unidentifiable using classical regression methods, 
+though; they can be identified using \code{\link{bayesglm}}.% and 
+%\code{bayesglm.hierachical}.
 }
 
 \references{Andrew Gelman, Aleks Jakulin, Maria Grazia Pittau and Yu-Sung Su. (2009).
@@ -69,9 +69,9 @@ ff <- log(Volume) ~ log(Height) + log(Girth)
 str(m <- model.frame(ff, trees))
 (model.matrix(ff, m))
 class(ff) <- c("bayesglm", "terms", "formula")
-(model.matrix.bayes(ff, m))
-class(ff) <- c("bayesglm.h", "terms", "formula")
-(model.matrix.bayes(ff, m))
+(model.matrixBayes(ff, m))
+%class(ff) <- c("bayesglm.h", "terms", "formula")
+%(model.matrixBayes(ff, m))
 }
 \keyword{models}
 \keyword{manip}

@@ -1,3 +1,6 @@
+2011-11-21 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.4-14
+   * R/.onAttach: fix the NOTE issue
 
 2011-06-19 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.4-13
