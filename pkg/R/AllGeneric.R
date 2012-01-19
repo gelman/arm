@@ -48,11 +48,11 @@ if (!isGeneric("se.coef")) {
 
 
 
-#if (!isGeneric("mcsamp")) {
-#    setGeneric("mcsamp",
-#               function(object, ...)
-#               standardGeneric("mcsamp"))
-#}
+if (!isGeneric("mcsamp")) {
+    setGeneric("mcsamp",
+               function(object, ...)
+               standardGeneric("mcsamp"))
+}
 
 
 
