@@ -1,6 +1,7 @@
 2012-01-19 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.5-01
    * R/mcsamp: add mcsamp() back, though it is not working.
+   * R/AllGeneric: set coef as generic to pass the check
 
 2011-11-21 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.4-14
