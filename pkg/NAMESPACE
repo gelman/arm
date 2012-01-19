@@ -68,7 +68,7 @@ export(
 #       "logit",
        "matching",
        "mcsamp", 
-       "model.matrix.bayes",
+       "model.matrixBayes",
        "multicomp.plot",
        "mcplot",
        "pfround",
