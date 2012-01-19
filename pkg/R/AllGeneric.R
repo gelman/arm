@@ -5,7 +5,7 @@
 #}
 
 
-
+setGeneric("coef")
 
 if (!isGeneric("coefplot")) {
     setGeneric("coefplot",

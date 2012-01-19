@@ -6,8 +6,8 @@ importFrom(Matrix,
 )
 
 importFrom(stats,
-      "extractAIC",
-      "coef"
+      "coef",
+      "extractAIC"
 )
 
 importFrom(lme4,
@@ -33,7 +33,7 @@ exportMethods(
               "coefplot",
               "display",
               "fixef",
-              #"mcsamp",
+              "mcsamp",
               #"model.matrix.bayes",
               "se.coef",
               "sim",
@@ -66,8 +66,9 @@ export(
        "go",
        "invlogit",
 #       "logit",
-       "matching", 
-       "model.matrixBayes",
+       "matching",
+       "mcsamp", 
+       "model.matrix.bayes",
        "multicomp.plot",
        "mcplot",
        "pfround",
