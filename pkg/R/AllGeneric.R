@@ -6,6 +6,8 @@
 
 
 setGeneric("coef")
+setGeneric("print")
+#setGeneric("extractAIC")
 
 if (!isGeneric("coefplot")) {
     setGeneric("coefplot",
