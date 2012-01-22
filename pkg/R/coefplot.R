@@ -172,7 +172,7 @@ coefplot.default <- function(coefs, sds, CI=2,
 #      }
     }
   } 
-  on.exit(par(old.par))  
+  #on.exit(par(old.par))  
 }
 
 setMethod("coefplot", signature(object = "numeric"),
