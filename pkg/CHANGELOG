@@ -1,3 +1,8 @@
+2012-03-3 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.5-03
+   * DESCRIPTION: add foreign as the required package
+   * R/simmer: new sim() for mer class
+
 2012-01-19 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.5-01
    * R/mcsamp: add mcsamp() back, though it is not working.

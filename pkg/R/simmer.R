@@ -1,225 +1,182 @@
-getAugmentedAndRotatedDesignMatrix <- function(model) {
-  numModeledParameters <- model@dims[['q']];
-  numUnmodeledParameters <- model@dims[['p']];
-  numObservations <- model@dims[['n']];
+# the permutation matrix used during optimization, produced by cholmod.
+# fill-reduces
+getCholmodPerm <- function(model) {
+  as(model@L@perm + 1, "pMatrix");
+}
+
+# permutes the block diagonal form into what lmer uses. See
+# the discussion around getBlockCov
+getRanefPerm <- function(model)
+{
+  numFactors <- model@dims[["nt"]];
+  factorDims <- sapply(model@ST, nrow);
+  numRepsPerBlock <- (model@Gp[-1] - model@Gp[-length(model@Gp)]) / factorDims;
   
-  numParameters <- numUnmodeledParameters + numModeledParameters;
-  numAugmentedRows <- numModeledParameters + numObservations;
-  
-  # set up design matrix:
-  # [ ZLambda X ]
-  # [ I       0 ]
-  designMatrix <- Matrix(0, numAugmentedRows, numParameters, sparse=TRUE);
-  if (numModeledParameters > 0) {
-    designMatrix[1:numObservations, 1:numModeledParameters] <- t(model@A);
-    designMatrix[(1 + numObservations):numAugmentedRows, 1:numModeledParameters] <- diag(1, numModeledParameters);
-  }
-  if (numUnmodeledParameters > 0) {
-    designMatrix[1:numObservations, (numModeledParameters + 1):numParameters] <- model@X;
-  }
+  indices <- rep(0, sum(factorDims * numRepsPerBlock));
 
-  return(designMatrix);
-}
-
-getAugmentedDesignMatrix <- function(model) {
-  numModeledParameters <- model@dims[['q']];
-  numUnmodeledParameters <- model@dims[['p']];
-  numObservations <- model@dims[['n']];
-  
-  numParameters <- numUnmodeledParameters + numModeledParameters;
-  numAugmentedRows <- numModeledParameters + numObservations;
-  
-  # set up design matrix:
-  # [ Z          X ]
-  # [ Lambda^-1  0 ]
-  designMatrix <- Matrix(0, numAugmentedRows, numParameters, sparse=TRUE);
-  if (numModeledParameters > 0) {
-    designMatrix[1:numObservations, 1:numModeledParameters] <- t(model@Zt);
-    designMatrix[(1 + numObservations):numAugmentedRows, 1:numModeledParameters] <-
-      solve(getSphericalCovarianceLeftFactor(model));
-  }
-  if (numUnmodeledParameters > 0) {
-    designMatrix[1:numObservations, (numModeledParameters + 1):numParameters] <- model@X;
-  }
-
-  return(designMatrix);
-}
-
-getAugmentedResponse <- function(model) {
-  numModeledParameters <- model@dims[['q']];
-  numObservations <- model@dims[['n']];
-
-  numAugmentedRows <- numModeledParameters + numObservations;
-
-  response <- Matrix(0, numAugmentedRows, sparse=TRUE);
-  response[1:numObservations] <- model@y;
-
-  return(response);
-}
-
-getNumModeledParametersPerLevel <- function(model) {
-  numLevels <- model@dims[["nt"]];
-
-  return(sapply(model@ST, nrow))
-}
-
-getNumGroupsPerLevel <- function(model) {
-  numLevels <- model@dims[["nt"]];
-  return (sapply(1:numLevels, function(i) {
-    return ((model@Gp[i + 1] - model@Gp[i]) / nrow(model@ST[[i]]));
-  }));
-}
-
-getTermIndex <- function(index, numTerms, termPointers) {
-  for (i in 1:numTerms){
-    if (index < termPointers[i + 1]){
-      return (i + 1);
+  index <- 1;
+  offset <- 0;
+  for (k in 1:numFactors) {
+    for (l in 1:factorDims[k]) {
+      for (j in 1:numRepsPerBlock[k]) {
+        indices[index] <- offset + l + (j - 1) * factorDims[k];
+        index <- index + 1;
+      }
     }
-    else{
-      return (-1);
-    }
+    offset <- offset + numRepsPerBlock[k] * factorDims[k];
   }
+  return(as(indices, "pMatrix"));
 }
 
-getSphericalCovarianceLeftFactor <- function(model) {
-  # is T %*% S, but we have to fill T and S from the block form
-  # in which they are stored. Unfortunately, the blocks cannot
-  # simply be replicated, as the random effects are not stored
-  # in block form themselves (blocks are per level, not per term)
+stToCov <- function(ST) {
+  dimension <- nrow(ST);
+  T <- ST;
+  diag(T) <- rep(1, dimension);
+  S <- diag(diag(ST), dimension);
+  return(tcrossprod(T %*% S));
+}
 
-  # should be lower triangular
+stToChol <- function(ST) {
+  dimension <- nrow(ST);
+  T <- ST;
+  diag(T) <- rep(1, dimension);
+  S <- diag(diag(ST), dimension);
+  return(T %*% S);
+}
 
-  numLevels <- model@dims[["nt"]];
-  numModeledParametersPerLevel <- getNumModeledParametersPerLevel(model);
-  numGroupsPerLevel <- getNumGroupsPerLevel(model);
-  
-  numModeledParameters <- model@dims[["q"]];
+# returns a covar (or decomp) in the form one might expect:
+# S1.11 S1.12
+# S1.21 S1.22
+#             S1.11 S1.12
+#             S1.21 S1.22
+#                         S2.11 S2.12
+#                         S2.21 S2.22
+# lmer internally shuffles this around.
+getBlockCov <- function(blockList, numRepsPerBlock) {
+  numFactors <- length(blockList);
+  factorDims <- sapply(blockList, nrow);
 
-  covarianceMatrix <- Matrix(0, numModeledParameters, numModeledParameters, sparse=TRUE);
-  
-  covarianceIndex <- 1;
-  for (k in 1:numLevels) {
-    # store L = T %*% S
-    triangularMatrix <- model@ST[[k]];
-    diag(triangularMatrix) <- rep(1, numModeledParametersPerLevel[k]);
-    
-    diagonalMatrix <- diag(diag(model@ST[[k]]), numModeledParametersPerLevel[k]);
+  # suppose blocks can be decomps, but ignore that for now
+  numNonZeroes <- sum(factorDims^2 * numRepsPerBlock);
+  rowIndices <- rep(0, numNonZeroes);
+  colIndices <- rep(0, numNonZeroes);
+  values <- rep(0, numNonZeroes);
 
-    leftFactor <- triangularMatrix %*% diagonalMatrix;
+  sparseIndex <- 1;
+  upperLeftIndex <- 1;
+  for (i in 1:numFactors) {
+    numParams <- factorDims[i];
+    numValues <- numParams^2;
 
-    # copy in L into covariance as many times as needed, one block for each group
-    # at this level
-    for (j in 1:numGroupsPerLevel[k]) {
-      firstRow <- covarianceIndex;
-      lastRow <- covarianceIndex + numModeledParametersPerLevel[k] - 1;
-      
-      covarianceMatrix[firstRow:lastRow, firstRow:lastRow] <- triangularMatrix %*% diagonalMatrix;
-      
-      covarianceIndex <- covarianceIndex + numModeledParametersPerLevel[k];
+    for (j in 1:numRepsPerBlock[i]) {
+      sparseRange <- sparseIndex + 1:numValues - 1;
+      upperLeftRange <- upperLeftIndex + 1:numParams - 1;
+
+      rowIndices[sparseRange] <- rep(upperLeftRange, numParams);
+      colIndices[sparseRange] <- rep(upperLeftRange, rep(numParams, numParams));
+      values[sparseRange] <- as.vector(blockList[[i]]);
+
+      sparseIndex <- sparseIndex + numValues;
+      upperLeftIndex <- upperLeftIndex + numParams;
     }
   }
-  
-  return(covarianceMatrix);
+
+  return(sparseMatrix(rowIndices, colIndices, x = values));
 }
 
-# this excludes the common scale factor, which it is assumed will be
-# simulated on its own
-getLinearCovarianceEstimate <- function(model) {
-  numObservations <- model@dims[["n"]];
-  numModeledParameters <- model@dims[["q"]];
+# block replicates a "Sigma" for the modeled coefficients
+getRanefVcov <- function(model) {
+  Sigmas <- lapply(model@ST, stToCov);
+  factorDims <- sapply(model@ST, nrow);
   
-  numAugmentedRows <- numObservations + numModeledParameters;
-  
-  designMatrix <- getAugmentedDesignMatrix(model);
+  numRepsPerBlock <- (model@Gp[-1] - model@Gp[-length(model@Gp)]) / factorDims;
 
-  return(solve(crossprod(designMatrix)));
-  
-  #responseCovariance <- Matrix(0, numAugmentedRows, numAugmentedRows, sparse=TRUE);
-  #responseCovariance[1:numObservations, 1:numObservations] <-
-  #  Diagonal(numObservations, 1) + crossprod(model@A);
-  #responseCovariance <- Matrix(responseCovariance, sparse=TRUE);
-  #designCrossprodInverse <- solve(crossprod(designMatrix));
-
-  # (X'X)^-1 X' covar([y, 0]') X (X'X)^-1',
-  # covar([ y ]) = [ I.n + ZL L'Z'  0 ]
-  #      ([ 0 ]) = [       0        0 ]
-  #return (designCrossprodInverse %*% t(designMatrix) %*% responseCovariance %*%
-  #        designMatrix %*% designCrossprodInverse);
+  return(getBlockCov(Sigmas, numRepsPerBlock));
 }
 
-getPermutationMatrix <- function(model) {
-  return(as(model@L@perm + 1, "pMatrix"));
+# block replicates a lower triangular cholesky for the modeled coefficients
+getRanefChol <- function(model) {
+  Lambdas <- lapply(model@ST, stToChol);
+  factorDims <- sapply(model@ST, nrow);
+  
+  numRepsPerBlock <- (model@Gp[-1] - model@Gp[-length(model@Gp)]) / factorDims;
+
+  return(getBlockCov(Lambdas, numRepsPerBlock));
 }
 
 # information is conditional on hyperparameters
 # information is of [ranef, fixef]
-getObservedInformation <- function(model) {
-  numModeledParameters <- model@dims[["q"]];
-  numUnmodeledParameters <- model@dims[["p"]];
+getInverseInformation <- function(model) {
+  # Xt.sp = sparse part of design matrix, transposed
+  # X.dn  = dense part
+  # transformations will be *not* applied, aside from weighting
+  # observations
+  # Xt.sp = L' Z' dmu/deta W^0.5
+  # X.dn  = W^0.5 dmu/deta X
+  #
+  # dmu/deta is 1 if linear, is what it is for glm (depends on link)
+  # W is 1 if linear, 1 / var(y) if glm
 
-  numParameters <- numModeledParameters + numUnmodeledParameters;
-  
-  # the matrix C, which corresponds to ST'Z'diag(d mu / d eta)W^.5,
-  # is closely related to the update matrix for the random effects
-  # in literature, this is U'
-  #ranefWeightedJacobianTrans <- NULL;
-  #sparseWeightMatrix <- NULL;
+  Xt.sp <- model@A;
+  X.dn  <- model@X;
   if (length(model@sqrtXWt) > 0) {
-    if (all(dim(model@Cm) > 0)) {
-      ranefWeightedJacobianTrans <- model@Cm;
-    } 
-    else {
-      # this should be obtained from model@Cx, but that requires rebuilding
-      # the matrix from A. For now, it is re-computed
-      sparseWeightMatrix <- Diagonal(length(as.vector(model@sqrtXWt)), as.vector(model@sqrtXWt));
-      
-      ranefWeightedJacobianTrans <- model@A %*% sparseWeightMatrix;
+    if (all(dim(model@Cm)) > 0) {
+      Xt.sp <- model@Cm;
+    } else {
+      Xt.sp@x <- model@Cx;
     }
-  } 
-  else {
-    ranefWeightedJacobianTrans <- model@A;
+    X.dn <- diag(as.vector(model@sqrtXWt)) %*% X.dn;
   }
 
-  # matrix for beta is more difficult
-  # X (d mu / d eta) W ^.5
-  # in literature, this is V
-  #fixefWeightedJacobian <- NULL;
-  if (all(dim(model@sqrtXWt) > 0)) {
-    if (is.null(sparseWeightMatrix)) {
-      sparseWeightMatrix <- Diagonal(length(as.vector(model@sqrtXWt)), as.vector(model@sqrtXWt));
-    }
-    fixefWeightedJacobian <- sparseWeightMatrix %*% model@X;
-  } 
-  else {
-    fixefWeightedJacobian <- model@X;
-  }
+  # at this point, we have the components of the augmented design matrix that
+  # we need to take the crossproduct of, and then invert.
 
-  # if the above are U and V, the observed information is:
-  # [ U'U + I   U'V ]
-  # [ V'U       V'V ]
-  upperLeftBlock <- tcrossprod(ranefWeightedJacobianTrans) + diag(1, numModeledParameters);
-  lowerRightBlock <- crossprod(fixefWeightedJacobian);
-  upperRightBlock <- ranefWeightedJacobianTrans %*% fixefWeightedJacobian;
-  lowerLeftBlock <- t(upperRightBlock);
+  # block-wise matrix inversion;
+  # http://en.wikipedia.org/wiki/Invertible_matrix#Blockwise_inversion
+  # A, B, C, and D correspond to there, although C = B' so we don't need
+  # to create it
+  #
+  # To figure out where this comes from, you can check the docs for
+  # blmer, there should be some calculations there.
+  A <- tcrossprod(Xt.sp) + Diagonal(nrow(Xt.sp));
+  B <- Xt.sp %*% X.dn;
+  D <- crossprod(X.dn);
 
-  observedInformation <- Matrix(0, numParameters, numParameters, sparse=TRUE);
-  observedInformation[1:numModeledParameters, 1:numModeledParameters] <-
-    upperLeftBlock;
-  observedInformation[(numModeledParameters + 1):numParameters, (numModeledParameters + 1):numParameters] <-
-    lowerRightBlock;
-  observedInformation[1:numModeledParameters, (numModeledParameters + 1):numParameters] <-
-    upperRightBlock;
-  observedInformation[(numModeledParameters + 1):numParameters, 1:numModeledParameters] <-
-    lowerLeftBlock;
+  A.inv <- solve(A);
 
-  return(observedInformation);
+  # X.i here are blocks of the inverse
+  temp <- crossprod(B, A.inv); # CA^-1, comes up a lot
+  D.i <- solve(D - temp %*% B);
+  C.i <- -1 * D.i %*% temp;
+  A.i <- A.inv - crossprod(temp, C.i);
+
+  # since everything above is "spherical", we have to bring it to the
+  # appropriate scale/rotation
+  P.ranef <- getRanefPerm(model);
+  Lambda <- P.ranef %*% getRanefChol(model) %*% t(P.ranef);
+  
+  A.i <- Lambda %*% tcrossprod(A.i, Lambda);
+  C.i <- tcrossprod(C.i, Lambda);
+
+  numRanef <- model@dims[["q"]];
+  numFixef <- model@dims[["p"]];
+  result <- matrix(NA, numRanef + numFixef, numRanef + numFixef);
+
+  ranefRange <- 1:numRanef;
+  fixefRange <- numRanef + 1:numFixef;
+  
+  result[ranefRange, ranefRange] <- as.matrix(A.i);
+  result[fixefRange, ranefRange] <- as.matrix(C.i);
+  result[ranefRange, fixefRange] <- t(result[fixefRange, ranefRange]);
+  result[fixefRange, fixefRange] <- as.matrix(D.i);
+  
+  return(result);
 }
 
+# assumes p(sigma^2) propto sigma^-2
 sampleSigma <- function(model) {
-  # proportional to a chi-square with d.o.f. = num observations + num ranef
-  return(1 / rgamma(1, model@dims[["n"]] / 2, model@deviance[["pwrss"]] / 2));
-  
-  return(sqrt(model@deviance[["pwrss"]] / rchisq(1, model@dims[["n"]])));# + model@dims[["q"]])));
+  return(sqrt(1 / rgamma(1, (model@dims[["n"]] - model@dims[["p"]]) / 2,
+                         model@deviance[["pwrss"]] / 2)));
 }
 
 setMethod("sim", signature(object = "mer"),
@@ -228,10 +185,6 @@ setMethod("sim", signature(object = "mer"),
   # create some object matrix and util functions#########
   numRanef <- object@dims[["q"]]
   numFixef <- object@dims[["p"]]
-  # sigma
-  simulatedSD <- NULL
-  simulatedSD[[1]] <- rep(NA, n.sims)
-  names(simulatedSD) <- "sigma"
   
   # beta.unmodeled
   fixefLabel <- names(object@fixef)
@@ -262,83 +215,51 @@ setMethod("sim", signature(object = "mer"),
   ###################################
   
   isLinearMixedModel <- all(c(dim(object@V) == 0, length(object@muEta) == 0));
+
+  # sigma
+  simulatedSD <- ifelse(isLinearMixedModel, rep(NA, n.sims), NA);
   
   effectsMean <- c(object@ranef, object@fixef);
-  effectsCovariance <- NULL;
-  if (isLinearMixedModel) {
-    effectsCovariance <- getLinearCovarianceEstimate(object);
-  } else {
-    effectsCovariance <- solve(getObservedInformation(object));
-  }
+  # note that if anyone was counting, we could do what lmer does internally
+  # and solve only the lower-triangular form against the entire
+  # matrix of simulations at once. Might be faster, is essentially what
+  # mvrnorm has to do internally.
+  effectsCovariance <- getInverseInformation(object);
 
-  # the random effects in the model (b) differ from the values simulated (u in the model):
-  #   b = Lambda %*% t(P) %*% u
-  #
-  # where Lambda is the left factor of Sigma and P is the permutation matrix calculated
-  # when taking the left factor of (Lambda Z Z' Lambda' + I)
-  #rotation <- Diagonal(numRanef + numFixef, 1);
-  #rotation[1:numRanef, 1:numRanef] <- getSphericalCovarianceLeftFactor(object) %*% t(getPermutationMatrix(object));
-  #effectsCovariance <- rotation %*% tcrossprod(effectsCovariance, rotation);
-
-  if (isLinearMixedModel) {
-    for (i in 1:n.sims) {
-      simulatedSD[[1]][i] <- #sampleSigma(object);
-        ifelse(object@dims[["REML"]] == 1, object@deviance[["sigmaREML"]], object@deviance[["sigmaML"]]);
-      simulatedEffects <- mvrnorm(1, effectsMean, (simulatedSD[[1]][i] ^ 2) * effectsCovariance);
-      beta.unmodeled[[1]][i,] <- simulatedEffects[(numRanef + 1):(numRanef + numFixef)]
-      for (m in 1:nt){
-        dim.ranef <- dim(beta.bygroup[[m]])
-        idx <- ranefStructure[[m]][[1]]
-        beta.bygroup[[m]][i,,] <- matrix(simulatedEffects[idx], dim.ranef[2], dim.ranef[3])
-      }
-    }  
-    ###############
-    # reorganize ranef
-    reGrpRanef <- function(el, ...){
-      ans <- do.call(abind, beta.bygroup[el[[1]]])
-    } 
-    beta.bygroup <- lapply(ranefLabel, reGrpRanef, beta.bygroup)
-    rr <- ranef(object)
-    n.grp <- length(rr)
-    for(m in 1:n.grp){
-      dimnames(beta.bygroup[[m]]) <- c(list(NULL), dimnames(rr[[m]]))
+  fixefRange <- numRanef + 1:numFixef;
+  
+  for (i in 1:n.sims) {
+    if (isLinearMixedModel) {
+      simulatedSD[i] <- sampleSigma(object);
+        # ifelse(object@dims[["REML"]] == 1, object@deviance[["sigmaREML"]], object@deviance[["sigmaML"]]);
+      simulatedEffects <- mvrnorm(1, effectsMean, (simulatedSD[i] ^ 2) * effectsCovariance)
+    } else {
+      simulatedEffects <- mvrnorm(1, effectsMean, effectsCovariance);
     }
-    #####################
-
-    ans <- new("sim.mer", 
-               "fixef" = beta.unmodeled$fixef,
-               "ranef" = beta.bygroup,
-               "sigma" = simulatedSD$sigma)
-    return(ans)
+      
+    beta.unmodeled[[1]][i,] <- simulatedEffects[fixefRange]
+    for (m in 1:nt){
+      dim.ranef <- dim(beta.bygroup[[m]])
+      idx <- ranefStructure[[m]][[1]]
+      beta.bygroup[[m]][i,,] <- matrix(simulatedEffects[idx], dim.ranef[2], dim.ranef[3])
+    }
+  }
+  ###############
+  # reorganize ranef
+  reGrpRanef <- function(el, ...){
+    ans <- do.call(abind, beta.bygroup[el[[1]]])
   } 
-  else {
-    for (i in 1:n.sims) {
-      simulatedEffects <- mvrnorm(1, effectsMean, effectsCovariance)
-      beta.unmodeled[[1]][i,] <- simulatedEffects[(numRanef + 1):(numRanef + numFixef)]
-      for(m in 1:nt){
-        dim.ranef <- dim(beta.bygroup[[m]])
-        idx <- ranefStructure[[m]][[1]]
-        beta.bygroup[[m]][i,,] <- matrix(simulatedEffects[idx], dim.ranef[2], dim.ranef[3])
-      }
-    }
-    ###############
-    # reorganize ranef
-    reGrpRanef <- function(el, ...){
-      ans <- do.call(abind, beta.bygroup[el[[1]]])
-    } 
-    beta.bygroup <- lapply(ranefLabel, reGrpRanef, beta.bygroup)
-    rr <- ranef(object)
-    n.grp <- length(rr)
-    for(m in 1:n.grp){
-      dimnames(beta.bygroup[[m]]) <- c(list(NULL), dimnames(rr[[m]]))
-    }
-    #####################
-    
-    ans <- new("sim.mer", 
-                "fixef" = beta.unmodeled$fixef,
-                "ranef" = beta.bygroup,
-                "sigma" = NA)
-
-    return(ans)
+  beta.bygroup <- lapply(ranefLabel, reGrpRanef, beta.bygroup)
+  rr <- ranef(object)
+  n.grp <- length(rr)
+  for(m in 1:n.grp){
+    dimnames(beta.bygroup[[m]]) <- c(list(NULL), dimnames(rr[[m]]))
   }
+  #####################
+
+  ans <- new("sim.mer", 
+             "fixef" = beta.unmodeled$fixef,
+             "ranef" = beta.bygroup,
+             "sigma" = simulatedSD)
+  return(ans)
 })

@@ -62,7 +62,8 @@ model.matrixBayes <- function(object, data = environment(object),
         isF  <-  FALSE
         data <- list( x=rep( 0, nrow( data ) ) )
     }
-    ans  <- .Internal( model.matrix( t, data ) )
+    #ans  <- .Internal( model.matrix( t, data ) )
+    ans  <- model.matrix( t, data )
     cons <- if(any(isF)){
     lapply( data[isF], function( x ) attr( x,  "contrasts") ) }
     else { NULL }
