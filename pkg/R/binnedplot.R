@@ -40,6 +40,9 @@ binned.resids <- function (x, y, nclass=floor(sqrt(length(x)))){
       for (i in 1:(nclass-1)){
         x.lo <- x.sort[breaks.index[i]]
         x.hi <- x.sort[breaks.index[i]+1]
+        browser()
+        print(x.lo)
+        print(x.hi)
         if (x.lo==x.hi){
             if (x.lo==min(x)){
                 x.lo <- -Inf
