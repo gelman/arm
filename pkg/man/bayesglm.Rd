@@ -152,8 +152,12 @@ bayesglm.fit (x, y, weights = rep(1, nobs),
   
   \item{min.prior.scale}{Minimum prior scale for the coefficients: default is 1e-12.}  
   
-  \item{scaled}{if scaled = TRUE, then the prior distribution is rescaled where 
-    prior.scale is multiplied by sd(y) and divided by sd(x). Default is TRUE}
+  \item{scaled}{scaled=TRUE, the scales for the prior distributions of the coefficients 
+  are determined as follows: For a predictor with only one value, 
+  we just use prior.scale. For a predictor with two values, 
+  we use prior.scale/range(x). For a predictor with more than two values, 
+  we use prior.scale/(2*sd(x)). If the response is Gaussian, prior.scale is also 
+  multiplied by 2 * sd(y). Default is TRUE}
     
   \item{keep.order}{a logical value indicating whether the terms should
     keep their positions. If \code{FALSE} the terms are reordered so

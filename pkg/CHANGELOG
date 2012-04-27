@@ -1,3 +1,7 @@
+2012-04-27 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.5-04
+   * man/bayesglm: rewrite the description for the option scaled.
+
 2012-03-3 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.5-03
    * DESCRIPTION: add foreign as the required package
