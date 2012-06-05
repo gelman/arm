@@ -1,8 +1,7 @@
 Package: arm
-Version: 1.5-04
-Date: 2012-4-27
-Title: Data Analysis Using Regression and Multilevel/Hierarchical
-        Models
+Version: 1.5-05
+Date: 2012-6-6
+Title: Data Analysis Using Regression and Multilevel/Hierarchical Models
 Author: Andrew Gelman <gelman@stat.columbia.edu>,
         Yu-Sung Su <suyusung@tsinghua.edu.cn>,
         Masanao Yajima <my2167@columbia.edu>,

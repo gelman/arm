@@ -8,9 +8,10 @@
 \alias{bayesglm.fit}
 % display methods
 \alias{print,bayesglm-method}
-\alias{print,bayesglm.h-method}
+%\alias{print,bayesglm.h-method}
 \alias{show,bayesglm-method}
-\alias{show,bayesglm.h-method}
+%\alias{show,bayesglm.h-method}
+\alias{predict.bayesglm}
 
 \title{Bayesian generalized linear models.}
 
