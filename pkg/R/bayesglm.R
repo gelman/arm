@@ -230,14 +230,13 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     resdf <- output$resdf
     aic.model <- output$aic.model
     #######
-    
     list(coefficients = coef, 
             residuals = residuals, 
             fitted.values = mu,
             effects = if (!EMPTY) fit$effects, 
             R = if (!EMPTY) Rmat,
             rank = rank, 
-            qr = if (!EMPTY) structure(fit[c("qr", "rank", "qraux", "pivot", "tol")], class = "qr"), 
+            qr = if (!EMPTY) structure(stats:::qr.lm(fit)[c("qr", "rank", "qraux", "pivot", "tol")], class = "qr"), 
             family = family,
             linear.predictors = eta, 
             deviance = dev, 
@@ -431,17 +430,17 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 }
 
 
-.bayesglm.fit.loop.initialMemoryAllocation <- function (epsilon, nvars, ngoodobs) {
-    list (ny=as.integer(1),
-            tol = min(1e-07, epsilon/1000),
-            coefficients = double(nvars),
-            rank = integer(1),
-            pivot = 1:nvars,
-            qraux = double (nvars),
-            work = double (2 * nvars),
-            residuals = double (ngoodobs + nvars),
-            effects=double (ngoodobs + nvars))
-}
+#.bayesglm.fit.loop.initialMemoryAllocation <- function (epsilon, nvars, ngoodobs) {
+#    list (ny=as.integer(1),
+#            tol = min(1e-07, epsilon/1000),
+#            coefficients = double(nvars),
+#            rank = integer(1),
+#            pivot = 1:nvars,
+#            qraux = double (nvars),
+#            work = double (2 * nvars),
+#            residuals = double (ngoodobs + nvars),
+#            effects=double (ngoodobs + nvars))
+#}
 
 .bayesglm.fit.loop.initializeState <- function (start, etastart, mustart, offset, x.nobs, var.y, nvars, family, weights, prior.sd, y) {
     if (!is.null(etastart)) {
@@ -513,7 +512,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     return (TRUE)
 }
 
-.bayesglm.fit.loop.updateState <- function (state, priors, fortran.call.parameters, family, 
+.bayesglm.fit.loop.updateState <- function (state, priors, family, #fortran.call.parameters, 
         offset, weights,
         y, x, x.nobs, nvars, nobs,
         intercept, scaled, control) {
@@ -522,23 +521,27 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     
     w <- sqrt((weights[state$good] * state$mu.eta.val[state$good])^2/state$varmu[state$good])
     w.star <- c(w, sqrt(state$dispersion)/state$prior.sd)
-    
     good.star <- c(state$good, rep(TRUE, nvars))
-    fit <- .Fortran("dqrls", 
-            qr = x[good.star, ] * w.star, 
-            n = sum (good.star), 
-            p = nvars, 
-            y = w.star * z.star, 
-            ny = fortran.call.parameters$ny, 
-            tol = fortran.call.parameters$tol, 
-            coefficients = fortran.call.parameters$coefficients, 
-            residuals = fortran.call.parameters$residuals, 
-            effects = fortran.call.parameters$effects, 
-            rank = fortran.call.parameters$rank, 
-            pivot = fortran.call.parameters$pivot, 
-            qraux = fortran.call.parameters$qraux,
-            work = fortran.call.parameters$work, 
-            PACKAGE = "base")
+    fit <- lm.fit(x = x[good.star, ]*w.star,
+                   y = z.star*w.star)
+                   #w = w.star)
+ 
+    
+    #fit <- .Fortran("dqrls", 
+#            qr = x[good.star, ] * w.star, 
+#            n = sum (good.star), 
+#            p = nvars, 
+#            y = w.star * z.star, 
+#            ny = fortran.call.parameters$ny, 
+#            tol = fortran.call.parameters$tol, 
+#            coefficients = fortran.call.parameters$coefficients, 
+#            residuals = fortran.call.parameters$residuals, 
+#            effects = fortran.call.parameters$effects, 
+#            rank = fortran.call.parameters$rank, 
+#            pivot = fortran.call.parameters$pivot, 
+#            qraux = fortran.call.parameters$qraux,
+#            work = fortran.call.parameters$work, 
+#            PACKAGE = "base")
     
     if (intercept & scaled){
         
@@ -549,9 +552,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             centered.coefs <- fit$coefficients
             centered.coefs[1] <- sum(fit$coefficients*colMeans.x)
             if(NCOL(x.nobs)==1){
-              V.coefs <- chol2inv(fit$qr[1:nvars])
+              V.coefs <- chol2inv(fit$qr$qr[1:nvars])
             }else{
-              V.coefs <- chol2inv(fit$qr[1:nvars, 1:nvars, drop = FALSE])
+              V.coefs <- chol2inv(fit$qr$qr[1:nvars, 1:nvars, drop = FALSE])
             }
             diag.V.coefs <- diag(V.coefs)
             sampling.var <- diag.V.coefs
@@ -575,14 +578,14 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (!(family$family %in% c("poisson", "binomial"))) {
         if (exists ("V.coefs") == FALSE) {
             if(NCOL(x.nobs)==1){
-              V.coefs <- chol2inv(fit$qr[1:nvars])            
+              V.coefs <- chol2inv(fit$qr$qr[1:nvars])            
             }else{
-              V.coefs <- chol2inv(fit$qr[1:nvars, 1:nvars, drop = FALSE])
+              V.coefs <- chol2inv(fit$qr$qr[1:nvars, 1:nvars, drop = FALSE])
             }
         }
         #mse.resid <- mean((w * (z - x.nobs %*% fit$coefficients))^2) ## LOCAL VARIABLE
         #mse.resid <- mean ( (fit$y[1:nobs] - w * predictions)^2)
-        mse.resid <- mean ( (fit$y[1:sum(state$good)] - w * predictions[state$good,])^2)
+        mse.resid <- mean ( ((z.star*w.star)[1:sum(state$good)] - w * predictions[state$good,])^2)
         
         
         ## mse.uncertainty <- mean(diag(x.nobs %*% V.coefs %*% t(x.nobs))) * state$dispersion
@@ -684,24 +687,24 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     residuals <- rep.int(NA, nobs)
     residuals[state$good] <- state$z[state$good] - (state$eta[state$good] - offset[state$good])
     
-    state$fit$qr <- as.matrix(state$fit$qr)
+    state$fit$qr$qr <- as.matrix(state$fit$qr$qr)
     
     nr <- min(sum(state$good), nvars)
     if (nr < nvars) {
       Rmat <- diag(x = 0, nvars)
-      Rmat[1:nr, 1:nvars] <- state$fit$qr[1:nr, 1:nvars, drop=FALSE]
+      Rmat[1:nr, 1:nvars] <- state$fit$qr$qr[1:nr, 1:nvars, drop=FALSE]
     }
     else{
-      if(NCOL(state$fit$qr)==1){
-        Rmat <- state$fit$qr[1:nvars]
+      if(NCOL(state$fit$qr$qr)==1){
+        Rmat <- state$fit$qr$qr[1:nvars]
       }else{
-        Rmat <- state$fit$qr[1:nvars, 1:nvars, drop=FALSE]
+        Rmat <- state$fit$qr$qr[1:nvars, 1:nvars, drop=FALSE]
       }
     }
     Rmat <- as.matrix(Rmat)
     Rmat[row(Rmat) > col(Rmat)] <- 0
     names (state$fit$coefficients) <- xnames
-    colnames(state$fit$qr) <- xnames
+    colnames(state$fit$qr$qr) <- xnames
     dimnames(Rmat) <- list(xnames, xnames)
     
     list (residuals=residuals,
@@ -754,13 +757,12 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     # eta
     # x, y, nvars, nobs: invariants
     
-    fortran.call.parameters <- .bayesglm.fit.loop.initialMemoryAllocation (control$epsilon, nvars, sum (state$good))
+    #fortran.call.parameters <- .bayesglm.fit.loop.initialMemoryAllocation (control$epsilon, nvars, sum (state$good))
     
     for (iter in 1:control$maxit) {
         dispersionold <- state$dispersion
         devold <- state$dev
-        
-        state <- .bayesglm.fit.loop.updateState (state, priors, fortran.call.parameters, family, 
+        state <- .bayesglm.fit.loop.updateState (state, priors, family, #fortran.call.parameters, 
                 offset, weights,
                 y, x, x.nobs, nvars, nobs,
                 intercept, scaled, control) 
