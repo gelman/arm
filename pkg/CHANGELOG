@@ -1,3 +1,7 @@
+2012-09-20 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.5-06
+   * R/bayesglm: stop using .Fortran() here.
+
 2012-06-6 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.5-05
    * man/bayesglm: add predictLM
