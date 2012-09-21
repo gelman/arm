@@ -236,7 +236,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             effects = if (!EMPTY) fit$effects, 
             R = if (!EMPTY) Rmat,
             rank = rank, 
-            qr = if (!EMPTY) structure(stats:::qr.lm(fit)[c("qr", "rank", "qraux", "pivot", "tol")], class = "qr"), 
+            qr = if (!EMPTY) structure(getQr(fit)[c("qr", "rank", "qraux", "pivot", "tol")], class = "qr"), 
             family = family,
             linear.predictors = eta, 
             deviance = dev, 
@@ -941,7 +941,7 @@ predictLM <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
     p <- object$rank
     p1 <- seq_len(p)
     piv <- if (p) 
-        stats:::qr.lm(object)$pivot[p1]
+        getQr(object)$pivot[p1]
     if (p < ncol(X) && !(missing(newdata) || is.null(newdata))) 
         warning("prediction from a rank-deficient fit may be misleading")
     beta <- object$coefficients
@@ -984,8 +984,8 @@ predictLM <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
         if (type != "terms") {
             if (p > 0) {
                 XRinv <- if (missing(newdata) && is.null(w)) 
-                  qr.Q(qr.lm(object))[, p1, drop = FALSE]
-                else X[, piv] %*% qr.solve(qr.R(qr.lm(object))[p1, 
+                  qr.Q(getQr(object))[, p1, drop = FALSE]
+                else X[, piv] %*% qr.solve(qr.R(getQr(object))[p1, 
                   p1])
                 ip <- drop(XRinv^2 %*% rep(res.var, p))
             }
@@ -1020,7 +1020,7 @@ predictLM <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
             if (se.fit || interval != "none") {
                 ip <- matrix(ncol = nterms, nrow = NROW(X))
                 dimnames(ip) <- list(rownames(X), names(asgn))
-                Rinv <- qr.solve(qr.R(qr.lm(object))[p1, p1])
+                Rinv <- qr.solve(qr.R(getQr(object))[p1, p1])
             }
             if (hasintercept) 
                 X <- sweep(X, 2L, avx, check.margin = FALSE)
@@ -1090,4 +1090,12 @@ predictLM <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
     else if (se.fit) 
         list(fit = predictor, se.fit = se, df = df, residual.scale = sqrt(res.var))
     else predictor
+}
+
+
+
+getQr <- function(x, ...){
+  if (is.null(r <- x$qr)) 
+        stop("lm object does not have a proper 'qr' component.\n Rank zero or should not have used lm(.., qr=FALSE).")
+  r
 }
