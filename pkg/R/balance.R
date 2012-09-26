@@ -4,7 +4,11 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
     #int <- attr(terms(pscore.fit), "intercept")
     call.raw <- call.matched <- pscore.fit$call
     call.raw$data <- substitute(rawdata)
-    call.matched$data <- substitute(matched)    
+    call.matched$data <- substitute(matched)
+    if(!is.call(pscore.fit$call$formula)){
+        call.raw$formula <- formula(terms(pscore.fit))
+    }
+    
     if (!factor){
         form <- gsub("factor(", "", call.raw$formula, fixed = TRUE)
         form <- gsub(")", "", form, fixed = TRUE)
@@ -35,7 +39,7 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
     
     if(dim(pred.raw)[2]!=dim(pred.matched)[2])
         warnings("number of covariates of the raw data does not equal to
-            that of the matched data! This might be due to the drop of 
+            that of the matched data! This might be due to the drop of
             factor levels.  Use factor=FALSE to proceed!")
     
     raw.dat <- data.frame(pred.raw,treat=treat.raw)
@@ -73,7 +77,7 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
     dimnames(diff.means.matched) <- list(covnames[-(K+1)],
         c("Treat","control","diff","diff.std","se","sd"))
     
-    out <- list(diff.means.raw=diff.means, 
+    out <- list(diff.means.raw=diff.means,
       diff.means.matched=diff.means.matched, covnames=covnames)
     class(out) <- "balance"
     return(out)
@@ -83,16 +87,16 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
 print.balance <- function(x, ..., digits= 2)
 {
  cat("Differences in Means of Unmatched Data\n")
- cat("--\n") 
+ cat("--\n")
  print(round(x$diff.means.raw, digits=digits))
- cat("--\n") 
- cat("\n") 
- cat("Differences in Means of Matched Data\n")
- cat("--\n") 
- print(round(x$diff.means.matched, digits=digits))
- cat("--\n") 
+ cat("--\n")
  cat("\n")
-}   
+ cat("Differences in Means of Matched Data\n")
+ cat("--\n")
+ print(round(x$diff.means.matched, digits=digits))
+ cat("--\n")
+ cat("\n")
+}
 
 
 
@@ -121,7 +125,7 @@ plot.balance <- function(x, longcovnames=NULL,
   # pts2 <- A + B*(est2/sd2)           # after macthed
   
   pts <-  est/sd                      # before matched.dat
-  pts2 <- est2/sd2                    # after macthed 
+  pts2 <- est2/sd2                    # after macthed
   #x.range <- c(jitter(min(c(pts, pts2)),15), max(c(pts,pts2)+.105))
   
   
@@ -129,7 +133,7 @@ plot.balance <- function(x, longcovnames=NULL,
   #par (mar=mar, mgp=mgp, oma=oma, tcl=tcl)
   
 
-  par(mar = c(0, 3, 5.1, 2)) 
+  par(mar = c(0, 3, 5.1, 2))
   if (is.null(longcovnames)) {
       longcovnames <- covnames
       maxchar <- max(sapply(longcovnames, nchar))
@@ -145,8 +149,8 @@ plot.balance <- function(x, longcovnames=NULL,
      # plot the estimates
      plot(c(pts,pts2), c(idx,idx),
          bty="n", xlab="", ylab="",
-         xaxt="n", yaxt="n", #xaxs="i", 
-         #yaxs="i", 
+         xaxt="n", yaxt="n", #xaxs="i",
+         #yaxs="i",
          type="n",
          #ylim=c(max(idx)+.25, min(idx)-.25),
          #xlim=x.range,
@@ -158,19 +162,19 @@ plot.balance <- function(x, longcovnames=NULL,
          axis(3)
      }
      if (is.null(longcovnames)){
-         axis(2, at=1:K, labels=covnames[1:K], 
+         axis(2, at=1:K, labels=covnames[1:K],
              las=2, hadj=1, lty=0, cex.axis=cex.vars)
      }
      else{
-         axis(2, at=1:K, labels=longcovnames[1:K], 
+         axis(2, at=1:K, labels=longcovnames[1:K],
              las=2, hadj=1, lty=0, cex.axis=cex.vars)
      }
   }
   else{
     plot(c(pts,pts2), c(idx,idx),
       bty="n", xlab="", ylab="",
-      xaxt="n", yaxt="n", #xaxs="i", 
-      #yaxs="i", 
+      xaxt="n", yaxt="n", #xaxs="i",
+      #yaxs="i",
       type="n", axes=FALSE,
       #ylim=c(max(idx)+.25, min(idx)-.25),
       #xlim=x.range,
