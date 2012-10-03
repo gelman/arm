@@ -26,7 +26,7 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data", "subset", "weights", "na.action", 
     "etastart", "mustart", "offset"), names(mf), 0)
-  mf <- mf[c(1, m)]
+  mf <- mf[c(1L, m)]
   mf$drop.unused.levels <- drop.unused.levels
   mf$na.action <- NULL
   mf[[1]] <- as.name("model.frame")
@@ -38,7 +38,7 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
     stop("invalid 'method' argument")
   if (identical(method, "glm.fit")) 
     control <- do.call("glm.control", control)
-  
+
   mt <- attr(mf, "terms")
   Y <- model.response(mf, "any")
   if (length(dim(Y)) == 1) {
@@ -48,8 +48,9 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
       names(Y) <- nm
     }
   }
+  # 2012.10.3  I input data instead of mf here.  Don't know if this is right
   X <- if (!is.empty.model(mt)) {
-        model.matrixBayes(mt, mf, contrasts, keep.order = keep.order, drop.baseline=drop.baseline)
+        model.matrixBayes(object=mt, data=data, contrasts.arg=contrasts, keep.order = keep.order, drop.baseline=drop.baseline)
         #model.matrix.default(mt, mf, contrasts)
        }
        else{
@@ -82,7 +83,7 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
     prior.scale.for.intercept = prior.scale.for.intercept,
     prior.df.for.intercept = prior.df.for.intercept, min.prior.scale =
     min.prior.scale, scaled = scaled, Warning=Warning)
-  if (any(offset) && attr(mt, "intercept") > 0) {
+  if (length(offset) && attr(mt, "intercept") > 0) {
    cat("bayesglm not yet set up to do deviance comparion here\n")
   fit$null.deviance <- bayesglm.fit(x = X[, "(Intercept)", drop = FALSE], 
     y = Y, weights = weights, offset = offset,

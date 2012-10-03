@@ -1,3 +1,7 @@
+2012-10-03 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.5-08
+   * R/bayesglm: fix various bugs in bayesglm
+
 2012-09-26 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.5-07
    * R/balance: handle the situation when the formula in pscore.fit is not directly express.
