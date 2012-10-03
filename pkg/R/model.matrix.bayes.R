@@ -2,26 +2,32 @@
 model.matrixBayes <- function(object, data = environment(object),
         contrasts.arg = NULL, xlev = NULL, keep.order=FALSE, drop.baseline=FALSE,...)
 {
-    class(object) <- c("formula")
-    t <- if( missing( data ) ) { terms( object ) } else { terms( object, data=data, keep.order=keep.order ) }
+    #class(object) <- c("terms", "formula")
+    t <- if( missing( data ) ) { 
+          terms( object ) 
+         }else{ 
+            terms.formula(object, data = data, keep.order=keep.order) 
+         }
     attr(t, "intercept") <- attr(object, "intercept")
-    if ( is.null( attr( data, "terms" ) ) ){ data <- model.frame( object, data, xlev=xlev ) }
-    else {
-        reorder <- match(sapply(attr(t,"variables"),deparse, width.cutoff=500)[-1], names(data))
-        if ( any( is.na( reorder ) ) ) {
+    if (is.null(attr(data, "terms"))){ 
+      data <- model.frame(object, data, xlev=xlev) 
+    }else {
+        reorder <- match(sapply(attr(t,"variables"), deparse, width.cutoff=500)[-1], names(data))
+        if (any(is.na(reorder))) {
             stop( "model frame and formula mismatch in model.matrix()" ) 
         }
-        if( !identical( reorder, seq_len( ncol( data ) ) ) ) {
-            data <- data[,reorder, drop=FALSE] 
+        if(!identical(reorder, seq_len(ncol(data)))) {
+            data <- data[,reorder, drop = FALSE] 
         }
     }
-    int <- attr( t, "response")
-    if( length( data ) ) {      # otherwise no rhs terms, so skip all this
+    int <- attr(t, "response")
+    if(length(data)) {      # otherwise no rhs terms, so skip all this
         
         if (drop.baseline){
-             contr.funs <- as.character(getOption("contrasts"))
+          contr.funs <- as.character(getOption("contrasts"))
+        }else{
+          contr.funs <- as.character(list("contr.bayes.unordered", "contr.bayes.ordered"))
         }
-        else  contr.funs <- as.character(list("contr.bayes.unordered", "contr.bayes.ordered"))
         
         namD <- names(data)
         ## turn any character columns into factors
@@ -30,12 +36,12 @@ model.matrixBayes <- function(object, data = environment(object),
                 data[[i]] <- factor(data[[i]])
                 warning( gettextf( "variable '%s' converted to a factor", i ), domain = NA)
             }
-        isF <- sapply( data, function( x ) is.factor( x ) || is.logical( x ) )
+        isF <- vapply(data, function(x) is.factor(x) || is.logical(x), NA)        
         isF[int] <- FALSE
-        isOF <- sapply( data, is.ordered )
+        isOF <- vapply(data, is.ordered, NA)
         for( nn in namD[isF] )            # drop response
             if( is.null( attr( data[[nn]], "contrasts" ) ) ) {
-                contrasts( data[[nn]] ) <- contr.funs 
+                contrasts( data[[nn]] ) <- contr.funs[1 + isOF[nn]]
             }
         ## it might be safer to have numerical contrasts:
         ##    get(contr.funs[1 + isOF[nn]])(nlevels(data[[nn]]))
@@ -60,14 +66,14 @@ model.matrixBayes <- function(object, data = environment(object),
         }
     } else {               # internal model.matrix needs some variable
         isF  <-  FALSE
-        data <- list( x=rep( 0, nrow( data ) ) )
+        data <- data.frame(x=rep(0, nrow(data)))
     }
     #ans  <- .Internal( model.matrix( t, data ) )
-    ans  <- model.matrix( t, data )
+    ans  <- model.matrix.default(object=t, data=data)
     cons <- if(any(isF)){
-    lapply( data[isF], function( x ) attr( x,  "contrasts") ) }
-    else { NULL }
-    attr( ans, "contrasts" ) <- cons
+              lapply( data[isF], function(x) attr( x,  "contrasts") ) 
+            }else { NULL }
+    attr(ans, "contrasts" ) <- cons
     ans
 }
 #)
