@@ -31,7 +31,14 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
   mf$na.action <- NULL
   mf[[1]] <- as.name("model.frame")
   mf <- eval(mf, parent.frame())
-  switch(method, model.frame = return(mf), glm.fit = 1, stop("invalid 'method': ", method))
+  #switch(method, model.frame = return(mf), glm.fit = 1, stop("invalid 'method': ", method))
+  if (identical(method, "model.frame")) 
+    return(mf)
+  if (!is.character(method) && !is.function(method)) 
+    stop("invalid 'method' argument")
+  if (identical(method, "glm.fit")) 
+    control <- do.call("glm.control", control)
+  
   mt <- attr(mf, "terms")
   Y <- model.response(mf, "any")
   if (length(dim(Y)) == 1) {
@@ -43,24 +50,29 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
   }
   X <- if (!is.empty.model(mt)) {
         model.matrixBayes(mt, mf, contrasts, keep.order = keep.order, drop.baseline=drop.baseline)
+        #model.matrix.default(mt, mf, contrasts)
        }
        else{
         matrix(, NROW(Y), 0)
        }
 #  nobs <- NROW(X)
 #  X <- rbind(X, diag(NCOL(X)))
-
-
-  weights <- model.weights(mf)
-  offset <- model.offset(mf)
-  if (!is.null(weights) && any(weights < 0)){
-    stop("negative weights not allowed")
-  }
-  if (!is.null(offset) && length(offset) != NROW(Y)){
-    stop(gettextf("number of offsets is %d should equal %d (number of observations)", length(offset), NROW(Y)), domain = NA)
+  weights <- as.vector(model.weights(mf))
+  if (!is.null(weights) && !is.numeric(weights)) 
+        stop("'weights' must be a numeric vector")
+  if (!is.null(weights) && any(weights < 0)) 
+        stop("negative weights not allowed")
+    
+  offset <- as.vector(model.offset(mf))
+  if (!is.null(offset)) {
+    if (length(offset) != NROW(Y)) 
+      stop(gettextf("number of offsets is %d should equal %d (number of observations)", 
+                length(offset), NROW(Y)), domain = NA)
   }
   mustart <- model.extract(mf, "mustart")
+
   etastart <- model.extract(mf, "etastart")
+
   fit <- bayesglm.fit(x = X, y = Y, weights = weights, start = start,
     etastart = etastart, mustart = mustart, offset = offset,
     family = family, control = glm.control(maxit = n.iter),
@@ -522,7 +534,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     w <- sqrt((weights[state$good] * state$mu.eta.val[state$good])^2/state$varmu[state$good])
     w.star <- c(w, sqrt(state$dispersion)/state$prior.sd)
     good.star <- c(state$good, rep(TRUE, nvars))
-    fit <- lm.fit(x = x[good.star, ]*w.star,
+    fit <- lm.fit(x = as.matrix(x[good.star, ])*w.star,
                    y = z.star*w.star)
                    #w = w.star)
  
@@ -562,7 +574,6 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             sampling.var[1] <- crossprod (crossprod(V.coefs, colMeans.x), colMeans.x)
             sd.tmp <- ((centered.coefs - priors$mean)^2 + sampling.var * state$dispersion + priors$df * priors$scale^2)/(1 + priors$df)
 #            if(any(sd.tmp < 0)){
-#              browser()
 #            }
             sd <- sqrt(sd.tmp)
             
@@ -985,8 +996,7 @@ predictLM <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
             if (p > 0) {
                 XRinv <- if (missing(newdata) && is.null(w)) 
                   qr.Q(getQr(object))[, p1, drop = FALSE]
-                else X[, piv] %*% qr.solve(qr.R(getQr(object))[p1, 
-                  p1])
+                else X[, piv] %*% qr.solve(qr.R(getQr(object))[p1, p1])
                 ip <- drop(XRinv^2 %*% rep(res.var, p))
             }
             else ip <- rep(0, n)
