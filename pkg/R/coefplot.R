@@ -56,7 +56,7 @@ coefplot.default <- function(coefs, sds, CI=2,
       }
     }
     old.par <- par(no.readonly=TRUE)
-    on.exit(par(old.par))  
+    #on.exit(par(old.par))  
     min.mar <- par('mar')
     
     if (is.null(main)){main <- "Regression Estimates"}

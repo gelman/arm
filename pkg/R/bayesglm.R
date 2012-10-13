@@ -613,13 +613,22 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     state$mu.eta.val <- family$mu.eta(state$eta)
     
     dev <- sum (family$dev.resids (y, state$mu, weights))
-    if (!is.finite (dev) || !(family$valideta(state$eta) && family$validmu(state$mu))) {
+    
+    if (!is.finite (dev) || !isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
         if (!is.finite(dev)) {
             warning("step size truncated due to divergence", call. = FALSE)
-        }
-        if (!(family$valideta(state$eta) && family$validmu(state$mu))) {
+        } else if (!isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
             warning("step size truncated: out of bounds", call. = FALSE)
-        }
+        } 
+    
+    #
+#    if (!is.finite (dev) || !(family$valideta(state$eta) && family$validmu(state$mu))) {
+#        if (!is.finite(dev)) {
+#            warning("step size truncated due to divergence", call. = FALSE)
+#        }
+#        if (!(family$valideta(state$eta) && family$validmu(state$mu))) {
+#            warning("step size truncated: out of bounds", call. = FALSE)
+#        }
         
         ii <- 1
         while (ii <= control$maxit & 
