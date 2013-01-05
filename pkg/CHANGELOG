@@ -1,5 +1,8 @@
+2013-1-5 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.6-01
+   * R/bayesglm: fix an issue in updating start in the loop
+
 2012-10-13 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
-   * DESCRIPTION (Version, Date): 1.5-09
    * R/coefplot: fix an issue in coefplot.  No longer reset par when exit.
    * R/bayesglm: fix an issue in dev and family$state$valideta, family$state$mu
 

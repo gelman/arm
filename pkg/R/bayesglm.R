@@ -200,10 +200,10 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         dispersionold <- output$dispersionold
         ##########
         
-        ## 3.2 ##
+        ## 3.2 ## check the link between 3.1 and 3.2
         output.new <- .bayesglm.fit.loop.main.ideal (control, x, y, nvars, nobs, weights, offset,
                 intercept, scaled, 
-                start, etastart, mustart,
+                start = coefold, etastart = eta, mustart = mu,
                 family,
                 prior.mean, prior.mean.for.intercept, prior.scale, prior.df, prior.df.for.intercept,
                 print.unnormalized.log.posterior,
@@ -535,9 +535,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     w <- sqrt((weights[state$good] * state$mu.eta.val[state$good])^2/state$varmu[state$good])
     w.star <- c(w, sqrt(state$dispersion)/state$prior.sd)
     good.star <- c(state$good, rep(TRUE, nvars))
-    fit <- lm.fit(x = as.matrix(x[good.star, ])*w.star,
-                   y = z.star*w.star)
-                   #w = w.star)
+    fit <- lm.fit(x = as.matrix(x[good.star, ])*w.star, y = z.star*w.star)
  
     
     #fit <- .Fortran("dqrls", 
@@ -556,31 +554,29 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 #            work = fortran.call.parameters$work, 
 #            PACKAGE = "base")
     
-    if (intercept & scaled){
+
         
-        state$prior.sd <- priors$scale
-        if (all (priors$df==Inf) == FALSE) {
-            colMeans.x <- colMeans (x.nobs)
-            
-            centered.coefs <- fit$coefficients
-            centered.coefs[1] <- sum(fit$coefficients*colMeans.x)
-            if(NCOL(x.nobs)==1){
-              V.coefs <- chol2inv(fit$qr$qr[1:nvars])
-            }else{
-              V.coefs <- chol2inv(fit$qr$qr[1:nvars, 1:nvars, drop = FALSE])
-            }
-            diag.V.coefs <- diag(V.coefs)
-            sampling.var <- diag.V.coefs
+    state$prior.sd <- priors$scale
+    if (all (priors$df==Inf) == FALSE) {
+      colMeans.x <- colMeans (x.nobs)  
+      centered.coefs <- fit$coefficients
+      if(NCOL(x.nobs)==1){
+        V.coefs <- chol2inv(fit$qr$qr[1:nvars])
+      }else{
+        V.coefs <- chol2inv(fit$qr$qr[1:nvars, 1:nvars, drop = FALSE])
+      }
+      diag.V.coefs <- diag(V.coefs)
+      sampling.var <- diag.V.coefs
             # DL: sampling.var[1] <- crossprod(colMeans.x, V.coefs) %*% colMeans.x
-            sampling.var[1] <- crossprod (crossprod(V.coefs, colMeans.x), colMeans.x)
-            sd.tmp <- ((centered.coefs - priors$mean)^2 + sampling.var * state$dispersion + priors$df * priors$scale^2)/(1 + priors$df)
-#            if(any(sd.tmp < 0)){
-#            }
-            sd <- sqrt(sd.tmp)
-            
-            state$prior.sd[priors$df != Inf] <- sd[priors$df != Inf]
-        }
+      if(intercept & scaled){      
+        centered.coefs[1] <- sum(fit$coefficients*colMeans.x)
+        sampling.var[1] <- crossprod (crossprod(V.coefs, colMeans.x), colMeans.x)
+      }
+      sd.tmp <- ((centered.coefs - priors$mean)^2 + sampling.var * state$dispersion + priors$df * priors$scale^2)/(1 + priors$df)
+      sd <- sqrt(sd.tmp)
+      state$prior.sd[priors$df != Inf] <- sd[priors$df != Inf]
     }
+    
     if(NCOL(x.nobs)==1){
       predictions <- x.nobs * fit$coefficients
     }else{
@@ -588,53 +584,39 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     }
     
     if (!(family$family %in% c("poisson", "binomial"))) {
-        if (exists ("V.coefs") == FALSE) {
-            if(NCOL(x.nobs)==1){
-              V.coefs <- chol2inv(fit$qr$qr[1:nvars])            
-            }else{
-              V.coefs <- chol2inv(fit$qr$qr[1:nvars, 1:nvars, drop = FALSE])
-            }
+      if (exists ("V.coefs") == FALSE) {
+        if(NCOL(x.nobs)==1){
+          V.coefs <- chol2inv(fit$qr$qr[1:nvars])            
+        }else{
+          V.coefs <- chol2inv(fit$qr$qr[1:nvars, 1:nvars, drop = FALSE])
         }
-        #mse.resid <- mean((w * (z - x.nobs %*% fit$coefficients))^2) ## LOCAL VARIABLE
-        #mse.resid <- mean ( (fit$y[1:nobs] - w * predictions)^2)
-        mse.resid <- mean ( ((z.star*w.star)[1:sum(state$good)] - w * predictions[state$good,])^2)
-        
-        
-        ## mse.uncertainty <- mean(diag(x.nobs %*% V.coefs %*% t(x.nobs))) * state$dispersion
-        mse.uncertainty <- max (0, mean(rowSums(( x.nobs %*% V.coefs ) * x.nobs)) * state$dispersion) #faster  ## LOCAL VARIABLE
-        
-        state$dispersion <- mse.resid + mse.uncertainty
+      }
+      #mse.resid <- mean((w * (z - x.nobs %*% fit$coefficients))^2) ## LOCAL VARIABLE
+      #mse.resid <- mean ( (fit$y[1:nobs] - w * predictions)^2)
+      ## mse.uncertainty <- mean(diag(x.nobs %*% V.coefs %*% t(x.nobs))) * state$dispersion
+      mse.resid <- mean ( ((z.star*w.star)[1:sum(state$good)] - w * predictions[state$good,])^2)       
+      mse.uncertainty <- max (0, mean(rowSums(( x.nobs %*% V.coefs ) * x.nobs)) * state$dispersion) #faster  ## LOCAL VARIABLE
+      state$dispersion <- mse.resid + mse.uncertainty
     }
-    
-    
-    
-    state$eta <- drop(predictions) + offset
-    state$mu <- family$linkinv(state$eta)
+   
+    state$eta <- drop(predictions)
+    state$mu <- family$linkinv(state$eta + offset)
     state$mu.eta.val <- family$mu.eta(state$eta)
     
     dev <- sum (family$dev.resids (y, state$mu, weights))
-    
+ 
     if (!is.finite (dev) || !isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
         if (!is.finite(dev)) {
             warning("step size truncated due to divergence", call. = FALSE)
         } else if (!isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
             warning("step size truncated: out of bounds", call. = FALSE)
         } 
-    
-    #
-#    if (!is.finite (dev) || !(family$valideta(state$eta) && family$validmu(state$mu))) {
-#        if (!is.finite(dev)) {
-#            warning("step size truncated due to divergence", call. = FALSE)
-#        }
-#        if (!(family$valideta(state$eta) && family$validmu(state$mu))) {
-#            warning("step size truncated: out of bounds", call. = FALSE)
-#        }
-        
+         
         ii <- 1
-        while (ii <= control$maxit & 
-                !is.finite (dev)) {
+        while (ii <= control$maxit & !is.finite (dev)) {
             ii <- ii + 1
-            state$mu <- family$linkinv(state$eta)
+            start <- (predictions + state$start) / 2
+            state$mu <- family$linkinv(state$eta + offset)
             dev <- sum (family$dev.resids (y, state$mu, weights))
         }
         if (ii > control$maxit) {
@@ -642,10 +624,10 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         }
         
         ii <- 1
-        while (ii <= control$maxit & 
-                !(family$valideta(state$eta) && family$validmu(state$mu))) {
+        while (ii <= control$maxit &  !(family$valideta(state$eta) && family$validmu(state$mu))) {
             ii <- ii + 1
-            state$mu <- family$linkinv(state$eta)
+            start <- (predictions + state$start) / 2
+            state$mu <- family$linkinv(state$eta + offset)
         }
         if (ii > control$maxit) {
             stop("inner loop 2; cannot correct step size")
