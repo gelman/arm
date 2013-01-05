@@ -1,17 +1,25 @@
 Package: arm
-Version: 1.5-09
-Date: 2012-10-13
+Version: 1.6-01
+Date: 2013-1-5
 Title: Data Analysis Using Regression and Multilevel/Hierarchical Models
-Author: Andrew Gelman <gelman@stat.columbia.edu>,
-        Yu-Sung Su <suyusung@tsinghua.edu.cn>,
-        Masanao Yajima <my2167@columbia.edu>,
-        Jennifer Hill <jh1030@columbia.edu>,
-        Maria Grazia Pittau <grazia@stat.columbia.edu>,
-        Jouni Kerman <jouni@kerman.com> and
-        Tian Zheng <tzheng@stat.columbia.edu>
+Authors@R: c(person("Andrew", "Gelman", role = "aut", email = "gelman@stat.columbia.edu"), 
+             person("Yu-Sung", "Su", role =  c("aut", "cre"), email = "suyusung@tsinghua.edu.cn"),
+             person("Masanao", "Yajima", role =  "ctb", email = "yajima@stat.ucla.edu"),
+             person("Jennifer", "Hill", role =  "ctb", email = "jennifer.hill@nyu.edu"),
+             person("Maria Grazia", "Pittau", role =  "ctb", email = "grazia@stat.columbia.edu"),
+             person("Jouni", "Kerman", role =  "ctb", email = "jouni@kerman.com"),           
+             person("Tian", "Zheng", role =  "ctb", email = "tzheng@stat.columbia.edu")
+             )
+Author: Andrew Gelman [aut],
+        Yu-Sung Su [aut, cre],
+        Masanao Yajima [ctb],
+        Jennifer Hill [ctb],
+        Maria Grazia Pittau [ctb],
+        Jouni Kerman [ctb] and
+        Tian Zheng [ctb]
 Maintainer: Yu-Sung Su <suyusung@tsinghua.edu.cn>
 Depends: R (>= 2.9.0), methods, MASS, Matrix (>= 0.999375-33), lme4 (>= 0.999375-32), R2WinBUGS, abind, foreign
 Imports: Matrix, lme4, stats
 Description: R functions for processing lm, glm, mer and polr outputs.
-URL: http://cran.r-project.org/web/packages/arm
+URL: http://CRAN.R-project.org/package=car
 License: GPL (>= 2)
