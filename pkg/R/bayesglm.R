@@ -624,7 +624,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         }
         
         ii <- 1
-        while (ii <= control$maxit &  !(family$valideta(state$eta) && family$validmu(state$mu))) {
+        while (ii <= control$maxit &  !isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
             ii <- ii + 1
             start <- (predictions + state$start) / 2
             state$mu <- family$linkinv(state$eta + offset)
