@@ -422,7 +422,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     }
     
     mu <- family$linkinv(eta)
-    if (!(family$validmu(mu) && family$valideta(eta)))
+    if (!isTRUE(family$validmu(mu) && family$valideta(eta)))
         stop("cannot find valid starting values: please specify some")
     devold <- sum(family$dev.resids(y, mu, weights))
     boundary <- conv <- FALSE
