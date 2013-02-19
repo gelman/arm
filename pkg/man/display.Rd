@@ -7,7 +7,7 @@
 \alias{display,glm-method}
 \alias{display,mer-method}
 \alias{display,polr-method}
-\alias{display,syvglm-method}
+\alias{display,svyglm-method}
 
 \title{Functions for Processing lm, glm, mer, polr and svyglm Output}
 
