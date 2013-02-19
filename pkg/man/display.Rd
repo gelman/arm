@@ -19,7 +19,7 @@ display (object, ...)
 
 \S4method{display}{lm}(object, digits=2, detail=FALSE)
 \S4method{display}{bayesglm}(object, digits=2, detail=FALSE)
-\S4method{display}{bayesglm.h}(object, digits=2, detail=FALSE)
+%\S4method{display}{bayesglm.h}(object, digits=2, detail=FALSE)
 \S4method{display}{glm}(object, digits=2, detail=FALSE)
 \S4method{display}{mer}(object, digits=2, detail=FALSE)
 \S4method{display}{polr}(object, digits=2, detail=FALSE)
