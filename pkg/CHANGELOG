@@ -1,3 +1,9 @@
+2013-2-20 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.6-03, add import from survey package
+   * R/AllClass: set old class svyglm.
+   * R/display: add svyglm method
+   * man/display: add svyglm method
+
 2013-1-5 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.6-01
    * R/bayesglm: fix an issue in updating start in the loop
