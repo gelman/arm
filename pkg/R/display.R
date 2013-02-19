@@ -310,6 +310,50 @@ setMethod("display", signature(object = "polr"),
 )
 
 
+setMethod("display", signature(object = "svyglm"),
+    function(object, digits=2, detail=FALSE)
+    {
+    out <- NULL
+    out$call <- object$call
+    out$survey.design <- object$survey.design
+    summ <- summary(object)
+    if(detail){
+      coef <- summ$coef[, , drop = FALSE]
+      out$z.value <- coef[,3]#,drop=FALSE]
+      out$p.value <- coef[,4]#,drop=FALSE]
+    }
+    else{
+      coef <- summ$coef[, 1:2, drop = FALSE]
+    }
+    dimnames(coef)[[2]][1:2] <- c("coef.est", "coef.se")
+    out$n <- summ$df[1] + summ$df[2]
+    out$k <- summ$df[1]
+    out$coef <- coef[,"coef.est"]
+    out$se <- coef[,"coef.se"]
+    print(out$call)
+    cat("\n")
+    print(out$survey.design)
+    cat("\n")
+    pfround(coef, digits)
+    out$deviance <- summ$deviance
+    out$null.deviance <- summ$null.deviance
+    cat("---\n")
+    cat(paste("  n = ", out$n, ", k = ", out$k, "\n  residual deviance = ", 
+        fround(out$deviance, 1), ", null deviance = ", fround(out$null.deviance, 1), " (difference = ", fround(summ$null.deviance - summ$deviance, 1), ")", "\n", sep = ""))
+    out$dispersion <- summ$dispersion[1]
+    if (out$dispersion != 1) {
+      cat(paste("  overdispersion parameter = ", fround(out$dispersion, 1), "\n", sep = ""))
+      if (family(object)$family=="gaussian") {
+        out$sigma.hat <- sqrt(out$dispersion)
+        cat(paste("  residual sd is sqrt(overdispersion) = ",
+                  fround(out$sigma.hat, digits), "\n", sep = ""))
+      }
+    }
+    return(invisible(out))
+  }
+)
+
+
 #setMethod("display", signature(object = "bayespolr"),
 #    function(object, digits=2)
 #    {

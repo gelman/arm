@@ -3,15 +3,16 @@
 \alias{display}
 \alias{display,lm-method}
 \alias{display,bayesglm-method}
-\alias{display,bayesglm.h-method}
+%\alias{display,bayesglm.h-method}
 \alias{display,glm-method}
 \alias{display,mer-method}
 \alias{display,polr-method}
+\alias{display,syvglm-method}
 
-\title{Functions for Processing lm, glm, mer and polr Output}
+\title{Functions for Processing lm, glm, mer, polr and svyglm Output}
 
 \description{This generic function gives a
-    clean printout of lm, glm, mer, and polr objects.}
+    clean printout of lm, glm, mer, polr and svyglm objects.}
 
 \usage{
 display (object, ...)
@@ -22,10 +23,11 @@ display (object, ...)
 \S4method{display}{glm}(object, digits=2, detail=FALSE)
 \S4method{display}{mer}(object, digits=2, detail=FALSE)
 \S4method{display}{polr}(object, digits=2, detail=FALSE)
+\S4method{display}{svyglm}(object, digits=2, detail=FALSE)
 }
 
 \arguments{
-  \item{object}{The output of a call to lm, glm, mer, polr, or related regressions 
+  \item{object}{The output of a call to lm, glm, mer, polr, svyglm or related regressions 
     function with n data points and k predictors.}
   \item{...}{further arguments passed to or from other methods.}
   \item{digits}{number of significant digits to display.}
@@ -64,7 +66,8 @@ display (object, ...)
          \code{\link[stats]{lm}},
          \code{\link[stats]{glm}},
          \code{\link[lme4]{lmer}},
-         \code{\link[MASS]{polr}}
+         \code{\link[MASS]{polr}},
+         \code{\link[survey]{svyglm}}
          }
 
 \examples{                          
