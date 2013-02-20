@@ -2,6 +2,7 @@
    * DESCRIPTION (Version, Date): 1.6-03, add import from survey package
    * R/AllClass: set old class svyglm.
    * R/display: add svyglm method
+   * R/coefplot: fix a bug when the formula does not have an intercept
    * man/display: add svyglm method
 
 2013-1-5 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 

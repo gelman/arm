@@ -197,16 +197,17 @@ setMethod("coefplot", signature(object = "lm"),
       stop(message="the length of varnames does not equal the length of predictors.  
       Note: varnames must include a name for constant/intercept")
     }
-    if (intercept){
-        coefs <- coefs
-        sds <- sds
-        varnames <- varnames
-    }
-    else{
-        coefs <- coefs[-1]
-        sds <- sds[-1]
-        varnames <- varnames[-1]
-    }
+    chk.int <- attr(terms(object), "intercep")
+    if(chk.int & intercept | !chk.int & intercept | !chk.int & !intercept){
+      intercept <- TRUE
+      coefs <- coefs
+      sds <- sds
+      varnames <- varnames
+    } else if(chk.int & !intercept){
+      coefs <- coefs[-1]
+      sds <- sds[-1]
+      varnames <- varnames[-1]
+    }    
     
     
     # plotting
@@ -227,17 +228,17 @@ setMethod("coefplot", signature(object = "glm"),
       stop(message="the length of varnames does not equal the length of predictors.  
       Note: varnames must include a name for constant/intercept")
     }    
-    if (intercept){
-        coefs <- coefs
-        sds <- sds
-        varnames <- varnames
-    }
-    else{
-        coefs <- coefs[-1]
-        sds <- sds[-1]
-        varnames <- varnames[-1]
-    }
-    
+    chk.int <- attr(terms(object), "intercep")
+    if(chk.int & intercept | !chk.int & intercept | !chk.int & !intercept){
+      intercept <- TRUE
+      coefs <- coefs
+      sds <- sds
+      varnames <- varnames
+    } else if(chk.int & !intercept){
+      coefs <- coefs[-1]
+      sds <- sds[-1]
+      varnames <- varnames[-1]
+    }    
     
     # plotting
     coefplot(coefs, sds, 
