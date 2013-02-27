@@ -1,3 +1,9 @@
+2013-2-27 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.6-04
+    * R/coefplot: fix a bug when the formula does not have an intercept
+   * man/bayesglm: fix a coding error for weights in the bayesglm.fit
+
+
 2013-2-20 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.6-03, add import from survey package
    * R/AllClass: set old class svyglm.
