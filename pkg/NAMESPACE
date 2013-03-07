@@ -65,7 +65,7 @@ export(
        "G",
        "go",
        "invlogit",
-#       "logit",
+       "logit",
        "matching",
        "mcsamp", 
        "model.matrixBayes",
