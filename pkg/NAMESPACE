@@ -33,6 +33,7 @@ exportMethods(
               "coefplot",
               "display",
               "fixef",
+              "fitted",
               "mcsamp",
               #"model.matrix.bayes",
               "se.coef",
