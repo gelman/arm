@@ -1,6 +1,6 @@
 Package: arm
-Version: 1.6-05
-Date: 2013-3-8
+Version: 1.6-06
+Date: 2013-4-30
 Title: Data Analysis Using Regression and Multilevel/Hierarchical Models
 Authors@R: c(person("Andrew", "Gelman", role = "aut", email = "gelman@stat.columbia.edu"), 
              person("Yu-Sung", "Su", role =  c("aut", "cre"), email = "suyusung@tsinghua.edu.cn"),
@@ -9,17 +9,19 @@ Authors@R: c(person("Andrew", "Gelman", role = "aut", email = "gelman@stat.colum
              person("Maria Grazia", "Pittau", role =  "ctb", email = "grazia@stat.columbia.edu"),
              person("Jouni", "Kerman", role =  "ctb", email = "jouni@kerman.com"),           
              person("Tian", "Zheng", role =  "ctb", email = "tzheng@stat.columbia.edu")
+             person("Vicent", "Dorie", role =  "ctb", email = "vjd2106@columbia.edu")
              )
 Author: Andrew Gelman [aut],
         Yu-Sung Su [aut, cre],
         Masanao Yajima [ctb],
         Jennifer Hill [ctb],
         Maria Grazia Pittau [ctb],
-        Jouni Kerman [ctb] and
-        Tian Zheng [ctb]
+        Jouni Kerman [ctb],
+        Tian Zheng [ctb] and
+        Vicent Dorie [ctb]
 Maintainer: Yu-Sung Su <suyusung@tsinghua.edu.cn>
 Depends: R (>= 2.9.0), methods, MASS, Matrix (>= 0.999375-33), lme4 (>= 0.999375-32), R2WinBUGS, abind, foreign
 Imports: Matrix, lme4, stats
-Description: R functions for processing lm, glm, mer and polr outputs.
+Description: R functions for processing lm, glm, svy.glm, mer and polr outputs.
 URL: http://CRAN.R-project.org/package=arm
 License: GPL (>= 2)
