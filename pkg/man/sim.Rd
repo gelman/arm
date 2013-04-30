@@ -12,6 +12,7 @@
 \alias{coef,sim.mer-method}
 \alias{fixef,sim.mer-method}
 \alias{ranef,sim.mer-method}
+\alias{fitted,sim.mer-method}
 
 
 
@@ -37,6 +38,7 @@ sim(object, ...)
 \S4method{coef}{sim.mer}(object)
 \S4method{fixef}{sim.mer}(object)
 \S4method{ranef}{sim.mer}(object)
+\S4method{fitted}{sim.mer}(object, regression)
 
 
 }
@@ -46,6 +48,7 @@ sim(object, ...)
   \item{slot}{return which slot of \code{sim.polr}, available options are \code{coef, zeta, ALL}.}
   \item{...}{further arguments passed to or from other methods.}
   \item{n.sims}{number of independent simulation draws to create.}
+  \item{regression}{the orginial mer model}
 }
 
 \value{
@@ -128,7 +131,7 @@ coefall.sim <- coef(M.plr)
  fixef.E1.sim <- fixef(E1.sim)
  ranef.E1.sim <- ranef(E1.sim)
  sigma.E1.sim <- sigma.hat(E1.sim)
-
+ yhat <- fitted(E1.sim, E1)
 
 # Example 2
  u.full <- u[group]
@@ -139,7 +142,7 @@ coefall.sim <- coef(M.plr)
  fixef.E2.sim <- fixef(E2.sim)
  ranef.E2.sim <- ranef(E2.sim)
  sigma.E2.sim <- sigma.hat(E2.sim)
-
+ yhat <- fitted(E2.sim, E2)
 
 # Example 3 
  y <- rbinom (n, 1, invlogit (a[group] + b*x))
@@ -150,7 +153,7 @@ coefall.sim <- coef(M.plr)
  fixef.E3.sim <- fixef(E3.sim)
  ranef.E3.sim <- ranef(E3.sim)
  sigma.E3.sim <- sigma.hat(E3.sim)
- 
+ yhat <- fitted(E3.sim, E3)
 }
 
 \keyword{models}
