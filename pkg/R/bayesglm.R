@@ -50,7 +50,7 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
   }
   # 2012.10.3  I input data instead of mf here.  Don't know if this is right
   X <- if (!is.empty.model(mt)) {
-        model.matrixBayes(object=mt, data=data, contrasts.arg=contrasts, keep.order = keep.order, drop.baseline=drop.baseline)
+        model.matrixBayes(object=mt, data=mf, contrasts.arg=contrasts, keep.order = keep.order, drop.baseline=drop.baseline)
         #model.matrix.default(mt, mf, contrasts)
        }
        else{
