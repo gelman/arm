@@ -1,12 +1,14 @@
-2013-4-30 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+2013-5-9 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.6-06
    * NAMESPACE: export new method fitted() for sim.mer
    * R/fitted: add fitted() for sim.mer object
    * man/sim: add description for fitted() for sim.mer object
+   * R/bayesglm fix a bug in bayesglm() in "subset"
 
 2013-3-8 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.6-05
    * NAMESPACE: export logit()
+  
 
 2013-2-27 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.6-04
