@@ -6,7 +6,9 @@
   Plots the residual of observed variable.
 }
 \usage{
-residual.plot(Expected, Residuals, sigma, main = deparse(substitute(Expected)), col.pts = "blue", col.ctr = "red", col.sgm = "black", cex = 0.5, gray.scale = FALSE, xlab = "Predicted", ylab = "Residuals", ...)
+residual.plot(Expected, Residuals, sigma, main = deparse(substitute(Expected)), 
+  col.pts = "blue", col.ctr = "red", col.sgm = "black", cex = 0.5, 
+  gray.scale = FALSE, xlab = "Predicted", ylab = "Residuals", ...)
 }
 
 \arguments{
