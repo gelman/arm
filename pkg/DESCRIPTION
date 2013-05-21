@@ -8,7 +8,7 @@ Authors@R: c(person("Andrew", "Gelman", role = "aut", email = "gelman@stat.colum
              person("Jennifer", "Hill", role =  "ctb", email = "jennifer.hill@nyu.edu"),
              person("Maria Grazia", "Pittau", role =  "ctb", email = "grazia@stat.columbia.edu"),
              person("Jouni", "Kerman", role =  "ctb", email = "jouni@kerman.com"),           
-             person("Tian", "Zheng", role =  "ctb", email = "tzheng@stat.columbia.edu")
+             person("Tian", "Zheng", role =  "ctb", email = "tzheng@stat.columbia.edu"),
              person("Vicent", "Dorie", role =  "ctb", email = "vjd2106@columbia.edu")
              )
 Author: Andrew Gelman [aut],
