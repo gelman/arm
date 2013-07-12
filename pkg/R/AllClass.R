@@ -3,6 +3,7 @@ setOldClass("mcmc.list")
 setOldClass("polr")
 setOldClass("bugs")
 setOldClass("svyglm")
+#setOldClass("merMod")
 
 setClass("balance",
      representation(

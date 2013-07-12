@@ -179,7 +179,7 @@ sampleSigma <- function(model) {
                          model@deviance[["pwrss"]] / 2)));
 }
 
-setMethod("sim", signature(object = "mer"),
+setMethod("sim", signature(object = "merMod"),
           function(object, n.sims=100)
 {
   # create some object matrix and util functions#########

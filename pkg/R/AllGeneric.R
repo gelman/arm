@@ -24,6 +24,21 @@ if (!isGeneric("display")) {
                standardGeneric("display"))
 }
 
+
+#if (!isGeneric("fixef")) {
+#    setGeneric("fixef",
+#               function(object, ...)
+#               standardGeneric("fixef"))
+#}
+#
+#
+#if (!isGeneric("ranef")) {
+#    setGeneric("ranef",
+#               function(object, ...)
+#               standardGeneric("ranef"))
+#}
+
+
 #if (!isGeneric("model.matrix.bayes")) {
 #    setGeneric("model.matrix.bayes",
 #               function(object, ...)

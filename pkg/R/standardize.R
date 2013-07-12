@@ -107,7 +107,7 @@ setMethod("standardize", signature(object = "polr"),
 
 
 
-setMethod("standardize", signature(object = "mer"),
+setMethod("standardize", signature(object = "merMod"),
   function(object, unchanged=NULL, 
     standardize.y=FALSE, binary.inputs="center")
 {

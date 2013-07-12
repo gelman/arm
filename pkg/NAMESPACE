@@ -6,8 +6,8 @@ importFrom(Matrix,
 )
 
 importFrom(stats,
-      "coef",
-      "extractAIC"
+      "coef"
+      #"extractAIC"
 )
 
 importFrom(lme4,
@@ -85,8 +85,8 @@ export(
 )
 
 
-S3method(extractDIC, mer)
-S3method(extractAIC, mer)
+S3method(extractDIC, merMod)
+#S3method(extractAIC, mer)
 S3method(print, GO)
 S3method(plot, balance)
 S3method(print, balance)

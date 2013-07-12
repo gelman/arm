@@ -1,3 +1,9 @@
+2013-7-12 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.6-07
+   * made various change to adjust the new lme4
+   * currently, sim.mer is not working, waiting for revision.
+
+
 2013-5-9 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.6-06
    * NAMESPACE: export new method fitted() for sim.mer

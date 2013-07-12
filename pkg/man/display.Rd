@@ -5,7 +5,7 @@
 \alias{display,bayesglm-method}
 %\alias{display,bayesglm.h-method}
 \alias{display,glm-method}
-\alias{display,mer-method}
+\alias{display,merMod-method}
 \alias{display,polr-method}
 \alias{display,svyglm-method}
 
@@ -21,13 +21,13 @@ display (object, ...)
 \S4method{display}{bayesglm}(object, digits=2, detail=FALSE)
 %\S4method{display}{bayesglm.h}(object, digits=2, detail=FALSE)
 \S4method{display}{glm}(object, digits=2, detail=FALSE)
-\S4method{display}{mer}(object, digits=2, detail=FALSE)
+\S4method{display}{merMod}(object, digits=2, detail=FALSE)
 \S4method{display}{polr}(object, digits=2, detail=FALSE)
 \S4method{display}{svyglm}(object, digits=2, detail=FALSE)
 }
 
 \arguments{
-  \item{object}{The output of a call to lm, glm, mer, polr, svyglm or related regressions 
+  \item{object}{The output of a call to lm, glm, merMod, polr, svyglm or related regressions 
     function with n data points and k predictors.}
   \item{...}{further arguments passed to or from other methods.}
   \item{digits}{number of significant digits to display.}
@@ -35,7 +35,7 @@ display (object, ...)
   }
 
 \details{This generic function gives a
-    clean printout of lm, glm, mer and polr objects, focusing 
+    clean printout of lm, glm, merMod and polr objects, focusing 
     on the most pertinent pieces of information: 
     the coefficients and their standard errors, the sample size, 
     number of predictors, residual standard deviation, and R-squared.
@@ -112,21 +112,21 @@ display (object, ...)
  
    M3 <- lmer (y1 ~ x + (1|group))
    display (M3)
-   M3.sim <- sim(M3, n.sims=2)  
+   #M3.sim <- sim(M3, n.sims=2)  
 
 
 # Then the full varying-intercept, varying-slope model:
  
    M4 <- lmer (y1 ~ x + (1 + x |group))
    display (M4)
-   M4.sim <- sim(M4, n.sims=2)  
+  # M4.sim <- sim(M4, n.sims=2)  
 
  
 # Then the full varying-intercept, logit model:
  
    M5 <- glmer (y2 ~ x + (1|group), family=binomial(link="logit"))
    display (M5)
-   M5.sim <- sim(M5, n.sims=2)  
+  # M5.sim <- sim(M5, n.sims=2)  
 
  
 # Then the full varying-intercept, varying-slope logit model:
@@ -134,14 +134,14 @@ display (object, ...)
    M6 <- glmer (y2 ~ x + (1|group) + (0 + x |group), 
         family=binomial(link="logit"))
    display (M6)
-   M6.sim <- sim(M6, n.sims=2)  
+  # M6.sim <- sim(M6, n.sims=2)  
 
 
 # Then non-nested varying-intercept, varying-slop model:
    
    M7 <- lmer (y3 ~ x + (1 + x |group) + (1|group2))
    display(M7)
-   M7.sim <- sim(M7, n.sims=2)  
+  # M7.sim <- sim(M7, n.sims=2)  
 
  
 # Then the ordered logit model from polr

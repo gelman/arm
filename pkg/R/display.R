@@ -215,7 +215,7 @@ setMethod("display", signature(object = "glm"),
 #)
 
 
-setMethod("display", signature(object = "mer"),
+setMethod("display", signature(object = "merMod"),
     function(object, digits=2, detail=FALSE)
     {
     out <- NULL
@@ -226,11 +226,11 @@ setMethod("display", signature(object = "mer"),
     fcoef <- fixef(object)
     #coefs <- attr(summ, "coefs")
     #useScale <- attr (VarCorr (object), "sc")
-    useScale <- object@dims["useSc"]
+    useScale <- getME(object, "devcomp")$dims["useSc"]
     corF <- vcov(object)@factors$correlation
     coefs <- cbind(fcoef, corF@sd)
     if (length (fcoef) > 0){
-      if (!object@dims["useSc"]) {
+      if (!useScale) {
         coefs <- coefs[, 1:2, drop = FALSE]
         out$z.value <- coefs[, 1]/coefs[, 2]
         out$p.value <- 2 * pnorm(abs(out$z.value), lower = FALSE)
@@ -254,11 +254,11 @@ setMethod("display", signature(object = "mer"),
     vc <- as.matrix.VarCorr (VarCorr (object), useScale=useScale, digits)
     print (vc[,c(1:2,4:ncol(vc))], quote=FALSE)
     out$ngrps <- lapply(object@flist, function(x) length(levels(x)))
-    REML <- object@dims["REML"]
-    llik <- logLik(object, REML)
+    is_REML <- isREML(object)
+    llik <- logLik(object, REML=is_REML)
     out$AIC <- AIC(llik)
-    out$deviance <- object@deviance["ML"]     # Dbar
-    out$n <- object@dims["n"]
+    out$deviance <- deviance(refitML(object))     # Dbar
+    out$n <- getME(object, "devcomp")$dims["n"]
     Dhat <- -2*(llik) # Dhat
     pD <- out$deviance - Dhat              # pD
     out$DIC <- out$deviance + pD               # DIC=Dbar+pD=Dhat+2pD
