@@ -6,7 +6,7 @@
 \alias{sim,lm-method}
 \alias{sim,glm-method}
 \alias{sim,polr-method}
-\alias{sim,mer-method}
+\alias{sim,merMod-method}
 \alias{coef,sim-method}
 \alias{coef,sim.polr-method}
 \alias{coef,sim.mer-method}
@@ -31,7 +31,7 @@ sim(object, ...)
 \S4method{sim}{lm}(object, n.sims = 100)
 \S4method{sim}{glm}(object, n.sims = 100)
 \S4method{sim}{polr}(object, n.sims = 100)
-\S4method{sim}{mer}(object, n.sims = 100)
+\S4method{sim}{merMod}(object, n.sims = 100)
 
 \S4method{coef}{sim}(object)
 \S4method{coef}{sim.polr}(object, slot=c("ALL", "coef", "zeta"))
@@ -126,34 +126,34 @@ coefall.sim <- coef(M.plr)
 # Example 1
  E1 <- lmer (y ~ x + (1 | group))
  display(E1)
- E1.sim <- sim (E1)
- coef.E1.sim <- coef(E1.sim)
- fixef.E1.sim <- fixef(E1.sim)
- ranef.E1.sim <- ranef(E1.sim)
- sigma.E1.sim <- sigma.hat(E1.sim)
- yhat <- fitted(E1.sim, E1)
+# E1.sim <- sim (E1)
+# coef.E1.sim <- coef(E1.sim)
+# fixef.E1.sim <- fixef(E1.sim)
+# ranef.E1.sim <- ranef(E1.sim)
+# sigma.E1.sim <- sigma.hat(E1.sim)
+# yhat <- fitted(E1.sim, E1)
 
 # Example 2
  u.full <- u[group]
  E2 <- lmer (y ~ x + u.full + (1 | group))
  display(E2)
- E2.sim <- sim (E2)
- coef.E2.sim <- coef(E2.sim)
- fixef.E2.sim <- fixef(E2.sim)
- ranef.E2.sim <- ranef(E2.sim)
- sigma.E2.sim <- sigma.hat(E2.sim)
- yhat <- fitted(E2.sim, E2)
+# E2.sim <- sim (E2)
+# coef.E2.sim <- coef(E2.sim)
+# fixef.E2.sim <- fixef(E2.sim)
+# ranef.E2.sim <- ranef(E2.sim)
+# sigma.E2.sim <- sigma.hat(E2.sim)
+# yhat <- fitted(E2.sim, E2)
 
 # Example 3 
  y <- rbinom (n, 1, invlogit (a[group] + b*x))
  E3 <- glmer (y ~ x + (1 | group), family=binomial(link="logit"))
  display(E3)
- E3.sim <- sim (E3)
- coef.E3.sim <- coef(E3.sim)
- fixef.E3.sim <- fixef(E3.sim)
- ranef.E3.sim <- ranef(E3.sim)
- sigma.E3.sim <- sigma.hat(E3.sim)
- yhat <- fitted(E3.sim, E3)
+ #E3.sim <- sim (E3)
+ #coef.E3.sim <- coef(E3.sim)
+ #fixef.E3.sim <- fixef(E3.sim)
+ #ranef.E3.sim <- ranef(E3.sim)
+ #sigma.E3.sim <- sigma.hat(E3.sim)
+ #yhat <- fitted(E3.sim, E3)
 }
 
 \keyword{models}

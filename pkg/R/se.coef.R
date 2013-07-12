@@ -55,7 +55,7 @@ setMethod("se.coef", signature(object = "glm"),
 #    }
 #)
 
-setMethod("se.coef", signature(object = "mer"),
+setMethod("se.coef", signature(object = "merMod"),
     function(object)
     {
     #ngrps <- lapply(object@flist, function(x) length(levels(x)))
@@ -110,12 +110,11 @@ se.ranef <- function (object){
         vars.m <- attr( se.bygroup[[m]], "postVar" )
         K <- dim(vars.m)[1]
         J <- dim(vars.m)[3]
+        names.full <- dimnames(se.bygroup[[m]])
         se.bygroup[[m]] <- array(NA, c(J, K))
         for (j in 1:J) {
             se.bygroup[[m]][j, ] <- sqrt(diag(as.matrix(vars.m[, , j])))
-        }
-#        se.bygroup[[m]] <- se.bygroup[[m]] * sc
-        names.full <- dimnames(se.bygroup)
+        }       
         dimnames(se.bygroup[[m]]) <- list(names.full[[1]], names.full[[2]])
     }
     return(se.bygroup)
