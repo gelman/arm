@@ -406,12 +406,16 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     coefold <- NULL
     if (!is.null(etastart)) {
         eta <- etastart
-    }
-    else if (!is.null(start)) {
-        if (length(start) != nvars)
-            stop(gettextf("length of 'start' should equal %d and correspond to initial coefs for %s", 
+    } else if (!is.null(start)) {
+        if (length(start) != nvars){
+            if(start==0&length(start)==1){ 
+              start <- rep(0, nvars)
+              eta <- offset + as.vector(ifelse((NCOL(x) == 1), x.nobs[,1]*start, x.nobs %*% start))
+            }else{
+              stop(gettextf("length of 'start' should equal %d and correspond to initial coefs for %s", 
                             nvars, paste(deparse(xnames), collapse = ", ")), domain = NA)
-        else {
+            }
+        }else {
             coefold <- start
             eta <- offset + as.vector(ifelse((NCOL(x) == 1), x.nobs[,1]*start, x.nobs %*% start))
         }
