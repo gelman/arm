@@ -25,7 +25,7 @@ exportClasses(
               #"bayesglm.h",
               "bayespolr",
               "sim",
-              "sim.mer"
+              "sim.merMod"
               )
 
 exportMethods(

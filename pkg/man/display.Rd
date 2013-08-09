@@ -100,13 +100,13 @@ display (object, ...)
 
    M1 <- lm (y1 ~ x)
    display (M1)
-   M1.sim <- sim(M1, n.sims=2)  
+   #M1.sim <- sim(M1, n.sims=2)  
 
 # display a simple logit model
 
    M2 <- glm (y2 ~ x, family=binomial(link="logit"))
    display (M2)
-   M2.sim <- sim(M2, n.sims=2)  
+   #M2.sim <- sim(M2, n.sims=2)  
 
 # Then fit and display a simple varying-intercept model:
  
@@ -119,14 +119,14 @@ display (object, ...)
  
    M4 <- lmer (y1 ~ x + (1 + x |group))
    display (M4)
-  # M4.sim <- sim(M4, n.sims=2)  
+   M4.sim <- sim(M4, n.sims=2)  
 
  
 # Then the full varying-intercept, logit model:
  
    M5 <- glmer (y2 ~ x + (1|group), family=binomial(link="logit"))
    display (M5)
-  # M5.sim <- sim(M5, n.sims=2)  
+   M5.sim <- sim(M5, n.sims=2)  
 
  
 # Then the full varying-intercept, varying-slope logit model:
@@ -134,14 +134,14 @@ display (object, ...)
    M6 <- glmer (y2 ~ x + (1|group) + (0 + x |group), 
         family=binomial(link="logit"))
    display (M6)
-  # M6.sim <- sim(M6, n.sims=2)  
+   M6.sim <- sim(M6, n.sims=2)  
 
 
 # Then non-nested varying-intercept, varying-slop model:
    
    M7 <- lmer (y3 ~ x + (1 + x |group) + (1|group2))
    display(M7)
-  # M7.sim <- sim(M7, n.sims=2)  
+   M7.sim <- sim(M7, n.sims=2)  
 
  
 # Then the ordered logit model from polr

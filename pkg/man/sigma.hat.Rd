@@ -5,7 +5,7 @@
 \alias{sigma.hat,glm-method}
 \alias{sigma.hat,merMod-method}
 \alias{sigma.hat,sim-method}
-\alias{sigma.hat,sim.mer-method}
+\alias{sigma.hat,sim.merMod-method}
 
 
 
@@ -21,7 +21,7 @@ sigma.hat(object,\dots)
 \S4method{sigma.hat}{glm}(object)
 \S4method{sigma.hat}{merMod}(object)
 \S4method{sigma.hat}{sim}(object)
-\S4method{sigma.hat}{sim.mer}(object)
+\S4method{sigma.hat}{sim.merMod}(object)
 
 }
 
