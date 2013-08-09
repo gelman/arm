@@ -98,7 +98,7 @@ setMethod("sigma.hat", signature(object = "merMod"),
 
 
 
-setMethod("sigma.hat", signature(object = "sim.mer"),
+setMethod("sigma.hat", signature(object = "sim.merMod"),
     function(object)
     {
     sigma <- object@sigma

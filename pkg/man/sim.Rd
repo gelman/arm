@@ -2,17 +2,17 @@
 %\docType{genericFunction}
 \alias{sim}
 \alias{sim-class}
-\alias{sim.mer-class}
+\alias{sim.merMod-class}
 \alias{sim,lm-method}
 \alias{sim,glm-method}
 \alias{sim,polr-method}
 \alias{sim,merMod-method}
 \alias{coef,sim-method}
 \alias{coef,sim.polr-method}
-\alias{coef,sim.mer-method}
-\alias{fixef,sim.mer-method}
-\alias{ranef,sim.mer-method}
-\alias{fitted,sim.mer-method}
+\alias{coef,sim.merMod-method}
+\alias{fixef,sim.merMod-method}
+\alias{ranef,sim.merMod-method}
+\alias{fitted,sim.merMod-method}
 
 
 
@@ -35,10 +35,10 @@ sim(object, ...)
 
 \S4method{coef}{sim}(object)
 \S4method{coef}{sim.polr}(object, slot=c("ALL", "coef", "zeta"))
-\S4method{coef}{sim.mer}(object)
-\S4method{fixef}{sim.mer}(object)
-\S4method{ranef}{sim.mer}(object)
-\S4method{fitted}{sim.mer}(object, regression)
+\S4method{coef}{sim.merMod}(object)
+\S4method{fixef}{sim.merMod}(object)
+\S4method{ranef}{sim.merMod}(object)
+\S4method{fitted}{sim.merMod}(object, regression)
 
 
 }
@@ -126,23 +126,23 @@ coefall.sim <- coef(M.plr)
 # Example 1
  E1 <- lmer (y ~ x + (1 | group))
  display(E1)
-# E1.sim <- sim (E1)
-# coef.E1.sim <- coef(E1.sim)
-# fixef.E1.sim <- fixef(E1.sim)
-# ranef.E1.sim <- ranef(E1.sim)
-# sigma.E1.sim <- sigma.hat(E1.sim)
-# yhat <- fitted(E1.sim, E1)
+ E1.sim <- sim (E1)
+ coef.E1.sim <- coef(E1.sim)
+ fixef.E1.sim <- fixef(E1.sim)
+ ranef.E1.sim <- ranef(E1.sim)
+ sigma.E1.sim <- sigma.hat(E1.sim)
+ yhat <- fitted(E1.sim, E1)
 
 # Example 2
  u.full <- u[group]
  E2 <- lmer (y ~ x + u.full + (1 | group))
  display(E2)
-# E2.sim <- sim (E2)
-# coef.E2.sim <- coef(E2.sim)
-# fixef.E2.sim <- fixef(E2.sim)
-# ranef.E2.sim <- ranef(E2.sim)
-# sigma.E2.sim <- sigma.hat(E2.sim)
-# yhat <- fitted(E2.sim, E2)
+ E2.sim <- sim (E2)
+ coef.E2.sim <- coef(E2.sim)
+ fixef.E2.sim <- fixef(E2.sim)
+ ranef.E2.sim <- ranef(E2.sim)
+ sigma.E2.sim <- sigma.hat(E2.sim)
+ yhat <- fitted(E2.sim, E2)
 
 # Example 3 
  y <- rbinom (n, 1, invlogit (a[group] + b*x))
