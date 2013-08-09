@@ -26,12 +26,14 @@ Depends: R (>= 3.0),
   Matrix (>= 1.0),
   lme4 (>= 1.0), 
   stats,
+  R2WinBUGS, 
+  foreign
 Imports: Matrix (>= 1.0), 
   lme4 (>= 1.0),
   stats,
-  R2WinBUGS,  
-  abind, 
-  foreign
+Suggests: 
+  abind
 Description: R functions for processing lm, glm, svy.glm, merMod and polr outputs.
 URL: http://CRAN.R-project.org/package=arm
 License: GPL (>= 2)
+LazyLoad: yes
