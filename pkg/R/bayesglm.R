@@ -965,7 +965,7 @@ predictLM <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf,
         if (missing(newdata)) 
             warning("Predictions on current data refer to _future_ responses\n")
         if (missing(newdata) && missing(weights)) {
-            w <- stats:::weights.default(object)
+            w <- .weights.default(object)
             if (!is.null(w)) {
                 weights <- w
                 warning("Assuming prediction variance inversely proportional to weights used for fitting\n")
