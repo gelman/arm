@@ -2,8 +2,8 @@
   #.round <- base:::round  
   sd.scalar <- function (x, ...) {sqrt(var(as.vector(x), ...))}
   wmean <- function (x, w, ...) {mean(x*w, ...)/mean(w, ...)}
-  logit <- function (x) {log(x/(1-x))}
   .untriangle <- function (x) {x + t(x) - x*diag(nrow(as.matrix(x)))}
+
 
 
 
@@ -138,6 +138,13 @@ n <- NULL
   return( significant )
 }
 
+.weights.default <- function (object, ...) 
+{
+    wts <- object$weights
+    if (is.null(wts)) 
+        wts
+    else napredict(object$na.action, wts)
+}
 
 
 #.sweep.inv <- function(G){

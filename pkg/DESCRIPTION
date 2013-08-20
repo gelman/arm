@@ -1,6 +1,6 @@
 Package: arm
-Version: 1.6-07
-Date: 2013-8-8
+Version: 1.6-08
+Date: 2013-8-21
 Title: Data Analysis Using Regression and Multilevel/Hierarchical Models
 Authors@R: c(person("Andrew", "Gelman", role = "aut", email = "gelman@stat.columbia.edu"), 
              person("Yu-Sung", "Su", role =  c("aut", "cre"), email = "suyusung@tsinghua.edu.cn"),
@@ -20,20 +20,9 @@ Author: Andrew Gelman [aut],
         Tian Zheng [ctb] and
         Vicent Dorie [ctb]
 Maintainer: Yu-Sung Su <suyusung@tsinghua.edu.cn>
-Depends: R (>= 3.0), 
-  methods, 
-  MASS, 
-  Matrix (>= 1.0),
-  lme4 (>= 1.0), 
-  stats,
-  R2WinBUGS, 
-  foreign
-Imports: Matrix (>= 1.0), 
-  lme4 (>= 1.0),
-  stats,
-Suggests: 
-  abind
+Depends: R (>= 3.0), MASS, Matrix (>= 1.0), stats, lme4 (>= 1.0)
+Imports: methods
+Suggests: R2WinBUGS, foreign
 Description: R functions for processing lm, glm, svy.glm, merMod and polr outputs.
 URL: http://CRAN.R-project.org/package=arm
 License: GPL (>= 2)
-LazyLoad: yes
