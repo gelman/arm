@@ -6,6 +6,7 @@ importFrom(Matrix,
 )
 
 
+
 importFrom(stats,
       "coef",
       "napredict",
@@ -17,7 +18,7 @@ importFrom(MASS, "polr")
 
 importFrom(methods, "setOldClass")
 
-importFrom(nlme,
+importFrom(lme4,
       "fixef",
       "ranef"
 )
