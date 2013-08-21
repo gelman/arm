@@ -1,4 +1,4 @@
-traceplot.default <- coda:::traceplot
+traceplot.default <- function(x, ...) coda::traceplot
 
 
 # ========================================================================
