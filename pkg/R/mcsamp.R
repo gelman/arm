@@ -118,7 +118,7 @@ mcsamp.default <- function (object, n.chains=3, n.iter=1000, n.burnin=floor(n.it
 #
 #
 #
-setMethod("mcsamp", signature(object = "merMod"),
+setMethod("mcsamp", signature(object = "mer"),
     function (object, ...)
 {
     mcsamp.default(object, deviance=TRUE, ...)
