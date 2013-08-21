@@ -1,6 +1,6 @@
 bayesglm <- function (formula, family = gaussian, data, weights, subset,
   na.action, start = NULL, etastart, mustart, offset, control = glm.control(...),
-  model = TRUE, method = "glm.fit", x = FALSE, y = TRUE, contrasts = NULL,
+  model = TRUE, method = "bayesglm.fit", x = FALSE, y = TRUE, contrasts = NULL,
   drop.unused.levels = TRUE,
   prior.mean = 0, prior.scale = NULL, prior.df = 1,
   prior.mean.for.intercept = 0,
@@ -25,11 +25,11 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
   }
   mf <- match.call(expand.dots = FALSE)
   m <- match(c("formula", "data", "subset", "weights", "na.action", 
-    "etastart", "mustart", "offset"), names(mf), 0)
+    "etastart", "mustart", "offset"), names(mf), 0L)
   mf <- mf[c(1L, m)]
   mf$drop.unused.levels <- drop.unused.levels
   mf$na.action <- NULL
-  mf[[1]] <- as.name("model.frame")
+  mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(mf, parent.frame())
   #switch(method, model.frame = return(mf), glm.fit = 1, stop("invalid 'method': ", method))
   if (identical(method, "model.frame")) 
@@ -38,8 +38,8 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
     stop("invalid 'method' argument")
   if (identical(method, "glm.fit")) 
     control <- do.call("glm.control", control)
-
   mt <- attr(mf, "terms")
+    
   Y <- model.response(mf, "any")
   if (length(dim(Y)) == 1) {
     nm <- rownames(Y)
@@ -48,23 +48,24 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
       names(Y) <- nm
     }
   }
-  # 2012.10.3  I input data instead of mf here.  Don't know if this is right
+  # 2013.8.21  I input data instead of mf here.  Don't know if this is right
   X <- if (!is.empty.model(mt)) {
-        model.matrixBayes(object=mt, data=mf, contrasts.arg=contrasts, keep.order = keep.order, drop.baseline=drop.baseline)
+        model.matrixBayes(object=mt, data=data, contrasts.arg=contrasts, keep.order = keep.order, drop.baseline=drop.baseline)
         #model.matrix.default(mt, mf, contrasts)
        }
        else{
         matrix(, NROW(Y), 0)
        }
-#  nobs <- NROW(X)
-#  X <- rbind(X, diag(NCOL(X)))
+
   weights <- as.vector(model.weights(mf))
-  if (!is.null(weights) && !is.numeric(weights)) 
+  if (!is.null(weights) && !is.numeric(weights)) {
         stop("'weights' must be a numeric vector")
-  if (!is.null(weights) && any(weights < 0)) 
+  }
+  if (!is.null(weights) && any(weights < 0)) {
         stop("negative weights not allowed")
-    
+  }
   offset <- as.vector(model.offset(mf))
+
   if (!is.null(offset)) {
     if (length(offset) != NROW(Y)) 
       stop(gettextf("number of offsets is %d should equal %d (number of observations)", 
@@ -77,24 +78,26 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
   fit <- bayesglm.fit(x = X, y = Y, weights = weights, start = start,
     etastart = etastart, mustart = mustart, offset = offset,
     family = family, control = glm.control(maxit = n.iter),
-    intercept = attr(mt, "intercept") > 0, prior.mean = prior.mean,
+    intercept = attr(mt, "intercept") > 0L, 
+    prior.mean = prior.mean,
     prior.scale = prior.scale, prior.df = prior.df, 
     prior.mean.for.intercept = prior.mean.for.intercept,
     prior.scale.for.intercept = prior.scale.for.intercept,
-    prior.df.for.intercept = prior.df.for.intercept, min.prior.scale =
-    min.prior.scale, scaled = scaled, Warning=Warning)
-  if (length(offset) && attr(mt, "intercept") > 0) {
+    prior.df.for.intercept = prior.df.for.intercept, 
+    min.prior.scale = min.prior.scale, scaled = scaled, Warning=Warning)
+  if (length(offset) && attr(mt, "intercept") > 0L) {
    cat("bayesglm not yet set up to do deviance comparion here\n")
-  fit$null.deviance <- bayesglm.fit(x = X[, "(Intercept)", drop = FALSE], 
-    y = Y, weights = weights, offset = offset,
-    family = family, control = control, intercept = TRUE,
-    prior.mean = prior.mean, prior.scale = prior.scale,
-    prior.df = prior.df, prior.mean.for.intercept = prior.mean.for.intercept,
-    prior.scale.for.intercept = prior.scale.for.intercept,
-    prior.df.for.intercept = prior.df.for.intercept,
-    min.prior.scale = min.prior.scale, scaled = scaled, 
-    Warning=Warning)$deviance
+  fit$null.deviance <- bayesglm.fit(x = X[, "(Intercept)", drop = FALSE], y = Y, weights = weights, 
+            offset = offset, family = family, control = control, 
+            intercept = TRUE, 
+            prior.mean = prior.mean,
+            prior.scale = prior.scale, prior.df = prior.df, 
+            prior.mean.for.intercept = prior.mean.for.intercept,
+            prior.scale.for.intercept = prior.scale.for.intercept,
+            prior.df.for.intercept = prior.df.for.intercept, 
+            min.prior.scale = min.prior.scale, scaled = scaled, Warning=Warning)$deviance
   }
+  
   if (model){
     fit$model <- mf
   }
@@ -131,8 +134,8 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     nobs <- NROW(y)
     nvars <- NCOL(x)
     conv <- FALSE
-    EMPTY <- nvars == 0
-    
+    EMPTY <- nvars == 0  
+
     output <- .bayesglm.fit.initialize.priors (family, prior.scale, prior.scale.for.intercept, nvars, 
             prior.mean, prior.mean.for.intercept, intercept, prior.df, prior.df.for.intercept)
     prior.scale <- output$prior.scale 
@@ -157,6 +160,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     family <- .bayesglm.fit.initialize.family (family)
     ## TODO: DL -- I would put this inside initialize.family, but this does some magic setting of variables.
     ##             What I can do is push an environment into the function and wrap it in.
+    
     if (is.null(mustart)){
         eval(family$initialize)
     }
@@ -165,7 +169,6 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         eval(family$initialize)
         mustart <- mustart.keep
     }
-    
     ########################
     if (EMPTY) {
         eta <- rep.int(0, nobs) + offset
@@ -186,9 +189,10 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     }
     else {
         ## 3.1 ##
-        output <- .bayesglm.fit.loop.setup (etastart, start, nvars, xnames, offset, x, nobs, family, 
+        output <- .bayesglm.fit.loop.setup (etastart, start = start, nvars, xnames, offset, x, nobs, family, 
                 mustart, eta, weights, conv, prior.scale, y, x.nobs) 
-        coefold <- output$coefold
+        coefold <- output$Coefold
+        start <- output$Start
         eta <- output$eta
         mu <- output$mu
         devold <- output$devold
@@ -201,7 +205,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         ## 3.2 ## check the link between 3.1 and 3.2
         output.new <- .bayesglm.fit.loop.main.ideal (control, x, y, nvars, nobs, weights, offset,
                 intercept, scaled, 
-                start = coefold, etastart = eta, mustart = mu,
+                start = start, etastart = eta, mustart = mu,
                 family,
                 prior.mean, prior.mean.for.intercept, prior.scale, prior.df, prior.df.for.intercept,
                 print.unnormalized.log.posterior,
@@ -226,8 +230,23 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         Rmat <- output.new$Rmat
         residuals <- output.new$residuals
     }
+
     ## 4 ##
-    output <- .bayesglm.fit.cleanup (ynames, residuals, mu, eta, nobs, weights, w, good, weights, family$linkinv, family$dev.resids, y, intercept, fit, offset, EMPTY, n, dev, family$aic)
+    output <- .bayesglm.fit.cleanup (
+      ynames = ynames, 
+      residuals = residuals, 
+      mu = mu, eta = eta, nobs = nobs, 
+      wt= weights, w = w, good = good, 
+      linkinv = family$linkinv, 
+      dev.resids = family$dev.resids, 
+      y = y, 
+      intercept = intercept, 
+      fit = fit, offset = offset, EMPTY = EMPTY, 
+      dev =dev, aic = family$aic
+      )
+
+
+
     residuals <- output$residuals
     mu <- output$mu
     eta <- output$eta
@@ -434,8 +453,8 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     dispersion <- ifelse((family$family %in% c("poisson", "binomial")),  1, var(y)/10000)
     #==================================
     dispersionold <- dispersion
-    
-    list (coefold=coefold,
+    list (  Start = start,
+            Coefold = coefold,
             eta=eta,
             mu=mu,
             devold=devold,
@@ -459,11 +478,12 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 #}
 
 .bayesglm.fit.loop.initializeState <- function (start, etastart, mustart, offset, x.nobs, var.y, nvars, family, weights, prior.sd, y) {
+    coefold <- NULL
     if (!is.null(etastart)) {
         eta <- etastart
     }
     else if (!is.null(start)) {
-        start <- as.matrix (start)
+        coefold <- as.matrix (start)
         eta <- drop (x.nobs %*% start) + offset 
         ## TODO: should be able to drop this. coefold is the original start.
         #coefold <- start
@@ -479,7 +499,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     mu <- family$linkinv(eta)
     mu.eta.val <- family$mu.eta(eta)
     dev <- sum (family$dev.resids (y, mu, weights))
-    list (eta=eta,
+    list (  Start = start, Coefold = coefold, eta=eta,
             mu=mu,
             mu.eta.val=mu.eta.val,
             varmu=family$variance(mu),
@@ -537,7 +557,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     w.star <- c(w, sqrt(state$dispersion)/state$prior.sd)
     good.star <- c(state$good, rep(TRUE, nvars))
     fit <- lm.fit(x = as.matrix(x[good.star, ])*w.star, y = z.star*w.star)
-    
+    start <- state$Start
+    coefold <- state$Start
+
     #fit <- .Fortran("dqrls", 
 #            qr = x[good.star, ] * w.star, 
 #            n = sum (good.star), 
@@ -575,13 +597,15 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       sd.coef <- sqrt(sd.tmp)
       state$prior.sd[priors$df != Inf] <- sd.coef[priors$df != Inf]
     }
-
+    
     if(NCOL(x.nobs)==1){
       predictions <- x.nobs * fit$coefficients
     }else{
       predictions <- x.nobs %*% fit$coefficients
     }
-    
+ 
+    start[fit$qr$pivot] <- fit$coefficients
+
     if (!(family$family %in% c("poisson", "binomial"))) {
       if (exists ("V.coefs") == FALSE) {
         if(NCOL(x.nobs)==1){
@@ -606,20 +630,22 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 
     if (!is.finite (dev) || !isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
         if (!is.finite(dev)) {
-            warning("step size truncated due to divergence", call. = FALSE)
+         if (is.null(coefold)) {
+              stop("no valid set of coefficients has been found: please supply starting values", call. = FALSE)
+         }
+         warning("step size truncated due to divergence", call. = FALSE)
         } else if (!isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
             warning("step size truncated: out of bounds", call. = FALSE)
         } 
         ii <- 1
         while (ii <= control$maxit & !is.finite (dev)) {
             ii <- ii + 1
-
-            state$start <- (predictions + state$start) / 2
+            start <- (start + coefold) / 2
             state$eta <- if(NCOL(x.nobs)==1){
-                            drop(x.nobs * state$start)
+                            drop(x.nobs * start)
                           }else{
-                            drop(x.nobs %*% state$start)
-                          }         
+                            drop(x.nobs %*% start)
+                          }                       
             state$mu <- family$linkinv(state$eta + offset)
             dev <- sum (family$dev.resids (y, state$mu, weights))
         }
@@ -630,11 +656,11 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         ii <- 1
         while (ii <= control$maxit &  !isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
             ii <- ii + 1
-            state$start <- (predictions + state$start) / 2
+            start <- (start + coefold) / 2
             state$eta <- if(NCOL(x.nobs)==1){
-                            drop(x.nobs * state$start)
+                            drop(x.nobs * start)
                           }else{
-                            drop(x.nobs %*% state$start)
+                            drop(x.nobs %*% start)
                           }         
             state$mu <- family$linkinv(state$eta + offset)
         }
@@ -649,7 +675,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         }
     }
 
-    list (eta=state$eta,
+    list (  Start = start,
+            Coefold = coefold,
+            eta=state$eta,
             mu=state$mu,
             mu.eta.val=state$mu.eta.val,
             varmu=family$variance(state$mu),
@@ -745,6 +773,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     }
 }
 
+
 .bayesglm.fit.loop.main.ideal <- function (control, x, y, nvars, nobs, weights, offset,
         intercept, scaled, 
         start, etastart, mustart,
@@ -752,6 +781,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         prior.mean, prior.mean.for.intercept, prior.scale, prior.df, prior.df.for.intercept,
         print.unnormalized.log.posterior,
         Warning) {
+
     xnames <- dimnames(x)[[2]]
     x.nobs <- x[1:nobs, ,drop=FALSE]
     
@@ -809,7 +839,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             dispersion=output$state$dispersion,
             dispersionold=dispersionold,
             start=output$state$fit$coefficients,
-            coef=output$state$fit$coefficients,
+            coefold=output$state$fit$coefficients,
             devold=devold,
             conv=output$state$conv,
             iter=iter,
@@ -819,23 +849,23 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 }
 
 
-.bayesglm.fit.cleanup <- function (ynames, residuals, mu, eta, nobs, wt, w, good, weights, linkinv, dev.resids, y, intercept, fit, offset, EMPTY, n, dev, aic) {
+.bayesglm.fit.cleanup <- function (ynames, residuals, mu, eta, nobs, wt, w, good, linkinv, dev.resids, y, intercept, fit, offset, EMPTY, dev, aic) {
     names(residuals) <- ynames
     names(mu) <- ynames
     names(eta) <- ynames
     wt <- rep.int(0, nobs)
     wt[good] <- w^2
     names(wt) <- ynames
-    names(weights) <- ynames
+    names(w) <- ynames
     names(y) <- ynames
     wtdmu <- if (intercept){
-                sum(weights * y)/sum(weights)
+                sum(w * y)/sum(w)
             }
             else{
                 linkinv(offset)
             }
-    nulldev <- sum(dev.resids(y, wtdmu, weights))
-    n.ok <- nobs - sum(weights == 0)
+    nulldev <- sum(dev.resids(y, wtdmu, w))
+    n.ok <- nobs - sum(w == 0)
     nulldf <- n.ok - as.integer(intercept)
 
     rank <- if (EMPTY){
@@ -846,13 +876,13 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             }
     resdf <- n.ok - rank
     resdf <- n.ok
-    aic.model <- aic(y, n, mu, weights, dev) + 2 * rank
+    aic.model <- aic(y, n.ok, mu, w, dev) + 2 * rank
     
     list (residuals=residuals,
             mu=mu,
             eta=eta,
-            wt=wt,
-            weights=weights,
+            wt = wt, 
+            weights = w, 
             y=y,
             wtdmu=wtdmu,
             nulldev=nulldev,
