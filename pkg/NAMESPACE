@@ -22,6 +22,8 @@ importFrom(lme4,
       "fixef",
       "ranef"
 )
+
+importFrom(abind, "abind")
       
 
 #importMethodsFrom(Matrix, "%*%")
@@ -33,7 +35,7 @@ exportClasses(
               #"bayesglm.h",
               "bayespolr",
               "sim",
-              "sim.merMod"
+              "sim.mer"
               )
 
 exportMethods(
@@ -93,7 +95,7 @@ export(
 )
 
 
-S3method(extractDIC, merMod)
+S3method(extractDIC, mer)
 #S3method(extractAIC, mer)
 S3method(print, GO)
 S3method(plot, balance)

@@ -68,14 +68,13 @@ setMethod("sigma.hat", signature(object = "glm"),
 
 
 
-setMethod("sigma.hat", signature(object = "merMod"),
+setMethod("sigma.hat", signature(object = "mer"),
     function(object)
     {
     #object <- summary (object)
     fcoef <- fixef(object)
     #useScale <- attr (VarCorr (object), "sc")  # =sc?
-    #useScale <- object@dims["useSc"]
-    useScale <- getME(object, "devcomp")$dims["useSc"]
+    useScale <- object@dims["useSc"]
     #ngrps <- lapply(object@flist, function(x) length(levels(x)))
     #n.groupings <- length (ngrps)
     varc <- VarCorr (object)
@@ -98,7 +97,7 @@ setMethod("sigma.hat", signature(object = "merMod"),
 
 
 
-setMethod("sigma.hat", signature(object = "sim.merMod"),
+setMethod("sigma.hat", signature(object = "sim.mer"),
     function(object)
     {
     sigma <- object@sigma

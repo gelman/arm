@@ -2,17 +2,17 @@
 %\docType{genericFunction}
 \alias{sim}
 \alias{sim-class}
-\alias{sim.merMod-class}
+\alias{sim.mer-class}
 \alias{sim,lm-method}
 \alias{sim,glm-method}
 \alias{sim,polr-method}
-\alias{sim,merMod-method}
+\alias{sim,mer-method}
 \alias{coef,sim-method}
 \alias{coef,sim.polr-method}
-\alias{coef,sim.merMod-method}
-\alias{fixef,sim.merMod-method}
-\alias{ranef,sim.merMod-method}
-\alias{fitted,sim.merMod-method}
+\alias{coef,sim.mer-method}
+\alias{fixef,sim.mer-method}
+\alias{ranef,sim.mer-method}
+\alias{fitted,sim.mer-method}
 
 
 
@@ -31,14 +31,14 @@ sim(object, ...)
 \S4method{sim}{lm}(object, n.sims = 100)
 \S4method{sim}{glm}(object, n.sims = 100)
 \S4method{sim}{polr}(object, n.sims = 100)
-\S4method{sim}{merMod}(object, n.sims = 100)
+\S4method{sim}{mer}(object, n.sims = 100)
 
 \S4method{coef}{sim}(object)
 \S4method{coef}{sim.polr}(object, slot=c("ALL", "coef", "zeta"))
-\S4method{coef}{sim.merMod}(object)
-\S4method{fixef}{sim.merMod}(object)
-\S4method{ranef}{sim.merMod}(object)
-\S4method{fitted}{sim.merMod}(object, regression)
+\S4method{coef}{sim.mer}(object)
+\S4method{fixef}{sim.mer}(object)
+\S4method{ranef}{sim.mer}(object)
+\S4method{fitted}{sim.mer}(object, regression)
 
 
 }
@@ -148,12 +148,12 @@ coefall.sim <- coef(M.plr)
  y <- rbinom (n, 1, invlogit (a[group] + b*x))
  E3 <- glmer (y ~ x + (1 | group), family=binomial(link="logit"))
  display(E3)
- #E3.sim <- sim (E3)
- #coef.E3.sim <- coef(E3.sim)
- #fixef.E3.sim <- fixef(E3.sim)
- #ranef.E3.sim <- ranef(E3.sim)
- #sigma.E3.sim <- sigma.hat(E3.sim)
- #yhat <- fitted(E3.sim, E3)
+ E3.sim <- sim (E3)
+ coef.E3.sim <- coef(E3.sim)
+ fixef.E3.sim <- fixef(E3.sim)
+ ranef.E3.sim <- ranef(E3.sim)
+ sigma.E3.sim <- sigma.hat(E3.sim)
+ yhat <- fitted(E3.sim, E3)
 }
 
 \keyword{models}
