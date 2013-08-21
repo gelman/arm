@@ -22,7 +22,7 @@ Author: Andrew Gelman [aut],
 Maintainer: Yu-Sung Su <suyusung@tsinghua.edu.cn>
 Depends: R (>= 3.0), MASS, Matrix (>= 1.0), stats, lme4 (>= 1.0)
 Imports: methods
-Suggests: R2WinBUGS, foreign
+Suggests: R2WinBUGS, foreign, nlme
 Description: R functions for processing lm, glm, svy.glm, merMod and polr outputs.
 URL: http://CRAN.R-project.org/package=arm
 License: GPL (>= 2)

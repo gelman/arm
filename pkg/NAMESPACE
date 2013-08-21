@@ -1,24 +1,26 @@
-#importFrom(Matrix,
-#      "t",
-#      "crossprod",
-#      "tcrossprod",
-#      "colMeans"
-#)
-import(Matrix, lme4)
+importFrom(Matrix,
+      "t",
+      "crossprod",
+      "tcrossprod",
+      "colMeans"
+)
+
 
 importFrom(stats,
       "coef",
-      "napredict"
+      "napredict",
+      ".getXlevels",
+      "model.frame"
 )
 
 importFrom(MASS, "polr")
 
 importFrom(methods, "setOldClass")
 
-#importFrom(lme4,
-#      "fixef",
-#      "ranef"
-#)
+importFrom(nlme,
+      "fixef",
+      "ranef"
+)
       
 
 #importMethodsFrom(Matrix, "%*%")
