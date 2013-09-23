@@ -81,11 +81,12 @@ setClass("sim.polr",
 
 
 
-setClass("sim.mer",
+setClass("sim.merMod",
      representation(
             fixef = "matrix",
             ranef = "list",
             sigma = "ANY")
 )
+
 
 setClass("GO")

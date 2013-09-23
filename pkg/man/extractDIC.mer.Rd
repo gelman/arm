@@ -1,8 +1,8 @@
 \name{extractDIC}
 %\docType{genericFunction}
 \alias{extractDIC}
-\alias{extractDIC.mer}
-\alias{extractAIC.mer}
+\alias{extractDIC.merMod}
+\alias{extractAIC.merMod}
 
 \title{
 Extract AIC and DIC from a mer model
@@ -14,13 +14,13 @@ Extract AIC and DIC from a mer model
 }
 \usage{
 extractDIC(fit,\dots)
-\method{extractDIC}{mer}(fit,\dots)
+\method{extractDIC}{merMod}(fit,\dots)
 
-\method{extractAIC}{mer}(fit,\dots)
+%\method{extractAIC}{merMod}(fit,\dots)
 }
 
 \arguments{
-  \item{fit}{fitted \code{mer} mode, usually the result of a fiiter like \code{mer}.}
+  \item{fit}{fitted \code{merMod} mode, usually the result of a fiiter like \code{merMod}.}
   \item{\dots}{further arguments (currently unused).}
 }
 
