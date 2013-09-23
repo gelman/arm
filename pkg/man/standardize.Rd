@@ -3,7 +3,7 @@
 \alias{standardize}
 \alias{standardize,lm-method}
 \alias{standardize,glm-method}
-\alias{standardize,mer-method}
+\alias{standardize,merMod-method}
 \alias{standardize,polr-method}
 
 
@@ -23,7 +23,7 @@
     standardize.y = FALSE, binary.inputs = "center")
 \S4method{standardize}{glm}(object, unchanged = NULL, 
     standardize.y = FALSE, binary.inputs = "center")
-\S4method{standardize}{mer}(object, unchanged = NULL, 
+\S4method{standardize}{merMod}(object, unchanged = NULL, 
     standardize.y = FALSE, binary.inputs = "center")
 \S4method{standardize}{polr}(object, unchanged = NULL, 
     standardize.y = FALSE, binary.inputs = "center")

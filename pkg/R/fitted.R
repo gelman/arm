@@ -35,9 +35,11 @@ setMethod("fitted", signature(object = "sim.merMod"),
   X <- W %*% X;
   Zt <- Zt %*% W;
   
-  result <- tcrossprod(X, sims@fixef) + crossprod(Zt, simulatedRanef);
-  
-  if (devcomp$dims[["GLMM"]] == 0L) return(result);
+  result <- as.matrix(tcrossprod(X, sims@fixef) + crossprod(Zt, simulatedRanef))
 
-  return(regression@resp$family$linkinv(result));
+  if (devcomp$dims[["GLMM"]] == 0L){
+    return(result)
+  }else{
+      return(regression@resp$family$linkinv(result))
+  }
 });
