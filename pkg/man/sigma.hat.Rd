@@ -3,9 +3,9 @@
 \alias{sigma.hat}
 \alias{sigma.hat,lm-method}
 \alias{sigma.hat,glm-method}
-\alias{sigma.hat,mer-method}
+\alias{sigma.hat,merMod-method}
 \alias{sigma.hat,sim-method}
-\alias{sigma.hat,sim.mer-method}
+\alias{sigma.hat,sim.merMod-method}
 
 
 
@@ -19,14 +19,14 @@ sigma.hat(object,\dots)
 
 \S4method{sigma.hat}{lm}(object)
 \S4method{sigma.hat}{glm}(object)
-\S4method{sigma.hat}{mer}(object)
+\S4method{sigma.hat}{merMod}(object)
 \S4method{sigma.hat}{sim}(object)
-\S4method{sigma.hat}{sim.mer}(object)
+\S4method{sigma.hat}{sim.merMod}(object)
 
 }
 
 \arguments{
-  \item{object}{any fitted model object of \code{lm}, \code{glm} and \code{mer} class}
+  \item{object}{any fitted model object of \code{lm}, \code{glm} and \code{merMod} class}
   \item{\dots}{other arguments}
 }
 

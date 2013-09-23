@@ -2,17 +2,17 @@
 %\docType{genericFunction}
 \alias{sim}
 \alias{sim-class}
-\alias{sim.mer-class}
+\alias{sim.merMod-class}
 \alias{sim,lm-method}
 \alias{sim,glm-method}
 \alias{sim,polr-method}
-\alias{sim,mer-method}
+\alias{sim,merMod-method}
 \alias{coef,sim-method}
 \alias{coef,sim.polr-method}
-\alias{coef,sim.mer-method}
-\alias{fixef,sim.mer-method}
-\alias{ranef,sim.mer-method}
-\alias{fitted,sim.mer-method}
+\alias{coef,sim.merMod-method}
+\alias{fixef,sim.merMod-method}
+\alias{ranef,sim.merMod-method}
+\alias{fitted,sim.merMod-method}
 
 
 
@@ -22,7 +22,7 @@
 \description{
 This generic function gets posterior simulations of sigma and beta from a \code{lm} object, or
 simulations of beta from a \code{glm} object, or
-simulations of beta from a \code{mer} object
+simulations of beta from a \code{merMod} object
 }
 
 \usage{
@@ -31,14 +31,14 @@ sim(object, ...)
 \S4method{sim}{lm}(object, n.sims = 100)
 \S4method{sim}{glm}(object, n.sims = 100)
 \S4method{sim}{polr}(object, n.sims = 100)
-\S4method{sim}{mer}(object, n.sims = 100)
+\S4method{sim}{merMod}(object, n.sims = 100)
 
 \S4method{coef}{sim}(object)
 \S4method{coef}{sim.polr}(object, slot=c("ALL", "coef", "zeta"))
-\S4method{coef}{sim.mer}(object)
-\S4method{fixef}{sim.mer}(object)
-\S4method{ranef}{sim.mer}(object)
-\S4method{fitted}{sim.mer}(object, regression)
+\S4method{coef}{sim.merMod}(object)
+\S4method{fixef}{sim.merMod}(object)
+\S4method{ranef}{sim.merMod}(object)
+\S4method{fitted}{sim.merMod}(object, regression)
 
 
 }
@@ -54,8 +54,7 @@ sim(object, ...)
 \value{
   \item{coef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients.}
   \item{zeta}{matrix (dimensions n.sims x k) of n.sims random draws of zetas (cut points in polr).}
-  \item{fixef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients 
-    of the fixed effects for the \code{mer} objects. Previously, it is called \code{unmodeled}.}
+  \item{fixef}{matrix (dimensions n.sims x k) of n.sims random draws of coefficients     of the fixed effects for the \code{merMod} objects. Previously, it is called \code{unmodeled}.}
   \item{sigma}{vector of n.sims random draws of sigma
   (for \code{glm}'s, this just returns a vector of 1's or else of the
   square root of the overdispersion parameter if that is in the model)}

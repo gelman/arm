@@ -3,7 +3,7 @@
 \alias{se.coef}
 \alias{se.coef,lm-method}
 \alias{se.coef,glm-method}
-\alias{se.coef,mer-method}
+\alias{se.coef,merMod-method}
 \alias{se.fixef}
 \alias{se.ranef}
 
@@ -20,11 +20,11 @@ se.ranef (object)
 
 \S4method{se.coef}{lm}(object)
 \S4method{se.coef}{glm}(object)
-\S4method{se.coef}{mer}(object)
+\S4method{se.coef}{merMod}(object)
 }
 
 \arguments{
-  \item{object}{object of \code{lm}, \code{glm} and \code{mer} fit}
+  \item{object}{object of \code{lm}, \code{glm} and \code{merMod} fit}
   \item{\dots}{other arguments}
 }
 \value{

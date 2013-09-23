@@ -26,7 +26,7 @@ setMethod("coef", signature(object = "sim.polr"),
 
 
 
-setMethod("coef", signature(object = "sim.mer"),
+setMethod("coef", signature(object = "sim.merMod"),
     function(object)
     {
     fef <- object@fixef
@@ -36,7 +36,7 @@ setMethod("coef", signature(object = "sim.mer"),
     }
 )
 
-setMethod("fixef", signature(object = "sim.mer"),
+setMethod("fixef", signature(object = "sim.merMod"),
     function(object)
     {
     ans <- object@fixef
@@ -45,7 +45,7 @@ setMethod("fixef", signature(object = "sim.mer"),
 )
 
 
-setMethod("ranef", signature(object = "sim.mer"),
+setMethod("ranef", signature(object = "sim.merMod"),
     function(object)
     {
     ans <- object@ranef
