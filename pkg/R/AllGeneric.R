@@ -50,6 +50,19 @@ if (!isGeneric("se.coef")) {
                standardGeneric("se.coef"))
 }
 
+if (!isGeneric("fixef")) {
+    setGeneric("fixef",
+               function(object, ...)
+               standardGeneric("fixef"),
+               useAsDefault = function(object, ...) nlme::fixef(object, ...))
+} 
+
+if (!isGeneric("ranef")) {
+    setGeneric("ranef",
+               function(object, ...)
+               standardGeneric("ranef"),
+               useAsDefault = function(object, ...) nlme::ranef(object, ...))
+} 
 
 
 if (!isGeneric("mcsamp")) {
@@ -74,6 +87,13 @@ if (!isGeneric("standardize")) {
 #               standardGeneric("terms.bayes"))
 #}
 
+
+if (!isGeneric("traceplot")) {
+    setGeneric("traceplot",
+               function(x, ...)
+               standardGeneric("traceplot"),
+               useAsDefault = function(x, ...) coda::traceplot(x, ...))
+} 
 
 if (!isGeneric("traceplot")) {
     setGeneric("traceplot",

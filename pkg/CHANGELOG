@@ -1,3 +1,15 @@
+2013-9-27 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.6-10
+   * make changes that fit to oldrelease R.
+
+2013-9-23 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.6-09
+   * start supporting new lme4
+
+2013-9-23 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.6-09
+   * start supporting new lme4
+   
 2013-8-22 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.6-07
    * revert back to 1.6-07, stop supporting the new lme4.

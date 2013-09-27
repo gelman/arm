@@ -20,9 +20,13 @@ importFrom(MASS, "polr")
 
 importFrom(methods, "setOldClass")
 
-importFrom(lme4,
+importFrom(nlme,
       "fixef",
       "ranef"
+)
+
+importFrom(lme4,
+     "getME"
 )
 
 importFrom(abind, "abind")
