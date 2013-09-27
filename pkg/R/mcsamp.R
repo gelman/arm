@@ -6,7 +6,7 @@ mcsamp.default <- function (object, n.chains=3, n.iter=1000, n.burnin=floor(n.it
     n.thin=max(1, floor(n.chains * (n.iter - n.burnin)/1000)), 
     saveb=TRUE, deviance=TRUE, make.bugs.object=TRUE)
 {
-  cat("mcsamp() is a wrapper for mcmcsamp() in lmer().\nThe current state of mcmcsamp() is not working properly.\nSo in the meantime, we suggest that users use sim() to get\nsimulated estimates.\n")
+  cat("mcsamp() used to be a wrapper for mcmcsamp() in lme4.\nCurrently, mcmcsamp() is no longer available in lme4.\nSo in the meantime, we suggest that users use sim() to get\nsimulated estimates.\n")
 }
 
 
