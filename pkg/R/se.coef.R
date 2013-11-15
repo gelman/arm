@@ -68,7 +68,7 @@ setMethod("se.coef", signature(object = "merMod"),
 
     #coef <- ranef (object)
     #estimate <- ranef(object, postVar=TRUE)
-    coef <- ranef(object, postVar=TRUE)
+    coef <- ranef(object, condVar=TRUE)
     se.bygroup <- coef #ranef( object, postVar = TRUE )
     n.groupings <- length (coef)
     
@@ -104,10 +104,11 @@ se.fixef <- function (object){
 
 se.ranef <- function (object){
     #ngrps <- lapply(object@flist, function(x) length(levels(x)))
-    se.bygroup <- ranef( object, postVar = TRUE )
+    se.bygroup <- ranef( object, condVar = TRUE )
     n.groupings<- length( se.bygroup )
     for( m in 1:n.groupings ) {
         vars.m <- attr( se.bygroup[[m]], "postVar" )
+        #browser()
         K <- dim(vars.m)[1]
         J <- dim(vars.m)[3]
         names.full <- dimnames(se.bygroup[[m]])
