@@ -108,7 +108,6 @@ se.ranef <- function (object){
     n.groupings<- length( se.bygroup )
     for( m in 1:n.groupings ) {
         vars.m <- attr( se.bygroup[[m]], "postVar" )
-        #browser()
         K <- dim(vars.m)[1]
         J <- dim(vars.m)[3]
         names.full <- dimnames(se.bygroup[[m]])
