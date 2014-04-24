@@ -66,7 +66,7 @@ sim(object, ...)
 
 \author{Andrew Gelman \email{gelman@stat.columbia.edu};
         Yu-Sung Su \email{suyusung@tsinghua.edu.cn};
-        Vincent Dorie \email{vincent@stat.columbia.edu}
+        Vincent Dorie \email{vjd4@nyu.edu}
 }
 
 \seealso{\code{\link{display}},
