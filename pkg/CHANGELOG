@@ -1,3 +1,9 @@
+2014-4-24 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
+   * DESCRIPTION (Version, Date): 1.7-01
+   * R/simmer.R: simmer attaches names to fixed effects
+   * R/fitted: fitted uses correct observational weights for glmms
+   * R/bayesglm: use change the use of lm.fit to lm.wfit.
+   
 2013-11-25 Yu-Sung Su     <suyusung@tsinghua.edu.cn> 
    * DESCRIPTION (Version, Date): 1.6-10
    * make changes that fit to oldrelease R.
