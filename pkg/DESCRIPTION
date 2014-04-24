@@ -1,13 +1,13 @@
 Package: arm
-Version: 1.7-01
+Version: 1.7-02
 Date: 2014-4-24
 Title: Data Analysis Using Regression and Multilevel/Hierarchical Models
-Authors@R: c(person("Andrew", "Gelman", role = "aut", email = "gelman@stat.columbia.edu"), 
+Authors@R: c(person("Andrew", "Gelman", role = "aut", email = "gelman@stat.columbia.edu"),
              person("Yu-Sung", "Su", role =  c("aut", "cre"), email = "suyusung@tsinghua.edu.cn"),
              person("Masanao", "Yajima", role =  "ctb", email = "yajima@stat.ucla.edu"),
              person("Jennifer", "Hill", role =  "ctb", email = "jennifer.hill@nyu.edu"),
              person("Maria Grazia", "Pittau", role =  "ctb", email = "grazia@stat.columbia.edu"),
-             person("Jouni", "Kerman", role =  "ctb", email = "jouni@kerman.com"),           
+             person("Jouni", "Kerman", role =  "ctb", email = "jouni@kerman.com"),
              person("Tian", "Zheng", role =  "ctb", email = "tzheng@stat.columbia.edu"),
              person("Vicent", "Dorie", role =  "ctb", email = "vjd4@nyu.edu")
              )
