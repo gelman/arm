@@ -88,7 +88,8 @@ setMethod("sim", signature(object = "merMod"),
                                  list(NULL, groupsPerUniqueFactor[[factorPerLevel[i]]], coefficientNamesPerLevel[[i]]));
   }
     
-  simulatedFixef <- matrix(NA, n.sims, numFixef);
+  simulatedFixef <- matrix(NA, n.sims, numFixef,
+                           dimnames = list(NULL, names(fixef(regression))));
   
   
   # "b" are the rotated random effects, i.e. what ranef() returns in
@@ -113,7 +114,7 @@ setMethod("sim", signature(object = "merMod"),
       simulatedRanef[[k]][i,,] <- matrix(simulatedRanefPerLevel[[k]], ncol = numCoefficientsPerLevel[k], byrow = TRUE);
     }
   }
-
+  
   ans <- new("sim.merMod",
              "fixef" = simulatedFixef,
              "ranef" = simulatedRanef,
