@@ -1,5 +1,5 @@
 
-# the plan here is to shuffle the ranefs back into the way a mer object
+# the plan here is to shuffle the ranefs back into the way a merMod object
 # stores them so that a simple X * beta + Z * theta op does the trick
 setMethod("fitted", signature(object = "sim.merMod"),
           function(object, regression)
@@ -31,15 +31,13 @@ setMethod("fitted", signature(object = "sim.merMod"),
 
   X <- getME(regression, "X");
   Zt <- getME(regression, "Zt");
-  W <- Diagonal(nrow(X), regression@resp$sqrtXwt);
-  X <- W %*% X;
-  Zt <- Zt %*% W;
   
-  result <- as.matrix(tcrossprod(X, sims@fixef) + crossprod(Zt, simulatedRanef))
+  linearPredictor <- as.matrix(tcrossprod(X, sims@fixef) + crossprod(Zt, simulatedRanef)) +
+    matrix(getME(regression, "offset"), dims[["n"]], numSimulations);
 
-  if (devcomp$dims[["GLMM"]] == 0L){
-    return(result)
+  if (dims[["GLMM"]] == 0L){
+    return(linearPredictor)
   }else{
-      return(regression@resp$family$linkinv(result))
+      return(regression@resp$family$linkinv(linearPredictor))
   }
 });
