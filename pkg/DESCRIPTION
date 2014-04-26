@@ -11,6 +11,14 @@ Authors@R: c(person("Andrew", "Gelman", role = "aut", email = "gelman@stat.colum
              person("Tian", "Zheng", role =  "ctb", email = "tzheng@stat.columbia.edu"),
              person("Vicent", "Dorie", role =  "ctb", email = "vjd4@nyu.edu")
              )
+Author: Andrew Gelman [aut],
+  Yu-Sung Su [aut, cre],
+  Masanao Yajima [ctb],
+  Jennifer Hill [ctb],
+  Maria Grazia Pittau [ctb],
+  Jouni Kerman [ctb],
+  Tian Zheng [ctb],
+  Vicent Dorie [ctb]
 Maintainer: Yu-Sung Su <suyusung@tsinghua.edu.cn>
 Depends: R (>= 3.0.0), MASS, Matrix (>= 1.0), stats, lme4 (>= 1.0)
 Imports: abind, methods, coda, nlme

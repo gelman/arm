@@ -539,6 +539,10 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         stop("NAs in d(mu)/d(eta)")
     }
 
+    if (is.infinite(state$dispersion)){
+        stop("dispersion blows up!")
+    }
+
     if (iter > 1 & abs(state$dev - devold)/(0.1 + abs(state$dev)) <  control$epsilon &
             abs(state$dispersion - dispersionold)/(0.1 + abs(state$dispersion)) < control$epsilon) {
         return (FALSE)
@@ -556,7 +560,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     w <- sqrt((weights[state$good] * mu.eta.val[state$good]^2)/state$varmu[state$good])
     w.star <- c(w, sqrt(state$dispersion)/state$prior.sd)
     good.star <- c(state$good, rep(TRUE, nvars))
-    fit <- lm.wfit(x = as.matrix(x[good.star, ]), w = w.star, y = z.star)
+    fit <- lm.fit(x = as.matrix(x[good.star, ])*w.star, y = z.star*w.star)
     start <- state$Start
     coefold <- state$Start
 
@@ -628,8 +632,8 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 
     dev <- sum (family$dev.resids (y, state$mu, weights))
 
-    if (!is.finite (dev) || !isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
-        if (!is.finite(dev)) {
+    if (!is.finite (dev)||(!is.finite(state$dispersion)) || !isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
+        if ((!is.finite(dev))|(!is.finite(state$dispersion))) {
          if (is.null(coefold)) {
               stop("no valid set of coefficients has been found: please supply starting values", call. = FALSE)
          }
