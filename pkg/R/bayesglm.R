@@ -540,7 +540,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     }
 
     if (is.infinite(state$dispersion)){
-        stop("dispersion blows up!")
+        stop("dispersion blows up due to divergence!")
     }
 
     if (iter > 1 & abs(state$dev - devold)/(0.1 + abs(state$dev)) <  control$epsilon &
