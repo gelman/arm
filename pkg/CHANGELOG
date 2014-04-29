@@ -1,3 +1,7 @@
+2014-4-27 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
+   * DESCRIPTION (Version, Date): 1.7-03
+   * R/bayesglm: revert back to the use of lm.fit to lm.wfit; put a stop when dispersion goes Inf
+
 2014-4-24 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 1.7-02
    * R/simmer.R: simmer attaches names to fixed effects
