@@ -145,7 +145,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     prior.df <- output$prior.df
     prior.df.for.intercept <- output$prior.df.for.intercept
 
-    prior.scale <- .bayesglm.fit.initialize.priorScale (scaled, family, prior.scale, y, nvars, x, min.prior.scale)
+    prior.scale <- .bayesglm.fit.initialize.priorScale (scaled, family, prior.scale, prior.scale.for.intercept, y, nvars, x, min.prior.scale)
 
     output <- .bayesglm.fit.initialize.x (x, nvars, nobs, intercept, scaled)
     x <- output$x
@@ -343,10 +343,11 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
             prior.df=prior.df)
 }
 
-.bayesglm.fit.initialize.priorScale <- function (scaled, family, prior.scale, y, nvars, x, min.prior.scale) {
+.bayesglm.fit.initialize.priorScale <- function (scaled, family, prior.scale, prior.scale.for.intercept, y, nvars, x, min.prior.scale) {
     if (scaled) {
         if (family$family == "gaussian"){
             prior.scale <- prior.scale * 2 * sd(y)
+            prior.scale.for.intercept <- prior.scale.for.intercept * 2 * sd(y)
         }
 
         for (j in 1:nvars) {
