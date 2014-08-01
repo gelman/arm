@@ -132,8 +132,7 @@ bayesglm.fit (x, y, weights = rep(1, nobs),
     expanded to the length of this vector.}
 
   \item{prior.scale}{prior scale for the coefficients: default is NULL; if is NULL, for
-    a logit model, prior.scale is 2.5; for a probit model, prior scale is 2.5*1.6;
-    for a gaussian model, prior.scale is 2*sd(y).
+    a logit model, prior.scale is 2.5; for a probit model, prior scale is 2.5*1.6.
     Can be a vector of length equal to the number of predictors
     (not counting the intercept, if any). If it is a scalar, it is
     expanded to the length of this vector.}
@@ -144,7 +143,8 @@ bayesglm.fit (x, y, weights = rep(1, nobs),
     the number of predictors (not counting the intercept, if any).
     If it is a scalar, it is expanded to the length of this vector.}
 
-  \item{prior.mean.for.intercept}{prior mean for the intercept: default is 0.}
+  \item{prior.mean.for.intercept}{prior mean for the intercept: default
+    is 0. See \sQuote{Details}.}
 
   \item{prior.scale.for.intercept}{prior scale for the intercept: default is NULL; for
     a logit model, prior scale for intercept is 10;
@@ -267,14 +267,14 @@ The new arguments here are: \code{prior.mean}, \code{prior.scale},
   display (M1)
 
   M2 <- bayesglm (y ~ x1 + x2, family=binomial(link="logit"),
-    prior.scale=Inf, prior.df=Inf) # Same as M1
+    prior.scale=Inf, prior.scale.for.intercept=Inf) # Same as M1
   display (M2)
 
   M3 <- bayesglm (y ~ x1 + x2, family=binomial(link="logit"))
   display (M3)
 
   M4 <- bayesglm (y ~ x1 + x2, family=binomial(link="logit"),
-    prior.scale=2.5, prior.df=1)  # Same as M3
+    prior.scale=2.5, prior.scale.for.intercept=1)  # Same as M3
   display (M4)
 
   M5 <- bayesglm (y ~ x1 + x2, family=binomial(link="logit"),

@@ -86,7 +86,6 @@ bayesglm <- function (formula, family = gaussian, data, weights, subset,
     prior.df.for.intercept = prior.df.for.intercept,
     min.prior.scale = min.prior.scale, scaled = scaled, Warning=Warning)
   if (length(offset) && attr(mt, "intercept") > 0L) {
-   cat("bayesglm not yet set up to do deviance comparion here\n")
   fit$null.deviance <- bayesglm.fit(x = X[, "(Intercept)", drop = FALSE], y = Y, weights = weights,
             offset = offset, family = family, control = control,
             intercept = TRUE,
@@ -139,11 +138,8 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     output <- .bayesglm.fit.initialize.priors (family, prior.scale, prior.scale.for.intercept, nvars,
             prior.mean, prior.mean.for.intercept, intercept, prior.df, prior.df.for.intercept)
     prior.scale <- output$prior.scale
-    prior.scale.for.intercept <- output$prior.scale.for.intercept
     prior.mean <- output$prior.mean
-    prior.mean.for.intercept <- output$prior.mean.for.intercept
     prior.df <- output$prior.df
-    prior.df.for.intercept <- output$prior.df.for.intercept
 
     prior.scale <- .bayesglm.fit.initialize.priorScale (scaled, family, prior.scale, prior.scale.for.intercept, y, nvars, x, min.prior.scale)
 
@@ -207,7 +203,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
                 intercept, scaled,
                 start = start, etastart = eta, mustart = mu,
                 family,
-                prior.mean, prior.mean.for.intercept, prior.scale, prior.df, prior.df.for.intercept,
+                prior.mean, prior.scale, prior.df, 
                 print.unnormalized.log.posterior,
                 Warning)
         fit <- output.new$fit
@@ -236,7 +232,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       ynames = ynames,
       residuals = residuals,
       mu = mu, eta = eta, nobs = nobs,
-      wt= weights, w = w, good = good,
+      weights= weights, w = w, good = good,
       linkinv = family$linkinv,
       dev.resids = family$dev.resids,
       y = y,
@@ -309,38 +305,40 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     }
     ################
 
+    if (intercept) {
+        nvars <- nvars - 1
+    }
+    
     if (length(prior.mean) == 1) {
         prior.mean <- rep(prior.mean, nvars)
     }
-    else {
-        if (intercept) {
-            prior.mean <- c(prior.mean.for.intercept, prior.mean)
-        }
+    else if (length(prior.mean) != nvars) {
+        stop("Invalid length for prior.mean")
     }
 
     if (length(prior.scale)==1){
         prior.scale <- rep(prior.scale, nvars)
     }
-    else {
-        if (intercept) {
-            prior.scale <- c(prior.scale.for.intercept, prior.scale)
-        }
+    else if (length(prior.scale) != nvars) {
+        stop("Invalid length for prior.scale")
     }
 
     if (length(prior.df) == 1) {
         prior.df <- rep(prior.df, nvars)
     }
-    else {
-        if (intercept) {
-            prior.df <- c(prior.df.for.intercept, prior.df)
-        }
+    else if (length(prior.df) != nvars) {
+        stop("Invalid length for prior.df")
     }
 
-    list (prior.scale=prior.scale,
-            prior.scale.for.intercept=prior.scale.for.intercept,
-            prior.mean=prior.mean,
-            prior.scale=prior.scale,
-            prior.df=prior.df)
+    if (intercept) {
+        prior.mean <- c(prior.mean.for.intercept, prior.mean)
+        prior.scale <- c(prior.scale.for.intercept, prior.scale)
+        prior.df <- c(prior.df.for.intercept, prior.df)
+    }
+
+    list (prior.mean=prior.mean,
+          prior.scale=prior.scale,
+          prior.df=prior.df)
 }
 
 .bayesglm.fit.initialize.priorScale <- function (scaled, family, prior.scale, prior.scale.for.intercept, y, nvars, x, min.prior.scale) {
@@ -627,8 +625,8 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       state$dispersion <- mse.resid + mse.uncertainty
     }
 
-    state$eta <- drop(predictions)
-    state$mu <- family$linkinv(state$eta + offset)
+    state$eta <- drop(predictions) + offset
+    state$mu <- family$linkinv(state$eta)
     state$mu.eta.val <- family$mu.eta(state$eta)
 
     dev <- sum (family$dev.resids (y, state$mu, weights))
@@ -698,24 +696,16 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 }
 
 
-.bayesglm.fit.loop.initializePriors <- function (prior.mean, prior.mean.for.intercept, prior.scale, prior.df, prior.df.for.intercept) {
+.bayesglm.fit.loop.initializePriors <- function (prior.mean, prior.scale, prior.df) {
     list(mean=prior.mean,
-            mean.for.intercept=prior.mean.for.intercept,
-            scale=prior.scale,
-            df=prior.df,
-            df.for.intercept=prior.df.for.intercept)
+         scale=prior.scale,
+         df=prior.df)
+
 }
 
 .bayesglm.fit.loop.print <- function (state, priors, family, print.unnormalized.log.posterior, intercept, y) {
     if (print.unnormalized.log.posterior && family$family == "binomial") {
-        logprior <- if(intercept) {
-                    sum( dt( state$fit$coefficients[-1], priors$df , priors$mean,log = TRUE ) )
-                    + dt( state$fit$coefficients[1], priors$df.for.intercept, priors$mean.for.intercept,
-                            log = TRUE )
-                }
-                else {
-                    sum( dt( state$fit$coefficients, priors$df , priors$mean, log = TRUE ) )
-                }
+        logprior <- sum( dt( state$fit$coefficients, priors$df , priors$mean, log = TRUE ) )
         #xb <- invlogit( x.nobs %*% coefs.hat )
         xb <- invlogit (state$eta - offset)
         loglikelihood <- sum( log( c( xb[ y == 1 ], 1 - xb[ y == 0 ] ) ) )
@@ -783,7 +773,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         intercept, scaled,
         start, etastart, mustart,
         family,
-        prior.mean, prior.mean.for.intercept, prior.scale, prior.df, prior.df.for.intercept,
+        prior.mean, prior.scale, prior.df, 
         print.unnormalized.log.posterior,
         Warning) {
 
@@ -795,7 +785,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     # invalid starting point (should be moved out of here):
     # is.null(start)==false & length(start) != nvars
 
-    priors <- .bayesglm.fit.loop.initializePriors (prior.mean, prior.mean.for.intercept, prior.scale, prior.df, prior.df.for.intercept)
+    priors <- .bayesglm.fit.loop.initializePriors (prior.mean, prior.scale, prior.df)
 
     state <- .bayesglm.fit.loop.initializeState (start, etastart, mustart, offset, x.nobs, var(y), nvars, family, weights, priors$scale, y)
     #core elements of state:
@@ -854,22 +844,22 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 }
 
 
-.bayesglm.fit.cleanup <- function (ynames, residuals, mu, eta, nobs, wt, w, good, linkinv, dev.resids, y, intercept, fit, offset, EMPTY, dev, aic) {
+.bayesglm.fit.cleanup <- function (ynames, residuals, mu, eta, nobs, weights, w, good, linkinv, dev.resids, y, intercept, fit, offset, EMPTY, dev, aic) {
     names(residuals) <- ynames
     names(mu) <- ynames
     names(eta) <- ynames
     wt <- rep.int(0, nobs)
     wt[good] <- w^2
     names(wt) <- ynames
-    names(w) <- ynames
+    names(weights) <- ynames
     names(y) <- ynames
     wtdmu <- if (intercept){
-                sum(w * y)/sum(w)
+                sum(weights * y)/sum(weights)
             }
             else{
                 linkinv(offset)
             }
-    nulldev <- sum(dev.resids(y, wtdmu, w))
+    nulldev <- sum(dev.resids(y, wtdmu, weights))
     n.ok <- nobs - sum(w == 0)
     nulldf <- n.ok - as.integer(intercept)
 
@@ -880,14 +870,13 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
                 fit$rank
             }
     resdf <- n.ok - rank
-    resdf <- n.ok
-    aic.model <- aic(y, n.ok, mu, w, dev) + 2 * rank
+    aic.model <- aic(y, n.ok, mu, weights, dev) + 2 * rank
 
     list (residuals=residuals,
             mu=mu,
             eta=eta,
             wt = wt,
-            weights = w,
+            weights = weights,
             y=y,
             wtdmu=wtdmu,
             nulldev=nulldev,
