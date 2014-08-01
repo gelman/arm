@@ -51,8 +51,7 @@ setMethod("display", signature(object = "bayesglm"),
     dimnames(coef)[[2]][1:2] <- c( "coef.est", "coef.se")
     out$coef <- coef[,"coef.est"]#,drop=FALSE]
     out$se <- coef[,"coef.se"]#,drop=FALSE]
-    #n <- summ$df[1] + summ$df[2]
-    out$n <- summ$df.residual
+    out$n <- summ$df[1] + summ$df[2]
     out$k <- summ$df[1]
     out$deviance <- summ$deviance
     out$null.deviance <- summ$null.deviance
