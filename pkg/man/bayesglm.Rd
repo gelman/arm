@@ -274,7 +274,7 @@ The new arguments here are: \code{prior.mean}, \code{prior.scale},
   display (M3)
 
   M4 <- bayesglm (y ~ x1 + x2, family=binomial(link="logit"),
-    prior.scale=2.5, prior.scale.for.intercept=1)  # Same as M3
+    prior.scale=2.5, prior.scale.for.intercept=10)  # Same as M3
   display (M4)
 
   M5 <- bayesglm (y ~ x1 + x2, family=binomial(link="logit"),
