@@ -1,11 +1,11 @@
 2014-8-1 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
-   * DESCRIPTION (Version, Date): 1.7-04 (thanks to Dr. Martyn Plummer's contribution)
+   * DESCRIPTION (Version, Date): 1.7-05 (thanks to Dr. Martyn Plummer's contribution)
    * R/bayesglm: fix several bugs in bayesglm 
    * R/display: change the display for bayesglm to fit the changes stated above.
    * man/bayesglm: 
         1. change M2 and M7 example codes to make them equivalent to M1 and M3.
         2. change the description for prior.scale for the gaussian family.
-
+   * DESCRIPTION: remove foreign and R2WinBUGS from suggests
 
 2014-4-27 Yu-Sung Su     <suyusung@tsinghua.edu.cn>
    * DESCRIPTION (Version, Date): 1.7-03
