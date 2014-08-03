@@ -142,7 +142,6 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     prior.df <- output$prior.df
 
     prior.scale <- .bayesglm.fit.initialize.priorScale (scaled, family, prior.scale, prior.scale.for.intercept, y, nvars, x, min.prior.scale)
-
     output <- .bayesglm.fit.initialize.x (x, nvars, nobs, intercept, scaled)
     x <- output$x
     xnames <- output$xnames
@@ -201,13 +200,12 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         ## 3.2 ## check the link between 3.1 and 3.2
         output.new <- .bayesglm.fit.loop.main.ideal (control, x, y, nvars, nobs, weights, offset,
                 intercept, scaled,
-                start = start, etastart = eta, mustart = mu,
+                start = start, etastart = eta, mustart = mu, dispersion = dispersion,
                 family,
-                prior.mean, prior.scale, prior.df, 
+                prior.mean, prior.scale=prior.sd, prior.df, 
                 print.unnormalized.log.posterior,
                 Warning)
         fit <- output.new$fit
-
         good <- output.new$good
         z <- output.new$z
         w <- output.new$w
@@ -360,7 +358,6 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
                 x.scale <- 2 * sd(x.obs)
             }
             prior.scale[j] <- prior.scale[j]/x.scale
-
             if (prior.scale[j] < min.prior.scale){
                 prior.scale[j] <- min.prior.scale
                 warning ("prior scale for variable ", j,
@@ -379,7 +376,6 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     if (intercept & scaled) {
         x[nobs+1,] <- colMeans(x.nobs)
     }
-
     list (x=x, xnames=xnames, x.nobs=x.nobs)
 }
 
@@ -476,7 +472,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 #            effects=double (ngoodobs + nvars))
 #}
 
-.bayesglm.fit.loop.initializeState <- function (start, etastart, mustart, offset, x.nobs, var.y, nvars, family, weights, prior.sd, y) {
+.bayesglm.fit.loop.initializeState <- function (start, etastart, mustart, dispersion, offset, x.nobs, var.y, nvars, family, weights, prior.sd, y) {
     coefold <- NULL
     if (!is.null(etastart)) {
         eta <- etastart
@@ -490,11 +486,11 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     else {
         eta <- family$linkfun(mustart)
     }
-    if (family$family %in% c("poisson", "binomial")) {
-        dispersion <- 1
-    } else{
-        dispersion <- var.y / 10000
-    }
+#    if (family$family %in% c("poisson", "binomial")) {
+#        dispersion <- 1
+#    } else{
+#        dispersion <- var.y / 10000
+#    }
     mu <- family$linkinv(eta)
     mu.eta.val <- family$mu.eta(eta)
     dev <- sum (family$dev.resids (y, mu, weights))
@@ -553,11 +549,10 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
         offset, weights,
         y, x, x.nobs, nvars, nobs,
         intercept, scaled, control) {
-    mu.eta.val <- family$mu.eta(state$eta)
-    z <- (state$eta[state$good] - offset[state$good]) + (y[state$good] - state$mu[state$good]) / mu.eta.val [state$good]
+    z <- (state$eta[state$good] - offset[state$good]) + (y[state$good] - state$mu[state$good]) / state$mu.eta.val[state$good]
     z.star <- c(z, priors$mean)
-    w <- sqrt((weights[state$good] * mu.eta.val[state$good]^2)/state$varmu[state$good])
-    w.star <- c(w, sqrt(state$dispersion)/state$prior.sd)
+    w <- sqrt((weights[state$good] * state$mu.eta.val[state$good]^2)/state$varmu[state$good])
+    w.star <- c(w, sqrt(state$dispersion)/priors$scale)
     good.star <- c(state$good, rep(TRUE, nvars))
     fit <- lm.fit(x = as.matrix(x[good.star, ])*w.star, y = z.star*w.star)
     start <- state$Start
@@ -580,7 +575,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 #            PACKAGE = "base")
 
 
-    state$prior.sd <- priors$scale
+    #state$prior.sd <- priors$scale
     if (all (priors$df==Inf) == FALSE) {
       colMeans.x <- colMeans (x.nobs)
       centered.coefs <- fit$coefficients
@@ -591,12 +586,12 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
       }
       diag.V.coefs <- diag(V.coefs)
       sampling.var <- diag.V.coefs
-            # DL: sampling.var[1] <- crossprod(colMeans.x, V.coefs) %*% colMeans.x
+      # DL: sampling.var[1] <- crossprod(colMeans.x, V.coefs) %*% colMeans.x
       if(intercept & scaled){
         centered.coefs[1] <- sum(fit$coefficients*colMeans.x)
         sampling.var[1] <- crossprod (crossprod(V.coefs, colMeans.x), colMeans.x)
       }
-      sd.tmp <- ((centered.coefs - priors$mean)^2 + sampling.var * state$dispersion + priors$df * priors$scale^2)/(1 + priors$df)
+      sd.tmp <- ((centered.coefs - priors$mean)^2 + sampling.var * state$dispersion + priors$df * state$prior.sd^2)/(1 + priors$df)
       sd.coef <- sqrt(sd.tmp)
       state$prior.sd[priors$df != Inf] <- sd.coef[priors$df != Inf]
     }
@@ -628,8 +623,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     state$eta <- drop(predictions) + offset
     state$mu <- family$linkinv(state$eta)
     state$mu.eta.val <- family$mu.eta(state$eta)
-
-    dev <- sum (family$dev.resids (y, state$mu, weights))
+    dev <- sum(family$dev.resids(y, state$mu, weights))
 
     if (!is.finite (dev)||(!is.finite(state$dispersion)) || !isTRUE(family$valideta(state$eta) && family$validmu(state$mu))) {
         if ((!is.finite(dev))|(!is.finite(state$dispersion))) {
@@ -771,7 +765,7 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 
 .bayesglm.fit.loop.main.ideal <- function (control, x, y, nvars, nobs, weights, offset,
         intercept, scaled,
-        start, etastart, mustart,
+        start, etastart, mustart, dispersion,
         family,
         prior.mean, prior.scale, prior.df, 
         print.unnormalized.log.posterior,
@@ -785,9 +779,9 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
     # invalid starting point (should be moved out of here):
     # is.null(start)==false & length(start) != nvars
 
-    priors <- .bayesglm.fit.loop.initializePriors (prior.mean, prior.scale, prior.df)
+    priors <- .bayesglm.fit.loop.initializePriors (prior.mean = prior.mean, prior.scale = prior.scale, prior.df = prior.df)
 
-    state <- .bayesglm.fit.loop.initializeState (start, etastart, mustart, offset, x.nobs, var(y), nvars, family, weights, priors$scale, y)
+    state <- .bayesglm.fit.loop.initializeState (start, etastart, mustart, dispersion, offset, x.nobs, var(y), nvars, family, weights, prior.sd = priors$scale, y)
     #core elements of state:
     # good: derived from eta
     # eta
