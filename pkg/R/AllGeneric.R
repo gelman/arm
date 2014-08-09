@@ -94,13 +94,3 @@ if (!isGeneric("traceplot")) {
                standardGeneric("traceplot"),
                useAsDefault = function(x, ...) coda::traceplot(x, ...))
 } 
-
-if (!isGeneric("traceplot")) {
-    setGeneric("traceplot",
-               function(x, ...)
-               standardGeneric("traceplot"),
-               useAsDefault = function(x, ...) coda::traceplot(x, ...))
-} 
-
-   
-#traceplot <- function(x, ...) UseMethod("traceplot")
