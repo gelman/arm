@@ -1,5 +1,6 @@
 \name{discrete.histogram}
 \alias{discrete.histogram}
+\alias{discrete.hist}
 
 \title{Histogram for Discrete Distributions}
 
@@ -7,7 +8,7 @@
 
 \usage{
 discrete.histogram (x, prob, prob2=NULL, prob3=NULL,
-    xlab="x", xaxs.label=NULL, yaxs.label=NULL, bar.width=NULL, 
+    xlab="x", xaxs.label=NULL, yaxs.label=NULL, bar.width=NULL,
     freq=FALSE, prob.col="blue", prob2.col="red", prob3.col="gray", ...)
 }
 
@@ -26,12 +27,12 @@ discrete.histogram (x, prob, prob2=NULL, prob3=NULL,
   \item{prob3.col}{The color of the third set of histogram bars.}
   \item{...}{Additional arguments passed to function \code{plot}}
   }
-  
+
 \details{This function displays a histogram for discrete
   probability distributions.
 }
- 
-        
+
+
 \examples{
 a <- c(3,4,0,0,5,1,1,1,1,0)
 discrete.histogram (a)
