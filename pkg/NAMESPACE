@@ -26,11 +26,13 @@ importFrom(nlme,
 )
 
 importFrom(lme4,
-     "getME"
+     "getME",
+     "isREML",
+     "refitML"
 )
 
 importFrom(abind, "abind")
-      
+
 
 #importMethodsFrom(Matrix, "%*%")
 
@@ -76,20 +78,22 @@ export(
        "contr.bayes.ordered",
        "contr.bayes.unordered",
        "corrplot",
-       "display", 
-       "discrete.histogram", 
+       "display",
+       "discrete.histogram",
+       "discrete.hist",
        "fround",
        "G",
        "go",
        "invlogit",
        "logit",
        "matching",
-       "mcsamp", 
+       "mcsamp",
        "model.matrixBayes",
        "multicomp.plot",
        "mcplot",
        "pfround",
        "predict.bayesglm",
+       "read.columns",
        "rescale",
        "residual.plot",
        "se.coef",
