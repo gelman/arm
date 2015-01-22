@@ -13,9 +13,8 @@ setClass("balance",
             factor = "logical")
 )
 
-
-
-
+#' @rdname bayesglm
+#' @export
 setClass("bayesglm",
      representation(
             formula = "formula",
