@@ -11,7 +11,7 @@
 \usage{
 go(..., add = FALSE, timer = FALSE)
 
-print.GO(x, ...)
+\method{print}{GO}(x, ...)
 
 G
 }

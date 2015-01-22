@@ -63,6 +63,7 @@ go <- function(..., add=FALSE, timer=FALSE)
 # By entering "G" on the console, go() is run. This is faster than
 # typing "go()"...
 #' @rdname go
+#' @method print GO
 #' @export
 print.GO <- function(x,...) {go()}
 

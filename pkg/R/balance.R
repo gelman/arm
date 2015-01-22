@@ -154,6 +154,7 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
 
 
 #' @rdname balance
+#' @method print balance
 #' @export
 print.balance <- function(x, ..., digits= 2)
 {

@@ -10,7 +10,7 @@
 \usage{
 balance(rawdata, matched, pscore.fit, factor = TRUE)
 
-print.balance(x, ..., digits = 2)
+\method{print}{balance}(x, ..., digits = 2)
 
 \method{plot}{balance}(x, longcovnames = NULL,
   main = "Standardized Difference in Means", v.axis = TRUE, cex.main = 1,
