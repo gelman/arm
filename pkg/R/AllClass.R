@@ -52,7 +52,8 @@ setClass("bayesglm",
 #    contains="oldClass"
 #)
 
-
+#' @rdname bayespolr
+#' @export
 setClass("bayespolr",
      representation(
             formula = "formula",
