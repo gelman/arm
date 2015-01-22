@@ -1,3 +1,72 @@
+#' Functions to compute the balance statistics
+#'
+#' This function computes the balance statistics before and after matching.
+#'
+#' This function plots the balance statistics before and after
+#' matching. The open circle dots represent the unmatched balance
+#' statistics.  The solid dots represent the matched balance
+#' statistics. The closer the value of the estimates to the zero, the
+#' better the treated and control groups are balanced after matching.
+#'
+#' @note The function does not work with predictors that contain
+#'   factor(x), log(x) or all other data transformation. Create new
+#'   objects for these variables. Attach them into the original dataset
+#'   before doing the matching procedure.
+#' @param rawdata data before using \code{matching} function, see the
+#'   example below.
+#' @param matched matched data using \code{matching} function, see the
+#'   example below.
+#' @param pscore.fit glm.fit object to get propensity scores.
+#' @param factor default is \code{TRUE} which will display the
+#'   factorized categorical variables. In a situation where no equal
+#'   levels of factorized categorical variables is observed, use
+#'   \code{factor = FALSE} to proceed.
+#' @param x an object return by the balance function.
+#' @param digits minimal number of \emph{significant} digits, default
+#'   is 2.
+#' @param longcovnames long covariate names.  If not provided, plot
+#'   will use covariate variable name by default.
+#' @param main The main title (on top) using font and size (character
+#'   expansion) \code{par("font.main")} and color
+#'   \code{par("col.main")}; default title is \code{Standardized
+#'   Difference in Means}.
+#' @param v.axis default is \code{TRUE}, which shows the top
+#'   axis--axis(3).
+#' @param cex.main font size of main title.
+#' @param cex.vars font size of variabel names.
+#' @param cex.pts point size of the estimates.
+#' @param mar A numerical vector of the form \code{c(bottom, left,
+#'   top, right)} which gives the number of lines of margin to be
+#'   specified on the four sides of the plot. The default is
+#'   \code{c(0,3,5.1,2)}.
+#' @param plot default is \code{TRUE}, which will plot the plot.
+#' @param ... other plot options may be passed to this function.
+#' 
+#' @references Andrew Gelman and Jennifer Hill. (2006). \emph{Data
+#'   Analysis Using Regression and Multilevel/Hierarchical
+#'   Models}. Cambridge University Press. (Chapter 10)
+#' @author Jennifer Hill \email{jh1030@@columbia.edu} ; Yu-Sung Su
+#'   \email{suyusung@@tsinghua.edu.cn}
+#' @seealso \code{\link{matching}}, \code{\link{par}}
+#' @keywords methods manip hplot dplot
+#' @export
+#' @examples
+#' # matching first
+#' old.par <- par(no.readonly = TRUE)
+#' data(lalonde)
+#' attach(lalonde)
+#' fit <- glm(treat ~ re74 + re75 + age + factor(educ) + 
+#'             black + hisp + married + nodegr + u74 + u75, 
+#'             family=binomial(link="logit"))
+#' pscores <- predict(fit, type="link")
+#' matches <- matching(z=lalonde$treat, score=pscores)
+#' matched <- lalonde[matches$matched,]
+#' 
+#' # balance check
+#' b.stats <- balance(lalonde, matched, fit)
+#' print(b.stats)
+#' plot(b.stats)
+#' par(old.par)
 balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
 {
     
@@ -84,6 +153,8 @@ balance <- function (rawdata, matched, pscore.fit, factor=TRUE)
 }
 
 
+#' @rdname balance
+#' @export
 print.balance <- function(x, ..., digits= 2)
 {
  cat("Differences in Means of Unmatched Data\n")
@@ -100,6 +171,8 @@ print.balance <- function(x, ..., digits= 2)
 
 
 
+#' @rdname balance
+#' @export
 plot.balance <- function(x, longcovnames=NULL,
                 main="Standardized Difference in Means",
                 v.axis=TRUE,

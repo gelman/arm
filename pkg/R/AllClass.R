@@ -4,6 +4,8 @@ setOldClass("polr")
 setOldClass("bugs")
 setOldClass("svyglm")
 
+#' @rdname balance
+#' @export
 setClass("balance",
      representation(
             rawdata = "data.frame",
