@@ -60,12 +60,11 @@ setGeneric("standardize", function(object, ...) {
   standardGeneric("standardize")
 })
 
-if (!isGeneric("traceplot")) {
-    setGeneric("traceplot",
-               function(x, ...)
-               standardGeneric("traceplot"),
-               useAsDefault = function(x, ...) coda::traceplot(x, ...))
-} 
+#' @rdname traceplot
+#' @export
+setGeneric("traceplot", function(x, ...) {
+  standardGeneric("traceplot")
+}, useAsDefault = function(x, ...) coda::traceplot(x, ...))
 
 
 #if (!isGeneric("model.matrix.bayes")) {

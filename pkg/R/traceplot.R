@@ -1,11 +1,31 @@
-#traceplot.default <- function(x, ...) coda::traceplot
+#' Trace plot of bugs object
+#'
+#' Displays a plot of iterations \emph{vs.} sampled values for each
+#' variable in the chain, with a separate plot per variable.
+#' 
+#' @param x A bugs object.
+#' @param mfrow graphical parameter (see \code{par}).
+#' @param varname vector of variable names to plot.
+#' @param match.head matches the variable names by the beginning of
+#' the variable names in bugs object.
+#' @param ask logical; if \code{TRUE}, the user is \emph{ask}ed before
+#' each plot, see \code{par(ask=.)}.
+#' @param col graphical parameter (see \code{par}).
+#' @param lty graphical parameter (see \code{par}).
+#' @param lwd graphical parameter (see \code{par}).
+#' @param ... further graphical parameters.
+#' @author  
+#'   Masanao Yajima \email{yajima@@stat.columbia.edu}.
+#'   Yu-Sung Su \email{suyusung@@tsinghua.edu.cn}
+#' @seealso \code{\link[coda]{densplot}},
+#' \code{\link[coda]{plot.mcmc}}, \code{\link[coda]{traceplot}}
+#' @keywords hplot
+#' @name traceplot
+NULL
 
 
-# ========================================================================
-# function for trace plot
-# ========================================================================
-
-
+#' @rdname traceplot
+#' @export
 setMethod("traceplot", signature(x = "mcmc.list"),
   function (x, smooth = TRUE, col = 1:6, type = "l", ylab = "", ...) 
 {
@@ -29,7 +49,8 @@ setMethod("traceplot", signature(x = "mcmc.list"),
 }
 )
 
-
+#' @rdname traceplot
+#' @export
 setMethod("traceplot", signature(x = "bugs"),
   function( x, mfrow = c( 1, 1 ), varname = NULL,
   match.head = TRUE, ask = TRUE,
@@ -62,3 +83,5 @@ setMethod("traceplot", signature(x = "bugs"),
   }
 }
 )
+
+#traceplot.default <- function(x, ...) coda::traceplot
