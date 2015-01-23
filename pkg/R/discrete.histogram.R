@@ -1,3 +1,37 @@
+#' Histogram for Discrete Distributions
+#'
+#' Creates a prettier histogram for discrete distributions
+#'
+#' This function displays a histogram for discrete probability
+#' distributions.
+#'
+#' @param x The vector of x's.
+#' @param prob The probabilities for the x's.
+#' @param prob2 A second vector of probabilities of the x's.
+#' @param prob3 A third vector of probabilities of the x's.
+#' @param xlab Label for the x axis.
+#' @param xaxs.label Label for the x's.
+#' @param yaxs.label Label for the y axis.
+#' @param bar.width Width of the bars.
+#' @param freq If TRUE, shows a frequency histogram as opposed to
+#'   probability.
+#' @param prob.col The color of the first set of histogram bars.
+#' @param prob2.col The color of the second set of histogram bars.
+#' @param prob3.col The color of the third set of histogram bars.
+#' @param ... Additional arguments passed to function \code{plot}.
+#' @keywords dplot
+#' @export
+#' @examples
+#' a <- c(3,4,0,0,5,1,1,1,1,0)
+#' discrete.histogram (a)
+#' 
+#' x <- c(0,1,3,4,5)
+#' p <- c(.3,.4,.1,.1,.1)
+#' discrete.histogram (x,p)
+#' 
+#' x <- c(0,1,3,4,5)
+#' y <- c(3,4,1,1,1)
+#' discrete.histogram (x,y)
 discrete.histogram <- function (x, prob, prob2 = NULL, prob3 = NULL, xlab = "x", xaxs.label = NULL,
     yaxs.label = NULL, bar.width = NULL, freq = FALSE, prob.col = "blue",
     prob2.col = "red", prob3.col = "gray", ...)
@@ -87,4 +121,6 @@ discrete.histogram <- function (x, prob, prob2 = NULL, prob3 = NULL, xlab = "x",
     }
 }
 
+#' @rdname discrete.histogram
+#' @export
 discrete.hist <- discrete.histogram

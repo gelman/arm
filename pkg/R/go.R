@@ -1,20 +1,27 @@
-
-# Name:        go(..., add=FALSE,timer=FALSE)
-# Description: Like source() but recalls the last source file names by default. Multiple source files can be specified.
-# Parameters:  ... = list of filenames as character strings;
-#              add = add these names to the current list? if replace, then FALSE
-# Note:        does not pass parameters to source()
-# Example:     go('myprog')  # will run source('myprog.r')
-#              go()      # will run source('myprog.r') again
-#              go('somelib',add=TRUE) # will run source('myprog.r') and source('somelib.r')
-#              go('myprog','somelib')  # same as above
-#              go('mytest') # will run source('mytest') only
-#              go()      # runs source('mytest') again
-# Reference:   jouni@kerman.com, kerman@stat.columbia.edu
-# Modified:    2004-06-22
-#
-
+#' Function to Recall Last Source File
+#'
+#' A function that like \code{source()} but recalls the last source
+#' file names by default.
+#' 
+#' @param \dots list of filenames as character strings.
+#' @param add add these names to the current list; if replace, then
+#' \code{FALSE}.
+#' @param timer time the execution time of \code{go()}.
+#'
+#' @author Jouni Kerman \email{jouni@@kerman.com}
+#' \email{kerman@@stat.columbia.edu}
+#' @keywords methods manip
+#' @export
+#' @examples
+#' go('myprog')            # will run source('myprog.r')
+#' go()                    # will run source('myprog.r') again
+#' go('somelib',add=TRUE)  # will run source('myprog.r') and source('somelib.r')
+#' go('myprog','somelib')  # same as above
+#' go('mytest')            # will run source('mytest') only
+#' go()                    # runs source('mytest') again
+#' G                       # short cut to call go()
 go <- function(..., add=FALSE, timer=FALSE)
+# Modified:    2004-06-22
 {
   last.sources <- getOption(".Last.Source")
   sources <- unlist(list(...))
@@ -53,8 +60,16 @@ go <- function(..., add=FALSE, timer=FALSE)
 }
 
 
-# By entering "G" on the console, go() is run. This is faster than typing "go()"...
+# By entering "G" on the console, go() is run. This is faster than
+# typing "go()"...
+#' @rdname go
+#' @usage NULL
+#' @method print GO
+#' @export
 print.GO <- function(x,...) {go()}
+
+#' @rdname go
+#' @export
 G <- structure(NA, class="GO")
 #class(G) <- "GO"
 

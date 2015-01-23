@@ -4,6 +4,8 @@ setOldClass("polr")
 setOldClass("bugs")
 setOldClass("svyglm")
 
+#' @rdname balance
+#' @export
 setClass("balance",
      representation(
             rawdata = "data.frame",
@@ -11,9 +13,8 @@ setClass("balance",
             factor = "logical")
 )
 
-
-
-
+#' @rdname bayesglm
+#' @export
 setClass("bayesglm",
      representation(
             formula = "formula",
@@ -23,7 +24,6 @@ setClass("bayesglm",
             prior.df = "numeric"),
     contains = "glm"
 )
-
 
 #setClass("bayesglm.h",
 #     representation(
@@ -51,7 +51,8 @@ setClass("bayesglm",
 #    contains="oldClass"
 #)
 
-
+#' @rdname bayespolr
+#' @export
 setClass("bayespolr",
      representation(
             formula = "formula",
@@ -66,27 +67,27 @@ setClass("bayespolr",
      contains = "polr"
 )
 
-
+#' @rdname sim
+#' @export
 setClass("sim",
      representation(
             coef = "matrix",
             sigma = "numeric")
 )
 
+#' @rdname sim
+#' @export
 setClass("sim.polr",
      representation(
             coef = "matrix",
             zeta = "matrix")
 )
 
-
-
+#' @rdname sim
+#' @export
 setClass("sim.merMod",
      representation(
             fixef = "matrix",
             ranef = "list",
             sigma = "ANY")
 )
-
-
-setClass("GO")

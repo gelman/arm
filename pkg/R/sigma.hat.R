@@ -1,3 +1,56 @@
+#' Extract Residual Errors
+#'
+#' This generic function extracts residual errors from a fitted model.
+#'
+#' @param object any fitted model object of \code{lm}, \code{glm} and
+#'   \code{merMod} class.
+#' @param ... other arguments.
+#' @author
+#'   Andrew Gelman \email{gelman@@stat.columbia.edu};
+#'   Yu-Sung Su \email{suyusung@@tsinghua.edu.cn}
+#' @seealso \code{\link{display}}, \code{\link{summary}},
+#' \code{\link{lm}}, \code{\link{glm}}, \code{\link[lme4]{lmer}}
+#' @keywords manip methods
+#' @name sigma.hat
+#' @examples
+#' library("MASS")
+#' library("lme4")
+#' 
+#' group <- rep(1:10, rep(10,10))
+#' mu.a <- 0
+#' sigma.a <- 2
+#' mu.b <- 3
+#' sigma.b <- 4
+#' rho <- 0
+#' Sigma.ab <- array (c(sigma.a^2, rho*sigma.a*sigma.b, 
+#'                  rho*sigma.a*sigma.b, sigma.b^2), c(2,2))
+#' sigma.y <- 1
+#' ab <- mvrnorm (10, c(mu.a,mu.b), Sigma.ab)
+#' a <- ab[,1]
+#' b <- ab[,2]
+#'
+#' x <- rnorm (100)
+#' y1 <- rnorm (100, a[group] + b[group]*x, sigma.y)
+#' y2 <- rbinom(100, 1, prob=invlogit(a[group] + b*x))
+#' 
+#' M1 <- lm (y1 ~ x) 
+#' sigma.hat(M1)
+#' 
+#' M2 <- bayesglm (y1 ~ x, prior.scale=Inf, prior.df=Inf)
+#' sigma.hat(M2) # should be same to sigma.hat(M1)
+#'
+#' M3 <- glm (y2 ~ x, family=binomial(link="logit"))
+#' sigma.hat(M3)
+#'
+#' M4 <- lmer (y1 ~ (1+x|group))
+#' sigma.hat(M4) 
+#' 
+#' M5 <- glmer (y2 ~ (1+x|group), family=binomial(link="logit"))
+#' sigma.hat(M5)
+NULL
+
+#' @rdname sigma.hat
+#' @export
 setMethod("sigma.hat", signature(object = "lm"),
     function(object)
     {
@@ -6,6 +59,8 @@ setMethod("sigma.hat", signature(object = "lm"),
     }
 )
 
+#' @rdname sigma.hat
+#' @export
 setMethod("sigma.hat", signature(object = "sim"),
     function(object)
     {
@@ -14,9 +69,8 @@ setMethod("sigma.hat", signature(object = "sim"),
     }
 )
 
-
-
-
+#' @rdname sigma.hat
+#' @export
 setMethod("sigma.hat", signature(object = "glm"),
     function(object)
     {
@@ -36,10 +90,6 @@ setMethod("sigma.hat", signature(object = "glm"),
     return(sigma)
     }
 )
-
-
-
-
 
 #setMethod("sigma.hat", signature(object = "mer"),
 #    function(object)
@@ -66,8 +116,8 @@ setMethod("sigma.hat", signature(object = "glm"),
 #    }
 #) 
 
-
-
+#' @rdname sigma.hat
+#' @export
 setMethod("sigma.hat", signature(object = "merMod"),
     function(object)
     {
@@ -96,9 +146,8 @@ setMethod("sigma.hat", signature(object = "merMod"),
     }
 )  
 
-
-
-
+#' @rdname sigma.hat
+#' @export
 setMethod("sigma.hat", signature(object = "sim.merMod"),
     function(object)
     {

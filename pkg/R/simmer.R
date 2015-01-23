@@ -1,5 +1,8 @@
 # simulations of sigma, fixef, and ranef drawn from a posterior
 # under a flat prior and conditioned on estimate of ranef covar
+
+#' @rdname sim
+#' @export
 setMethod("sim", signature(object = "merMod"),
           function(object, n.sims=100)
 {
@@ -18,7 +21,7 @@ setMethod("sim", signature(object = "merMod"),
     # upper left, lower right, and lower left blocks of left-factor
     # of inverse
     solveFunc <- getMethod("solve", signature(a = "CHMfactor", b = "diagonalMatrix"));
-    Rz.inv  <- t(solveFunc(Lz, Diagonal(Lz@Dim[1]), "L"));
+    Rz.inv  <- t(solveFunc(Lz, Matrix::Diagonal(Lz@Dim[1]), "L"));
     Rx.inv  <- solve(Rx);
     Rzx.inv <- -Rz.inv %*% Rzx %*% Rx.inv;
 
@@ -27,7 +30,7 @@ setMethod("sim", signature(object = "merMod"),
     #Lz.tmp <- as(Lz, "sparseMatrix");
     #P.chol <- as(Lz@perm + 1, "pMatrix");
     #Zt <- getME(regression, "Zt");
-    #W <- Diagonal(numObs, regression@resp$sqrtXwt);
+    #W <- Matrix::Diagonal(numObs, regression@resp$sqrtXwt);
     ## P.ranef <- getRanefPerm(regression);
     #Lambdat <- getME(regression, "Lambdat") # t(P.ranef) %*% getME(regression, "Lambdat") %*% P.ranef;
     #A <- Lambdat %*% Zt;
