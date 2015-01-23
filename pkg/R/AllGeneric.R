@@ -1,9 +1,3 @@
-#if (!isGeneric("bayesglm")) {
-#    setGeneric("bayesglm",
-#               function(formula, ...)
-#               standardGeneric("bayesglm"))
-#}
-
 
 setGeneric("coef")
 setGeneric("print")
@@ -21,13 +15,6 @@ setGeneric("coefplot", function(object, ...) {
 setGeneric("display", function(object, ...) {
   standardGeneric("display")
 })
-
-#if (!isGeneric("model.matrix.bayes")) {
-#    setGeneric("model.matrix.bayes",
-#               function(object, ...)
-#               standardGeneric("model.matrix.bayes"))
-#}
-#
 
 #' @rdname sim
 #' @export
@@ -67,17 +54,11 @@ setGeneric("mcsamp", function(object, ...) {
   standardGeneric("mcsamp")
 })
 
-if (!isGeneric("standardize")) {
-    setGeneric("standardize",
-               function(object, ...)
-               standardGeneric("standardize"))
-}
-
-#if (!isGeneric("terms.bayes")) {
-#    setGeneric("terms.bayes",
-#               function(x, ...)
-#               standardGeneric("terms.bayes"))
-#}
+#' @rdname standardize
+#' @export
+setGeneric("standardize", function(object, ...) {
+  standardGeneric("standardize")
+})
 
 if (!isGeneric("traceplot")) {
     setGeneric("traceplot",
@@ -85,3 +66,23 @@ if (!isGeneric("traceplot")) {
                standardGeneric("traceplot"),
                useAsDefault = function(x, ...) coda::traceplot(x, ...))
 } 
+
+
+#if (!isGeneric("model.matrix.bayes")) {
+#    setGeneric("model.matrix.bayes",
+#               function(object, ...)
+#               standardGeneric("model.matrix.bayes"))
+#}
+#
+
+#if (!isGeneric("bayesglm")) {
+#    setGeneric("bayesglm",
+#               function(formula, ...)
+#               standardGeneric("bayesglm"))
+#}
+
+#if (!isGeneric("terms.bayes")) {
+#    setGeneric("terms.bayes",
+#               function(x, ...)
+#               standardGeneric("terms.bayes"))
+#}
