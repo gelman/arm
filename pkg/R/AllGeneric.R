@@ -34,20 +34,6 @@ setGeneric("se.coef", function(object, ...) {
   standardGeneric("se.coef")
 })
 
-if (!isGeneric("fixef")) {
-    setGeneric("fixef",
-               function(object, ...)
-               standardGeneric("fixef"),
-               useAsDefault = function(object, ...) nlme::fixef(object, ...))
-} 
-
-if (!isGeneric("ranef")) {
-    setGeneric("ranef",
-               function(object, ...)
-               standardGeneric("ranef"),
-               useAsDefault = function(object, ...) nlme::ranef(object, ...))
-} 
-
 #' @rdname mcsamp
 #' @export
 setGeneric("mcsamp", function(object, ...) {

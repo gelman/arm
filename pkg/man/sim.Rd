@@ -6,8 +6,8 @@
 \alias{coef,sim.merMod-method}
 \alias{coef,sim.polr-method}
 \alias{fitted,sim.merMod-method}
-\alias{fixef,sim.merMod-method}
-\alias{ranef,sim.merMod-method}
+\alias{fixef.sim.merMod}
+\alias{ranef.sim.merMod}
 \alias{sim}
 \alias{sim,glm-method}
 \alias{sim,lm-method}
@@ -26,9 +26,9 @@ sim(object, ...)
 
 \S4method{coef}{sim.merMod}(object)
 
-\S4method{fixef}{sim.merMod}(object)
+\method{fixef}{sim.merMod}(object, ...)
 
-\S4method{ranef}{sim.merMod}(object)
+\method{ranef}{sim.merMod}(object, ...)
 
 \S4method{fitted}{sim.merMod}(object, regression)
 

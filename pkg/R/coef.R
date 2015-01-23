@@ -37,22 +37,15 @@ setMethod("coef", signature(object = "sim.merMod"),
     }
 )
 
-#' @rdname sim
-#' @export
-setMethod("fixef", signature(object = "sim.merMod"),
-    function(object)
-    {
-    ans <- object@fixef
-    return(ans)
-    }
-)
 
 #' @rdname sim
 #' @export
-setMethod("ranef", signature(object = "sim.merMod"),
-    function(object)
-    {
-    ans <- object@ranef
-    return(ans)
-    }
-)
+fixef.sim.merMod <- function(object, ...) {
+  object@fixef
+}
+
+#' @rdname sim
+#' @export
+ranef.sim.merMod <- function(object, ...) {
+  object@ranef
+}
