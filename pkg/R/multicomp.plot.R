@@ -1,6 +1,64 @@
-#==============================================================================
-# Multiple Comparison Plot
-#==============================================================================
+#' Multiple Comparison Plot
+#'
+#' Plots significant difference of simulated array.
+#'
+#' @param object Simulated array of coefficients, columns being
+#'   different variables and rows being simulated result.
+#' @param alpha Level of significance to compare.
+#' @param main Main label.
+#' @param label Labels for simulated parameters.
+#' @param shortlabel Short labels to put into the plot.
+#' @param show.pvalue Default is FALSE, if set to TRUE replaces short
+#'   label with Bayesian p value.
+#' @param label.as.shortlabel Default is FALSE, if set to TRUE takes
+#'   first 2 character of label and use it as short label.
+#' @param label.on.which.axis default is the 3rd (top) axis.
+#' @param col.low Color of significantly low coefficients.
+#' @param col.same Color of not significant difference.
+#' @param col.high Color of significantly high coefficients.
+#' @param vertical.line Default is TRUE, if set to FALSE does not draw
+#'   vertical line.
+#' @param horizontal.line Default is FALSE, if set to TRUE draws
+#'   horizontal line.
+#' @param vertical.line.lty Line type of vertical line.
+#' @param horizontal.line.lty Line type of horizontal line.
+#' @param mar A numerical vector of the form \code{c(bottom, left,
+#'   top, right)} which gives the number of lines of margin to be
+#'   specified on the four sides of the plot. The default is
+#'   \code{c(3.5,3.5,3.5,3.5)}.
+#' @return \item{pvalue}{Array of Bayesian p value.}
+#'   \item{significant}{Array of significance.}
+#' @references Andrew Gelman and Jennifer Hill. (2006). \emph{Data
+#'   Analysis Using Regression and Multilevel/Hierarchical
+#'   Models}. Cambridge University Press.
+#' @author
+#'   Masanao Yajima \email{yajima@@stat.columbia.edu},
+#'   Andrew Gelman \email{gelman@@stat.columbia.edu}
+#' @seealso \code{\link{coefplot}}
+#' @keywords hplot
+#' @name multicomp
+#' @export
+#' @examples
+#' old.par <- par(no.readonly = TRUE)
+#' 
+#' # example 1
+#' simulation.array <- data.frame(coef1=rnorm(100,10,2), coef2=rnorm(100,5,2),  
+#'                       coef3=rnorm(100,0,1), coef4=rnorm(100,-5,3), 
+#'                       coef5=rnorm(100,-2,1))
+#' short.lab <- c("c01", "c02", "c03", "c04", "c05")
+#' multicomp.plot(simulation.array[,1:4], label.as.shortlabel=TRUE)
+#' 
+#' # wraper for multicomp.plot
+#' mcplot(simulation.array, shortlabel = short.lab)
+#' 
+#' # example 2
+#' data(lalonde)
+#' M1 <- lm(re78 ~ treat + re74 + re75 + age + educ + u74 + u75, data=lalonde)
+#' M1.sim <- sim(M1)
+#' lm.sim <- coef(M1.sim)[,-1]
+#' multicomp.plot(lm.sim, label.as.shortlabel=TRUE, label.on.which.axis=2)
+#' 
+#' par(old.par)
 multicomp.plot <- function(object, alpha=0.05, main = "Multiple Comparison Plot", 
       label = NULL, shortlabel = NULL, show.pvalue = FALSE,
       label.as.shortlabel = FALSE, label.on.which.axis = 3,
@@ -96,4 +154,7 @@ multicomp.plot <- function(object, alpha=0.05, main = "Multiple Comparison Plot"
   invisible( list( pvalue = bayes.pvalue, significant = bayes.signif ) )
 }
 
+#' @rdname multicomp
+#' @usage NULL
+#' @export
 mcplot <- multicomp.plot
