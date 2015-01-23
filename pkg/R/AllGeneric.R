@@ -9,20 +9,18 @@ setGeneric("coef")
 setGeneric("print")
 setGeneric("fitted")
 
-#setGeneric("extractAIC")
 
-if (!isGeneric("coefplot")) {
-    setGeneric("coefplot",
-               function(object, ...)
-               standardGeneric("coefplot"))
-}
+#' @rdname coefplot
+#' @export
+setGeneric("coefplot", function(object, ...) {
+  standardGeneric("coefplot")
+})
 
-
-if (!isGeneric("display")) {
-    setGeneric("display",
-               function(object, ...)
-               standardGeneric("display"))
-}
+#' @rdname display
+#' @export
+setGeneric("display", function(object, ...) {
+  standardGeneric("display")
+})
 
 #if (!isGeneric("model.matrix.bayes")) {
 #    setGeneric("model.matrix.bayes",
@@ -65,11 +63,11 @@ if (!isGeneric("ranef")) {
 } 
 
 
-if (!isGeneric("mcsamp")) {
-    setGeneric("mcsamp",
-               function(object, ...)
-               standardGeneric("mcsamp"))
-}
+#' @rdname mcsamp
+#' @export
+setGeneric("mcsamp", function(object, ...) {
+  standardGeneric("mcsamp")
+})
 
 
 
