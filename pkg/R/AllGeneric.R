@@ -42,11 +42,11 @@ if (!isGeneric("sigma.hat")) {
                standardGeneric("sigma.hat"))
 }
 
-if (!isGeneric("se.coef")) {
-    setGeneric("se.coef",
-               function(object, ...)
-               standardGeneric("se.coef"))
-}
+#' @rdname se.coef
+#' @export
+setGeneric("se.coef", function(object, ...) {
+  standardGeneric("se.coef")
+})
 
 if (!isGeneric("fixef")) {
     setGeneric("fixef",
@@ -62,14 +62,11 @@ if (!isGeneric("ranef")) {
                useAsDefault = function(object, ...) nlme::ranef(object, ...))
 } 
 
-
 #' @rdname mcsamp
 #' @export
 setGeneric("mcsamp", function(object, ...) {
   standardGeneric("mcsamp")
 })
-
-
 
 if (!isGeneric("standardize")) {
     setGeneric("standardize",
@@ -77,14 +74,11 @@ if (!isGeneric("standardize")) {
                standardGeneric("standardize"))
 }
 
-
-
 #if (!isGeneric("terms.bayes")) {
 #    setGeneric("terms.bayes",
 #               function(x, ...)
 #               standardGeneric("terms.bayes"))
 #}
-
 
 if (!isGeneric("traceplot")) {
     setGeneric("traceplot",
