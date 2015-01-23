@@ -19,7 +19,6 @@
 #' @keywords models
 #' @export
 #' @examples
-#' data(frisk)
 #' n <- 100
 #' x1 <- rnorm (n)
 #' x2 <- rbinom (n, 1, .5)

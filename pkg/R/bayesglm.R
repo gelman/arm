@@ -69,7 +69,7 @@
 #'   squares (IWLS).  The only current alternative is
 #'   \code{"model.frame"} which returns the model frame and does no
 #'   fitting.}
-#' @param x, y For \code{glm}: logical values indicating whether the
+#' @param x,y For \code{glm}: logical values indicating whether the
 #'   response vector and model matrix used in the fitting process should
 #'   be returned as components of the returned value.
 #'   For \code{glm.fit}: \code{x} is a design matrix of dimension
@@ -126,7 +126,6 @@
 #' @param Warning default is TRUE, which will show the error messages
 #'   of not convergence and separation.
 #' @param ... further arguments passed to or from other methods.
-#'
 #' @return See \code{\link[stats]{glm}} for details.
 #'   \item{prior.mean}{prior means for the coefficients and the intercept.}
 #'   \item{prior.scale}{prior scales for the coefficients}
@@ -1131,16 +1130,19 @@ bayesglm.fit <- function (x, y, weights = rep(1, nobs), start = NULL,
 
 
 #' @rdname bayesglm
+#' @usage NULL
 #' @export
 setMethod("print", signature(x = "bayesglm"),
     function(x, digits=2) display(object=x, digits=digits))
 
 #' @rdname bayesglm
+#' @usage NULL
 #' @export
 setMethod("show", signature(object = "bayesglm"),
     function(object) display(object, digits=2))
 
 #' @rdname bayesglm
+#' @usage NULL
 #' @export
 predict.bayesglm <- function (object, newdata = NULL, type = c("link", "response",
     "terms"), se.fit = FALSE, dispersion = NULL, terms = NULL,

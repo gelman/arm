@@ -7,6 +7,32 @@
 model.matrixBayes(object, data = environment(object), contrasts.arg = NULL,
   xlev = NULL, keep.order = FALSE, drop.baseline = FALSE, ...)
 }
+\arguments{
+\item{object}{an object of an appropriate class.  For the default
+method, a model formula or terms object.}
+
+\item{data}{a data frame created with \code{\link{model.frame}}.  If
+another sort of object, \code{model.frame} is called first.}
+
+\item{contrasts.arg}{A list, whose entries are contrasts suitable for
+input to the \code{\link{contrasts}} replacement function and
+whose names are the names of columns of \code{data} containing
+\code{\link{factor}}s.}
+
+\item{xlev}{to be used as argument of \code{\link{model.frame}} if
+\code{data} has no \code{"terms"} attribute.}
+
+\item{keep.order}{a logical value indicating whether the terms should
+keep their positions. If \code{FALSE} the terms are reordered so
+that main effects come first, followed by the interactions,
+all second-order, all third-order and so on.  Effects of a given
+order are kept in the order specified.}
+
+\item{drop.baseline}{Drop the base level of categorical Xs,
+default is TRUE.}
+
+\item{...}{further arguments passed to or from other methods.}
+}
 \description{
 \code{model.matrixBayes} creates a design matrix.
 }

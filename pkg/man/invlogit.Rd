@@ -26,7 +26,6 @@ which is necessary, since probabilities must be between 0 and 1 and
 maps from the linear predictor to the probabilities
 }
 \examples{
-data(frisk)
 n <- 100
 x1 <- rnorm (n)
 x2 <- rbinom (n, 1, .5)

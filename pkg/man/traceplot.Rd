@@ -7,9 +7,6 @@
 \alias{traceplot,mcmc.list-method}
 \title{Trace plot of bugs object}
 \usage{
-\S4method{traceplot}{mcmc.list}(x, smooth = TRUE, col = 1:6, type = "l",
-  ylab = "", ...)
-
 \S4method{traceplot}{bugs}(x, mfrow = c(1, 1), varname = NULL,
   match.head = TRUE, ask = TRUE, col = rainbow(x$n.chains), lty = 1,
   lwd = 1, ...)

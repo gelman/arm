@@ -11,8 +11,6 @@
 \usage{
 go(..., add = FALSE, timer = FALSE)
 
-\method{print}{GO}(x, ...)
-
 G
 }
 \arguments{

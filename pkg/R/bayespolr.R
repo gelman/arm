@@ -436,11 +436,13 @@ function (formula, data, weights, start, ..., subset, na.action,
 }
 
 #' @rdname bayespolr
+#' @usage NULL
 #' @export
 setMethod("print", signature(x = "bayespolr"), 
     function(x, digits= 2) display(object=x, digits=digits))
 
 #' @rdname bayespolr
+#' @usage NULL
 #' @export
 setMethod("show", signature(object = "bayespolr"), 
     function(object) display(object, digits=2))

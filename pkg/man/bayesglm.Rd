@@ -27,14 +27,6 @@ bayesglm.fit(x, y, weights = rep(1, nobs), start = NULL, etastart = NULL,
   prior.scale.for.intercept = NULL, prior.df.for.intercept = 1,
   min.prior.scale = 1e-12, scaled = TRUE,
   print.unnormalized.log.posterior = FALSE, Warning = TRUE)
-
-\S4method{print}{bayesglm}(x, digits = 2)
-
-\S4method{show}{bayesglm}(object)
-
-\method{predict}{bayesglm}(object, newdata = NULL, type = c("link",
-  "response", "terms"), se.fit = FALSE, dispersion = NULL, terms = NULL,
-  na.action = na.pass, ...)
 }
 \arguments{
 \item{formula}{a symbolic description of the model to be fit.  The
@@ -94,7 +86,7 @@ squares (IWLS).  The only current alternative is
 \code{"model.frame"} which returns the model frame and does no
 fitting.}}
 
-\item{x,}{y For \code{glm}: logical values indicating whether the
+\item{x,y}{For \code{glm}: logical values indicating whether the
 response vector and model matrix used in the fitting process should
 be returned as components of the returned value.
 For \code{glm.fit}: \code{x} is a design matrix of dimension

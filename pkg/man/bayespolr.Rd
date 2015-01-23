@@ -14,10 +14,6 @@ bayespolr(formula, data, weights, start, ..., subset, na.action,
   prior.mean = 0, prior.scale = 2.5, prior.df = 1,
   prior.counts.for.bins = NULL, min.prior.scale = 1e-12, scaled = TRUE,
   n.iter = 100, print.unnormalized.log.posterior = FALSE)
-
-\S4method{print}{bayespolr}(x, digits = 2)
-
-\S4method{show}{bayespolr}(object)
 }
 \arguments{
 \item{formula}{a formula expression as for regression models, of

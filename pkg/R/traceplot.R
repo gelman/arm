@@ -26,6 +26,7 @@ NULL
 
 #' @importFrom coda nvar nchain varnames
 #' @rdname traceplot
+#' @usage NULL
 #' @export
 setMethod("traceplot", signature(x = "mcmc.list"),
   function (x, smooth = TRUE, col = 1:6, type = "l", ylab = "", ...) 

@@ -21,6 +21,7 @@
 #' @param standardize.y if TRUE, the outcome variable is standardized
 #'   also.
 #' @param binary.inputs options for standardizing binary variables.
+#' @param ... further arguments passed to or from other methods.
 #' @references Andrew Gelman. (2008). \dQuote{Scaling regression
 #'   inputs by dividing by two standard deviations.} \emph{Statistics in
 #'   Medicine} 27: 2865--2873.

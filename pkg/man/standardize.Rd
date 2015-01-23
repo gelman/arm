@@ -27,6 +27,8 @@ standardize(object, ...)
 \arguments{
 \item{object}{an object of class \code{lm} or \code{glm}.}
 
+\item{...}{further arguments passed to or from other methods.}
+
 \item{unchanged}{vector of names of parameters to leave
 unstandardized.}
 
