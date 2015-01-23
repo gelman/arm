@@ -1,5 +1,8 @@
 # simulations of sigma, fixef, and ranef drawn from a posterior
 # under a flat prior and conditioned on estimate of ranef covar
+
+#' @rdname sim
+#' @export
 setMethod("sim", signature(object = "merMod"),
           function(object, n.sims=100)
 {

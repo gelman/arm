@@ -25,7 +25,6 @@ setClass("bayesglm",
     contains = "glm"
 )
 
-
 #setClass("bayesglm.h",
 #     representation(
 #            formula = "formula",
@@ -68,27 +67,27 @@ setClass("bayespolr",
      contains = "polr"
 )
 
-
+#' @rdname sim
+#' @export
 setClass("sim",
      representation(
             coef = "matrix",
             sigma = "numeric")
 )
 
+#' @rdname sim
+#' @export
 setClass("sim.polr",
      representation(
             coef = "matrix",
             zeta = "matrix")
 )
 
-
-
+#' @rdname sim
+#' @export
 setClass("sim.merMod",
      representation(
             fixef = "matrix",
             ranef = "list",
             sigma = "ANY")
 )
-
-
-setClass("GO")

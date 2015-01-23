@@ -1,3 +1,5 @@
+#' @rdname sim
+#' @export
 setMethod("coef", signature(object = "sim"),
     function(object)
     {
@@ -6,7 +8,8 @@ setMethod("coef", signature(object = "sim"),
     }
 )
 
-
+#' @rdname sim
+#' @export
 setMethod("coef", signature(object = "sim.polr"),
     function(object, slot=c("ALL", "coef", "zeta"))
     {
@@ -22,10 +25,8 @@ setMethod("coef", signature(object = "sim.polr"),
     }
 )
 
-
-
-
-
+#' @rdname sim
+#' @export
 setMethod("coef", signature(object = "sim.merMod"),
     function(object)
     {
@@ -36,6 +37,8 @@ setMethod("coef", signature(object = "sim.merMod"),
     }
 )
 
+#' @rdname sim
+#' @export
 setMethod("fixef", signature(object = "sim.merMod"),
     function(object)
     {
@@ -44,7 +47,8 @@ setMethod("fixef", signature(object = "sim.merMod"),
     }
 )
 
-
+#' @rdname sim
+#' @export
 setMethod("ranef", signature(object = "sim.merMod"),
     function(object)
     {

@@ -29,11 +29,11 @@ setGeneric("display", function(object, ...) {
 #}
 #
 
-if (!isGeneric("sim")) {
-    setGeneric("sim",
-               function(object, ...)
-               standardGeneric("sim"))
-}
+#' @rdname sim
+#' @export
+setGeneric("sim", function(object, ...) {
+  standardGeneric("sim")
+})
 
 #' @rdname sigma.hat
 #' @export

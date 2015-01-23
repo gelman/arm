@@ -1,6 +1,8 @@
-
 # the plan here is to shuffle the ranefs back into the way a merMod object
 # stores them so that a simple X * beta + Z * theta op does the trick
+
+#' @rdname sim
+#' @export
 setMethod("fitted", signature(object = "sim.merMod"),
           function(object, regression)
 {
