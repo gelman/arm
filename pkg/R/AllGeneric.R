@@ -35,12 +35,11 @@ if (!isGeneric("sim")) {
                standardGeneric("sim"))
 }
 
-
-if (!isGeneric("sigma.hat")) {
-    setGeneric("sigma.hat",
-               function(object, ...)
-               standardGeneric("sigma.hat"))
-}
+#' @rdname sigma.hat
+#' @export
+setGeneric("sigma.hat", function(object, ...) {
+  standardGeneric("sigma.hat")
+})
 
 #' @rdname se.coef
 #' @export
