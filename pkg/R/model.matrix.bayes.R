@@ -1,4 +1,36 @@
-#setMethod("model.matrix.bayes", signature(object = "bayesglm"),
+#' Construct Design Matrices
+#'
+#' \code{model.matrixBayes} creates a design matrix.
+#'
+#' \code{model.matrixBayes} is adapted from \code{model.matrix} in the
+#' \code{stats} pacakge and is designed for the use of
+#' \code{\link{bayesglm}}.% and \code{bayesglm.hierachical} (not yet
+#' implemented!). It is designed to keep baseline levels of all
+#' categorical varaibles and keep the variable names unodered in the
+#' output.  The design matrices created by \code{model.matrixBayes}
+#' are unidentifiable using classical regression methods, though; they
+#' can be identified using \code{\link{bayesglm}}.% and
+#' %\code{bayesglm.hierachical}.
+#'
+#' @references Andrew Gelman, Aleks Jakulin, Maria Grazia Pittau and
+#' Yu-Sung Su. (2009). \dQuote{A Weakly Informative Default Prior
+#' Distribution For Logistic And Other Regression Models.} \emph{The
+#' Annals of Applied Statistics} 2 (4):
+#' 1360--1383. \url{http://www.stat.columbia.edu/~gelman/research/published/priors11.pdf}
+#' @author Yu-Sung Su \email{suyusung@@tsinghua.edu.cn}
+#' @seealso \code{\link[stats]{model.frame}},
+#' \code{\link[stats]{model.extract}}, \code{\link[stats]{terms}},
+#' \code{\link[stats]{terms.formula}}, \code{\link{bayesglm}}.
+#' @keywords models manip
+#' @export
+#' @examples
+#' ff <- log(Volume) ~ log(Height) + log(Girth)
+#' str(m <- model.frame(ff, trees))
+#' (model.matrix(ff, m))
+#' class(ff) <- c("bayesglm", "terms", "formula")
+#' (model.matrixBayes(ff, m))
+#' %class(ff) <- c("bayesglm.h", "terms", "formula")
+#' %(model.matrixBayes(ff, m))
 model.matrixBayes <- function(object, data = environment(object),
         contrasts.arg = NULL, xlev = NULL, keep.order=FALSE, drop.baseline=FALSE,...)
 {
@@ -76,7 +108,7 @@ model.matrixBayes <- function(object, data = environment(object),
     attr(ans, "contrasts" ) <- cons
     ans
 }
-#)
+
 
 #setMethod("model.matrix.bayes", signature(object = "bayesglm.h"),
 #model.matrix.bayes.h <- function (object, data = environment(object), 
