@@ -65,7 +65,6 @@
 #'   \code{\link{bayesglm}}, \code{\link[graphics]{plot}}
 #' @keywords hplot dplot methods manip
 #' @name coefplot
-#' @export
 #' @examples
 #' old.par <- par(no.readonly = TRUE)
 #' 
@@ -150,6 +149,10 @@
 #'    var.las=1, main="Regression Estimates")
 #'
 #' par(old.par)
+NULL
+
+#' @rdname coefplot
+#' @export
 coefplot.default <- function(coefs, sds, CI=2, 
             lower.conf.bounds, upper.conf.bounds,
             varnames=NULL, 
