@@ -24,6 +24,7 @@
 NULL
 
 
+#' @importFrom coda nvar nchain varnames
 #' @rdname traceplot
 #' @export
 setMethod("traceplot", signature(x = "mcmc.list"),

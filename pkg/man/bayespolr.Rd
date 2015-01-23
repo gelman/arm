@@ -84,7 +84,7 @@ is a scalar, it is expanded to the number of levels of y.}
 \item{min.prior.scale}{Minimum prior scale for the coefficients:
 default is 1e-12.}
 
-\item{scaled}{{if \codescaled = TRUE}, then the prior distribution
+\item{scaled}{if \code{scaled = TRUE}, then the prior distribution
 is rescaled.  Can be a vector of length equal to the number of
 cutpoints (intercepts). If it is a scalar, it is expanded to the
 length of this vector.}
@@ -126,6 +126,7 @@ values, we use prior.scale/range(x). For a predictor with more than
 two values, we use prior.scale/(2*sd(x)).
 }
 \examples{
+library("MASS")
 M1 <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
 display (M1)
 

@@ -127,6 +127,7 @@
 #' coefplot(M2, xlim=x.scale, main="bayesglm", intercept=TRUE)
 #' 
 #' # plot 5: the ordered logit model from polr
+#' library("MASS")
 #' M3 <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
 #' coefplot(M3, main="polr")
 #'   

@@ -62,6 +62,7 @@ generalized linear model).
 # Here's a simple example of a model of the form, y = a + bx + error,
 # with 10 observations in each of 10 groups, and with both the
 # intercept and the slope varying by group.  First we set up the model and data.
+  library("MASS")  # Needed for mvrnorm() and polr()
   group <- rep(1:10, rep(10,10))
   group2 <- rep(1:10, 10)
   mu.a <- 0
@@ -98,6 +99,7 @@ generalized linear model).
 
 # Then fit and display a simple varying-intercept model:
 
+   library("lme4")
    M3 <- lmer (y1 ~ x + (1|group))
    display (M3)
    M3.sim <- sim(M3, n.sims=2)

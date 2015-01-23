@@ -73,6 +73,7 @@
 #'  sigma.M2.sim <- sigma.hat(M2.sim)
 #' 
 #' # Ordered Logistic regression 
+#'  library("MASS")
 #'  house.plr <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
 #'  display(house.plr)
 #'  M.plr <- sim(house.plr)
@@ -82,6 +83,7 @@
 #' 
 #' # Using lmer:
 #' # Example 1
+#'  library("lme4")
 #'  E1 <- lmer (y ~ x + (1 | group))
 #'  display(E1)
 #'  E1.sim <- sim (E1)

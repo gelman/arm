@@ -13,6 +13,7 @@
 #' @keywords manip methods
 #' @export
 #' @examples
+#' library("lme4")
 #' fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 #' extractAIC(fm1)
 #' extractDIC(fm1)

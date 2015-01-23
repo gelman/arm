@@ -50,6 +50,7 @@
 #' M1.2 <- standardize(M1.1)
 #' display(M1.2)
 #' # M1.1 & M1.2 should be the same
+#' library("MASS")
 #' M2 <- polr(ordered(y2) ~ x)
 #' display(M2)
 #' M2.1 <- polr(ordered(y2) ~ rescale(x))

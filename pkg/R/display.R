@@ -1,3 +1,4 @@
+
 #' Functions for Processing lm, glm, mer, polr and svyglm Output
 #'
 #' This generic function gives a clean printout of lm, glm, mer, polr
@@ -37,6 +38,7 @@
 #' # Here's a simple example of a model of the form, y = a + bx + error, 
 #' # with 10 observations in each of 10 groups, and with both the 
 #' # intercept and the slope varying by group.  First we set up the model and data.
+#'   library("MASS")  # Needed for mvrnorm() and polr()
 #'   group <- rep(1:10, rep(10,10))
 #'   group2 <- rep(1:10, 10)
 #'   mu.a <- 0
@@ -73,6 +75,7 @@
 #' 
 #' # Then fit and display a simple varying-intercept model:
 #'  
+#'    library("lme4")
 #'    M3 <- lmer (y1 ~ x + (1|group))
 #'    display (M3)
 #'    M3.sim <- sim(M3, n.sims=2)  
@@ -304,7 +307,7 @@ setMethod("display", signature(object = "glm"),
 #    print (call)
 #    #object <- summary(object)
 #    fcoef <- fixef(object)
-#    useScale <- attr( VarCorr(object), "sc") 
+#    useScale <- attr( lme4::VarCorr(object), "sc") 
 #    corF <- vcov(object)@factors$correlation
 #    coefs <- cbind(fcoef, corF@sd)
 #    if (length (fcoef) > 0){
@@ -312,7 +315,7 @@ setMethod("display", signature(object = "glm"),
 #      pfround (coefs, digits)
 #    }
 #    cat("\nError terms:\n")
-#    vc <- as.matrix.VarCorr (VarCorr (object), useScale=useScale, digits)
+#    vc <- as.matrix.VarCorr (lme4::VarCorr (object), useScale=useScale, digits)
 #    print (vc[,c(1:2,4:ncol(vc))], quote=FALSE)
 #    ngrps <- lapply(object@flist, function(x) length(levels(x)))
 #    REML <- object@status["REML"]
@@ -350,7 +353,7 @@ setMethod("display", signature(object = "merMod"),
     #summ <- summary(object)
     fcoef <- fixef(object)
     #coefs <- attr(summ, "coefs")
-    #useScale <- attr (VarCorr (object), "sc")
+    #useScale <- attr (lme4::VarCorr (object), "sc")
     useScale <- getME(object, "devcomp")$dims["useSc"]
     corF <- vcov(object)@factors$correlation
     coefs <- cbind(fcoef, corF@sd)
@@ -376,7 +379,7 @@ setMethod("display", signature(object = "merMod"),
     out$coef <- coefs[,"coef.est"]
     out$se <- coefs[,"coef.se"]
     cat("\nError terms:\n")
-    vc <- as.matrix.VarCorr (VarCorr (object), useScale=useScale, digits)
+    vc <- as.matrix.VarCorr (lme4::VarCorr (object), useScale=useScale, digits)
     print (vc[,c(1:2,4:ncol(vc))], quote=FALSE)
     out$ngrps <- lapply(object@flist, function(x) length(levels(x)))
     is_REML <- isREML(object)

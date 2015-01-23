@@ -13,6 +13,9 @@
 #' @keywords manip methods
 #' @name sigma.hat
 #' @examples
+#' library("MASS")
+#' library("lme4")
+#' 
 #' group <- rep(1:10, rep(10,10))
 #' mu.a <- 0
 #' sigma.a <- 2

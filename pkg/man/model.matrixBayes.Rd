@@ -27,8 +27,6 @@ str(m <- model.frame(ff, trees))
 (model.matrix(ff, m))
 class(ff) <- c("bayesglm", "terms", "formula")
 (model.matrixBayes(ff, m))
-\%class(ff) <- c("bayesglm.h", "terms", "formula")
-\%(model.matrixBayes(ff, m))
 }
 \author{
 Yu-Sung Su \email{suyusung@tsinghua.edu.cn}

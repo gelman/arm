@@ -1,3 +1,15 @@
+#' ARM - Applied Regression Modeling
+#' 
+#' @name arm
+#' @docType package
+#' @importFrom stats coef napredict .getXlevels model.frame
+#' @importFrom methods setOldClass
+#' @importFrom Matrix t crossprod tcrossprod colMeans
+#' @importFrom MASS polr mvrnorm
+#' @importFrom coda traceplot
+#' @importFrom lme4 getME isREML refitML
+#' @importFrom nlme fixef ranef
+NULL
 
 
 #' Lalonde Dataset

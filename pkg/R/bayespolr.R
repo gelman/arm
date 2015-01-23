@@ -71,7 +71,7 @@
 #'   is a scalar, it is expanded to the number of levels of y.
 #' @param min.prior.scale Minimum prior scale for the coefficients:
 #'   default is 1e-12.
-#' @param scaled {if \codescaled = TRUE}, then the prior distribution
+#' @param scaled if \code{scaled = TRUE}, then the prior distribution
 #'   is rescaled.  Can be a vector of length equal to the number of
 #'   cutpoints (intercepts). If it is a scalar, it is expanded to the
 #'   length of this vector.
@@ -92,6 +92,7 @@
 #' @keywords models methods regression
 #' @export
 #' @examples
+#' library("MASS")
 #' M1 <- polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
 #' display (M1)
 #' 

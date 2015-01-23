@@ -20,6 +20,7 @@ Computes the (generalized) Akaike *A*n *I*nformation *C*riterion
 and *D*eviance *I*nformation *C*riterion for a mer model.
 }
 \examples{
+library("lme4")
 fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
 extractAIC(fm1)
 extractDIC(fm1)

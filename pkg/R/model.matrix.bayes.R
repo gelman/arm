@@ -29,8 +29,6 @@
 #' (model.matrix(ff, m))
 #' class(ff) <- c("bayesglm", "terms", "formula")
 #' (model.matrixBayes(ff, m))
-#' %class(ff) <- c("bayesglm.h", "terms", "formula")
-#' %(model.matrixBayes(ff, m))
 model.matrixBayes <- function(object, data = environment(object),
         contrasts.arg = NULL, xlev = NULL, keep.order=FALSE, drop.baseline=FALSE,...)
 {

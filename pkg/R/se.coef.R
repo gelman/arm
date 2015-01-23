@@ -31,6 +31,9 @@
 #' # with 10 observations in each of 10 groups, and with both the 
 #' # intercept and the slope varying by group.  First we set up the model and data.
 #'
+#' library("MASS")
+#' library("lme4")
+#' 
 #' group <- rep(1:10, rep(10,10))
 #' mu.a <- 0
 #' sigma.a <- 2

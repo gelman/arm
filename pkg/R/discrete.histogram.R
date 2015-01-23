@@ -19,8 +19,8 @@
 #' @param prob2.col The color of the second set of histogram bars.
 #' @param prob3.col The color of the third set of histogram bars.
 #' @param ... Additional arguments passed to function \code{plot}.
-#' 
 #' @keywords dplot
+#' @export
 #' @examples
 #' a <- c(3,4,0,0,5,1,1,1,1,0)
 #' discrete.histogram (a)
